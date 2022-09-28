@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, FlatList } from "react-native";
+import { ActivityIndicator, FlatList, StyleSheet, View } from "react-native";
 import { POLLING_INTERVAL } from "../../data/constants";
 import { getBackendActor } from "../../lib/actor";
 import { useInterval } from "../../utility/utils";
@@ -9,7 +9,7 @@ const ChatBarList = () => {
   const [data, setData] = useState(null);
 
   useInterval(async () => {
-    const response = await (await getBackendActor()).getMyChats();
+    const response = await (await getBackendActor()).getMyChatHeaders();
     if (response["ok"]) {
       setData(response["ok"]);
     } else if (response["#err"]) {
@@ -17,15 +17,36 @@ const ChatBarList = () => {
     }
   }, POLLING_INTERVAL);
 
-  const renderItem = ({ item }) => <ChatBar chat={item} />;
+  const renderItem = ({ item }) => <ChatBar chatHeader={item} />;
 
-  const keyExtractor = (item) => item["otherUsers"][0];
+  const keyExtractor = (item) => item["id"];
 
-  return data ? (
-    <FlatList data={data} renderItem={renderItem} keyExtractor={keyExtractor} />
-  ) : (
-    <ActivityIndicator />
+  return (
+    <View style={styles.container}>
+      {data ? (
+        <FlatList
+          data={data}
+          renderItem={renderItem}
+          keyExtractor={keyExtractor}
+        />
+      ) : (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator />
+        </View>
+      )}
+    </View>
   );
 };
+
+const styles = StyleSheet.create({
+  container: {
+    height: "100%",
+  },
+  loadingContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
 
 export default ChatBarList;

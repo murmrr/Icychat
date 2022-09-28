@@ -8,13 +8,13 @@ import { getBackendActor } from "../../lib/actor";
 import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
-const ChatBar = ({ chat }) => {
+const ChatBar = ({ chatHeader }) => {
   const [otherUserProfile, setOtherUserProfile] = useState(null);
 
   useInterval(async () => {
     const response = await (
       await getBackendActor()
-    ).getProfile(chat["otherUsers"][0]);
+    ).getProfile(chatHeader["otherUsers"][0]);
     if (response["ok"]) {
       setOtherUserProfile(response["ok"]);
     } else if (response["#err"]) {
@@ -26,7 +26,9 @@ const ChatBar = ({ chat }) => {
 
   return (
     <TouchableOpacity
-      onPress={() => navigation.navigate("OneOnOneChat", { chat })}
+      onPress={() =>
+        navigation.navigate("OneOnOneChat", { id: chatHeader["id"] })
+      }
     >
       <View style={styles.container}>
         <View style={styles.avatarContainer}>
@@ -45,7 +47,9 @@ const ChatBar = ({ chat }) => {
           ) : (
             <ActivityIndicator />
           )}
-          <Text style={styles.principal}>{chat["otherUsers"][0].toText()}</Text>
+          <Text style={styles.principal}>
+            {chatHeader["otherUsers"][0].toText()}
+          </Text>
         </View>
       </View>
     </TouchableOpacity>
