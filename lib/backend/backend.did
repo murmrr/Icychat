@@ -1,0 +1,82 @@
+type UpdateProfileError = variant {ProfileNotFound;};
+type Time = int;
+type SharedChat = 
+ record {
+   messages: vec Message;
+   sharedUsers: vec principal;
+ };
+type SendMessageError = 
+ variant {
+   RecipientNotFound;
+   UserNotFound;
+ };
+type Result_6 = 
+ variant {
+   err: CreateChatError;
+   ok;
+ };
+type Result_5 = 
+ variant {
+   err: GetMyChatsError;
+   ok: vec SharedChat;
+ };
+type Result_4 = 
+ variant {
+   err: GetMyProfileError;
+   ok: Profile;
+ };
+type Result_3 = 
+ variant {
+   err: GetProfileError;
+   ok: Profile;
+ };
+type Result_2 = 
+ variant {
+   err: RegisterError;
+   ok;
+ };
+type Result_1 = 
+ variant {
+   err: SendMessageError;
+   ok;
+ };
+type Result = 
+ variant {
+   err: UpdateProfileError;
+   ok;
+ };
+type RegisterError = 
+ variant {
+   AlreadyRegistered;
+   InvalidProfile;
+ };
+type ProfileUpdate = record {username: text;};
+type Profile = 
+ record {
+   userPrincipal: principal;
+   username: text;
+ };
+type MessageContent = record {message: text;};
+type Message = 
+ record {
+   content: MessageContent;
+   sender: principal;
+   time: Time;
+ };
+type GetProfileError = variant {UserNotFound;};
+type GetMyProfileError = variant {UserNotFound;};
+type GetMyChatsError = variant {UserNotFound;};
+type CreateChatError = 
+ variant {
+   ChatAlreadyExists;
+   UserNotFound;
+ };
+service : {
+  createChat: (principal) -> (Result_6);
+  getMyChats: () -> (Result_5) query;
+  getMyProfile: () -> (Result_4) query;
+  getProfile: (principal) -> (Result_3) query;
+  register: (ProfileUpdate) -> (Result_2);
+  sendMessage: (principal, MessageContent) -> (Result_1);
+  updateProfile: (ProfileUpdate) -> (Result);
+}
