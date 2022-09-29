@@ -43,7 +43,7 @@ type Result_2 =
 type Result_1 = 
  variant {
    err: SendMessageError;
-   ok;
+   ok: SharedChat;
  };
 type Result = 
  variant {
@@ -89,6 +89,7 @@ type ChatHeader =
  };
 service : {
   createChat: (principal) -> (Result_7);
+  getAllUsers: () -> (vec principal) query;
   getMyChat: (nat) -> (Result_6) query;
   getMyChatHeaders: () -> (Result_5) query;
   getMyProfile: () -> (Result_4) query;

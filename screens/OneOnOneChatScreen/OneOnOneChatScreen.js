@@ -56,7 +56,7 @@ const OneOnOneChatScreen = ({ navigation, route }) => {
           renderItem={renderItem}
           keyExtractor={keyExtractor}
         />
-        <ChatInput id={id} />
+        <ChatInput id={id} setData={setData} />
       </KeyboardAvoidingView>
     </View>
   ) : (
@@ -76,8 +76,8 @@ const styles = StyleSheet.create({
   loadingContainer: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center"
-  }
+    justifyContent: "center",
+  },
 });
 
 export default OneOnOneChatScreen;

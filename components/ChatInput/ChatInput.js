@@ -9,7 +9,7 @@ import {
 import { getBackendActor } from "../../lib/actor";
 import { scale, verticalScale } from "../../utility/scalingUtils";
 
-const ChatInput = ({ id }) => {
+const ChatInput = ({ id, setData }) => {
   const [message, setMessage] = useState("");
   const [sending, setSending] = useState(false);
   const inputRef = useRef();
@@ -23,6 +23,14 @@ const ChatInput = ({ id }) => {
     const response = await (
       await getBackendActor()
     ).sendMessage(id, messageContent);
+    console.log(response);
+    /*
+    if (response["ok"]) {
+      setData(response["ok"]);
+    } else if (response["#err"]) {
+      setData(null);
+    }
+    */
     setSending(false);
     inputRef.current.clear();
   };

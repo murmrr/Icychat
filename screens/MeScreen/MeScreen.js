@@ -46,12 +46,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   avatarContainer: {
-    width: scale(60),
+    width: scale(90),
     aspectRatio: 1,
+    marginBottom: scale(150),
   },
   avatar: {
     flex: 1,
-    borderRadius: scale(60),
+    borderRadius: scale(90),
   },
   textContainer: {
     alignSelf: "center",
@@ -59,6 +60,7 @@ const styles = StyleSheet.create({
   username: {
     textAlign: "center",
     fontSize: scale(15),
+    marginBottom: scale(75),
   },
   principal: {
     textAlign: "center",
@@ -67,8 +69,8 @@ const styles = StyleSheet.create({
   loadingContainer: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center"
-  }
+    justifyContent: "center",
+  },
 });
 
 export default MeScreen;

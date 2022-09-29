@@ -32,7 +32,7 @@ export type RegisterError =
   | { InvalidProfile: null }
   | { AlreadyRegistered: null };
 export type Result = { ok: null } | { err: UpdateProfileError };
-export type Result_1 = { ok: null } | { err: SendMessageError };
+export type Result_1 = { ok: SharedChat } | { err: SendMessageError };
 export type Result_2 = { ok: null } | { err: RegisterError };
 export type Result_3 = { ok: Profile } | { err: GetProfileError };
 export type Result_4 = { ok: Profile } | { err: GetMyProfileError };
@@ -50,6 +50,7 @@ export type Time = bigint;
 export type UpdateProfileError = { ProfileNotFound: null };
 export interface _SERVICE {
   createChat: ActorMethod<[Principal], Result_7>;
+  getAllUsers: ActorMethod<[], Array<Principal>>;
   getMyChat: ActorMethod<[bigint], Result_6>;
   getMyChatHeaders: ActorMethod<[], Result_5>;
   getMyProfile: ActorMethod<[], Result_4>;
