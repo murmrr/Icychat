@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ActivityIndicator, Button, StyleSheet, Text, View } from "react-native";
+import { ActivityIndicator, Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { POLLING_INTERVAL } from "../../data/constants";
 import { getBackendActor } from "../../lib/actor";
 import { scale } from "../../utility/scalingUtils";
@@ -27,6 +27,7 @@ const FindBarModalTile = ({ principal, setModalVisible }) => {
   }
 
   return (
+    <TouchableOpacity style={styles.touchableView} onPress={() => setModalVisible(false)}>
     <View style={styles.container}>
       {profile ? (
         <View style={styles.profileContainer}>
@@ -40,10 +41,17 @@ const FindBarModalTile = ({ principal, setModalVisible }) => {
         <ActivityIndicator />
       )}
     </View>
+    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
+  touchableView: {
+    width: "100%",
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
   container: {
     backgroundColor: "gray",
     width: scale(200),

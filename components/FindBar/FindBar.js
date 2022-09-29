@@ -23,7 +23,7 @@ const FindBar = ({ principal }) => {
 
   return (
     <>
-      <Modal animationType="slide" transparent={true} visible={modalVisible}>
+      <Modal animationType="fade" transparent={true} visible={modalVisible}>
         <View style={styles.modalTileContainer}>
           <FindBarModalTile principal={principal} setModalVisible={setModalVisible} />
         </View>

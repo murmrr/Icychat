@@ -10,10 +10,12 @@ const FindScreen = () => {
 
   useInterval(async () => {
     const response = await (await getBackendActor()).getAllUsers();
-    setAllUsers(response);
+    if (response["ok"]) {
+      setAllUsers(response["ok"]);
+    } else if (response["#err"]) {
+      setAllUsers(null);
+    }
   }, POLLING_INTERVAL);
-
-  //console.log(allUsers);
 
   const renderItem = ({ item }) => <FindBar principal={item} />;
 
