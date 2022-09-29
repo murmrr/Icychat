@@ -7,7 +7,7 @@ import {
   View,
 } from "react-native";
 import { getBackendActor } from "../../lib/actor";
-import { scale, verticalScale } from "../../utility/scalingUtils";
+import { verticalScale } from "../../utility/scalingUtils";
 
 const ChatInput = ({ id, setData }) => {
   const [message, setMessage] = useState("");
