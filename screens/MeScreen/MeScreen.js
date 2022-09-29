@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
 import UserAvatar from "react-native-user-avatar";
 import { POLLING_INTERVAL } from "../../data/constants";
 import { getBackendActor } from "../../lib/actor";
@@ -19,7 +20,7 @@ const MeScreen = () => {
   }, POLLING_INTERVAL);
 
   return profile ? (
-    <View style={styles.container}>
+    <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.avatarContainer}>
         <UserAvatar name={profile["username"]} style={styles.avatar} />
       </View>
@@ -29,16 +30,20 @@ const MeScreen = () => {
           {profile["userPrincipal"].toText()}
         </Text>
       </View>
-    </View>
+    </ScrollView>
   ) : (
-    <ActivityIndicator />
+    <View style={styles.loadingContainer}>
+      <ActivityIndicator />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     flexDirection: "column",
     alignItems: "center",
+    justifyContent: "center",
   },
   avatarContainer: {
     width: scale(60),
@@ -59,6 +64,11 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontSize: scale(12),
   },
+  loadingContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center"
+  }
 });
 
 export default MeScreen;
