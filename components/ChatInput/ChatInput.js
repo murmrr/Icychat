@@ -20,17 +20,7 @@ const ChatInput = ({ id, setData }) => {
     };
 
     setSending(true);
-    const response = await (
-      await getBackendActor()
-    ).sendMessage(id, messageContent);
-    console.log(response);
-    /*
-    if (response["ok"]) {
-      setData(response["ok"]);
-    } else if (response["#err"]) {
-      setData(null);
-    }
-    */
+    const response = await (await getBackendActor()).sendMessage(id, messageContent);
     setSending(false);
     inputRef.current.clear();
   };

@@ -10,10 +10,15 @@ type SendMessageError =
    IdNotFound;
    UserNotFound;
  };
-type Result_7 = 
+type Result_8 = 
  variant {
    err: CreateChatError;
    ok;
+ };
+type Result_7 = 
+ variant {
+   err: GetAllUsersError;
+   ok: vec principal;
  };
 type Result_6 = 
  variant {
@@ -48,7 +53,7 @@ type Result_1 =
 type Result = 
  variant {
    err: UpdateProfileError;
-   ok;
+   ok: Profile;
  };
 type RegisterError = 
  variant {
@@ -77,6 +82,7 @@ type GetMyChatError =
    IdNotFound;
    UserNotFound;
  };
+type GetAllUsersError = variant {UserNotFound;};
 type CreateChatError = 
  variant {
    ChatAlreadyExists;
@@ -88,8 +94,8 @@ type ChatHeader =
    otherUsers: vec principal;
  };
 service : {
-  createChat: (principal) -> (Result_7);
-  getAllUsers: () -> (vec principal) query;
+  createChat: (principal) -> (Result_8);
+  getAllUsers: () -> (Result_7) query;
   getMyChat: (nat) -> (Result_6) query;
   getMyChatHeaders: () -> (Result_5) query;
   getMyProfile: () -> (Result_4) query;
