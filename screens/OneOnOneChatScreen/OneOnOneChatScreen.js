@@ -7,19 +7,32 @@ import {
   Platform,
   StyleSheet,
   View,
+  Text,
 } from "react-native";
 import ChatInput from "../../components/ChatInput/ChatInput";
 import Message from "../../components/Message/Message";
 import { POLLING_INTERVAL } from "../../data/constants";
 import { getBackendActor } from "../../lib/actor";
+import { verticalScale } from "../../utility/scalingUtils";
 import { useInterval } from "../../utility/utils";
 
-const CustomHeader = () => {
-  return <Text>aasdd</Text>;
+const CustomHeader = ({ principal }) => {
+  const [otherUserProfile, setOtherUserProfile] = useState(null);
+
+  useInterval(async () => {
+    const response = await (await getBackendActor()).getProfile(principal);
+    if (response["ok"]) {
+      setOtherUserProfile(response["ok"]);
+    } else if (response["#err"]) {
+      setOtherUserProfile(null);
+    }
+  }, POLLING_INTERVAL);
+
+  return otherUserProfile ? (<Text style={styles.headerUsername}>{otherUserProfile["username"]}</Text>) : (<ActivityIndicator />);
 };
 
 const OneOnOneChatScreen = ({ navigation, route }) => {
-  const { id } = route.params;
+  const { id, principal } = route.params;
   const [data, setData] = useState(null);
 
   useInterval(async () => {
@@ -32,10 +45,10 @@ const OneOnOneChatScreen = ({ navigation, route }) => {
   }, POLLING_INTERVAL);
 
   useLayoutEffect(() => {
-    navigation.setOptions({
-      header: () => <CustomHeader />,
+    navigation.getParent().setOptions({
+      //headerTitle: (props) => <CustomHeader principal={principal}/>,
     });
-  }, [navigation]);
+  }, [navigation, data]);
 
   const renderItem = ({ item }) => <Message message={item} />;
 
@@ -67,6 +80,9 @@ const OneOnOneChatScreen = ({ navigation, route }) => {
 };
 
 const styles = StyleSheet.create({
+  headerUsername: {
+    fontSize: verticalScale(10)
+  },
   container: {
     flex: 1,
   },

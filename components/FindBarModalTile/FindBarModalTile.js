@@ -27,7 +27,7 @@ const FindBarModalTile = ({ principal, setModalVisible }) => {
   }
 
   return (
-    <TouchableOpacity style={styles.touchableView} onPress={() => setModalVisible(false)}>
+    <TouchableOpacity disabled={loading} onPress={() => {setModalVisible(false)}} style={styles.touchableView}>
     <View style={styles.container}>
       {profile ? (
         <View style={styles.profileContainer}>

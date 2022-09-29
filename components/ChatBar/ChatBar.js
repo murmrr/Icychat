@@ -27,7 +27,7 @@ const ChatBar = ({ chatHeader }) => {
   return (
     <TouchableOpacity
       onPress={() =>
-        navigation.navigate("OneOnOneChat", { id: chatHeader["id"] })
+        navigation.navigate("OneOnOneChat", { id: chatHeader["id"], principal: chatHeader["otherUsers"][0] })
       }
     >
       <View style={styles.container}>
