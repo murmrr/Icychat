@@ -11,7 +11,7 @@ const MainNavigation = () => {
   return (
     <Tab.Navigator>
       <Tab.Screen name="Chats" component={ChatsNavigation} />
-      <Tab.Screen name="Connect" component={FindScreen} />
+      <Tab.Screen name="Find" component={FindScreen} />
       <Tab.Screen name="Me" component={MeScreen} />
     </Tab.Navigator>
   );
