@@ -11,8 +11,6 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 const ChatBar = ({ chatHeader }) => {
   const [otherUserProfile, setOtherUserProfile] = useState(null);
 
-  //console.log(chatHeader["lastMessage"]);
-
   useInterval(async () => {
     const response = await (
       await getBackendActor()
