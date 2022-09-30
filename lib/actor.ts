@@ -5,13 +5,11 @@ import { idlFactory, _SERVICE } from "./backend/backend.did";
 
 import { BACKEND_CANISTER_ID, IC_HOST } from "../config";
 
-export const getBackendActor = async (identity?: Identity) => {
+export const getBackendActor = (identity?: Identity) => {
   const agent = new HttpAgent({
     identity,
     host: IC_HOST,
   });
-
-  await agent.fetchRootKey();
 
   return Actor.createActor<_SERVICE>(idlFactory, {
     agent,

@@ -20,7 +20,7 @@ const CustomHeader = ({ principal }) => {
   const [otherUserProfile, setOtherUserProfile] = useState(null);
 
   useInterval(async () => {
-    const response = await (await getBackendActor()).getProfile(principal);
+    const response = await getBackendActor().getProfile(principal);
     if (response["ok"]) {
       setOtherUserProfile(response["ok"]);
     } else if (response["#err"]) {
@@ -36,7 +36,7 @@ const OneOnOneChatScreen = ({ navigation, route }) => {
   const [data, setData] = useState(null);
 
   useInterval(async () => {
-    const response = await (await getBackendActor()).getMyChat(id);
+    const response = await getBackendActor().getMyChat(id);
     if (response["ok"]) {
       setData(response["ok"]);
     } else if (response["#err"]) {
@@ -69,7 +69,7 @@ const OneOnOneChatScreen = ({ navigation, route }) => {
           renderItem={renderItem}
           keyExtractor={keyExtractor}
         />
-        <ChatInput id={id} setData={setData} />
+        <ChatInput id={id} />
       </KeyboardAvoidingView>
     </View>
   ) : (

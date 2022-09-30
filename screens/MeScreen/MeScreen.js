@@ -11,7 +11,7 @@ const MeScreen = () => {
   const [profile, setProfile] = useState(null);
 
   useInterval(async () => {
-    const response = await (await getBackendActor()).getMyProfile();
+    const response = await getBackendActor().getMyProfile();
     if (response["ok"]) {
       setProfile(response["ok"]);
     } else if (response["#err"]) {

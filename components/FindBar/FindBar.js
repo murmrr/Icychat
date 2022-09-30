@@ -13,7 +13,7 @@ const FindBar = ({ principal }) => {
   const [modalVisible, setModalVisible] = useState(false);
 
   useInterval(async () => {
-    const response = await (await getBackendActor()).getProfile(principal);
+    const response = await getBackendActor().getProfile(principal);
     if (response["ok"]) {
       setProfile(response["ok"]);
     } else if (response["#err"]) {

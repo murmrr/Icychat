@@ -12,9 +12,7 @@ const ChatBar = ({ chatHeader }) => {
   const [otherUserProfile, setOtherUserProfile] = useState(null);
 
   useInterval(async () => {
-    const response = await (
-      await getBackendActor()
-    ).getProfile(chatHeader["otherUsers"][0]);
+    const response = await getBackendActor().getProfile(chatHeader["otherUsers"][0]);
     if (response["ok"]) {
       setOtherUserProfile(response["ok"]);
     } else if (response["#err"]) {
