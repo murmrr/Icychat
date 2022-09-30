@@ -10,7 +10,9 @@ const Message = ({ message }) => {
   const [profile, setProfile] = useState(null);
 
   useInterval(async () => {
-    const response = await getBackendActor().getProfile(message["sender"]);
+    const response = await (
+      await getBackendActor()
+    ).getProfile(message["sender"]);
     if (response["ok"]) {
       setProfile(response["ok"]);
     } else if (response["#err"]) {

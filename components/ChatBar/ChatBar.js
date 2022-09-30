@@ -14,9 +14,9 @@ const ChatBar = ({ chatHeader }) => {
   //console.log(chatHeader["lastMessage"]);
 
   useInterval(async () => {
-    const response = await getBackendActor().getProfile(
-      chatHeader["otherUsers"][0]
-    );
+    const response = await (
+      await getBackendActor()
+    ).getProfile(chatHeader["otherUsers"][0]);
     if (response["ok"]) {
       setOtherUserProfile(response["ok"]);
     } else if (response["#err"]) {
@@ -63,12 +63,14 @@ const ChatBar = ({ chatHeader }) => {
         </View>
         <View style={styles.timeContainer}>
           {chatHeader["lastMessage"].length > 0 ? (
-              <Text style={styles.time}>
-                {(new Date(Number(chatHeader["lastMessage"][0]["time"]) / 1000)).toLocaleTimeString()}
-              </Text>
-            ) : (
-              <></>
-            )}
+            <Text style={styles.time}>
+              {new Date(
+                Number(chatHeader["lastMessage"][0]["time"]) / 1000
+              ).toLocaleTimeString()}
+            </Text>
+          ) : (
+            <></>
+          )}
         </View>
       </View>
     </TouchableOpacity>
@@ -109,8 +111,8 @@ const styles = StyleSheet.create({
     width: scale(60),
   },
   time: {
-    fontSize: scale(10)
-  }
+    fontSize: scale(10),
+  },
 });
 
 export default ChatBar;

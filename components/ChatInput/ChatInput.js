@@ -20,7 +20,7 @@ const ChatInput = ({ id }) => {
     };
 
     setSending(true);
-    await getBackendActor().sendMessage(id, messageContent);
+    await (await getBackendActor()).sendMessage(id, messageContent);
     setSending(false);
     inputRef.current.clear();
   };

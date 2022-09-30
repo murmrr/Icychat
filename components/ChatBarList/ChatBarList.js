@@ -9,7 +9,7 @@ const ChatBarList = () => {
   const [data, setData] = useState(null);
 
   useInterval(async () => {
-    const response = await getBackendActor().getMyChatHeaders();
+    const response = await (await getBackendActor()).getMyChatHeaders();
     if (response["ok"]) {
       setData(response["ok"]);
     } else if (response["#err"]) {

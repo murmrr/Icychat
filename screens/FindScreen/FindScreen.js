@@ -9,7 +9,7 @@ const FindScreen = () => {
   const [allUsers, setAllUsers] = useState(null);
 
   useInterval(async () => {
-    const response = await getBackendActor().getAllUsers();
+    const response = await (await getBackendActor()).getAllUsers();
     if (response["ok"]) {
       setAllUsers(response["ok"]);
     } else if (response["#err"]) {
