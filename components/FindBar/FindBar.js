@@ -3,7 +3,7 @@ import { ActivityIndicator, Modal, StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { POLLING_INTERVAL } from "../../data/constants";
 import { getBackendActor } from "../../lib/actor";
-import { scale } from "../../utility/scalingUtils";
+import { moderateScale, scale } from "../../utility/scalingUtils";
 import { useInterval } from "../../utility/utils";
 import UserAvatar from "react-native-user-avatar";
 import FindBarModalTile from "../FindBarModalTile/FindBarModalTile";
@@ -25,21 +25,31 @@ const FindBar = ({ principal }) => {
     <>
       <Modal animationType="fade" transparent={true} visible={modalVisible}>
         <View style={styles.modalTileContainer}>
-          <FindBarModalTile principal={principal} setModalVisible={setModalVisible} />
+          <FindBarModalTile
+            principal={principal}
+            setModalVisible={setModalVisible}
+          />
         </View>
       </Modal>
       <TouchableOpacity onPress={() => setModalVisible(true)}>
         <View style={styles.container}>
           <View style={styles.avatarContainer}>
             {profile ? (
-              <UserAvatar name={profile["username"]} style={styles.avatar} />
+              <UserAvatar
+                name={profile["username"]}
+                size={scale(80)}
+                style={styles.avatar}
+              />
             ) : (
               <ActivityIndicator />
             )}
           </View>
           <View style={styles.textContainer}>
             {profile ? (
-              <Text style={styles.username}>{profile["username"]}</Text>
+              <>
+                <Text style={styles.username}>{profile["username"]}</Text>
+                <Text style={styles.principal}>{principal.toText()}</Text>
+              </>
             ) : (
               <ActivityIndicator />
             )}
@@ -59,25 +69,33 @@ const styles = StyleSheet.create({
   },
   container: {
     flexDirection: "row",
-    height: scale(80),
+    height: moderateScale(64.53),
+    marginHorizontal: moderateScale(26),
+    marginVertical: moderateScale(17.5),
   },
   avatarContainer: {
-    flex: 1,
-    alignItems: "center",
     justifyContent: "center",
+    alignItems: "center",
+    alignContent: "center",
+    width: "20%",
+    height: "100%",
   },
   avatar: {
-    height: "90%",
+    width: "100%",
     aspectRatio: 1,
-    borderRadius: scale(80),
+    borderRadius: 100,
   },
   textContainer: {
-    flex: 3,
+    flex: 1,
+    marginLeft: moderateScale(9.5),
     alignItems: "center",
     justifyContent: "center",
   },
   username: {
-    fontSize: scale(10),
+    fontSize: moderateScale(14),
+  },
+  principal: {
+    fontSize: moderateScale(6),
   },
 });
 

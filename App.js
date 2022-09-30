@@ -1,11 +1,11 @@
 import "./shim";
 
-import { LogBox } from 'react-native';
+import { LogBox } from "react-native";
 import { StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import MainNavigation from "./navigation/MainNavigation/MainNavigation";
 
-LogBox.ignoreLogs(['Warning: ...']);
+LogBox.ignoreLogs(["Warning: ..."]);
 LogBox.ignoreAllLogs();
 
 export default function App() {

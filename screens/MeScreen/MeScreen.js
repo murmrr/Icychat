@@ -22,7 +22,11 @@ const MeScreen = () => {
   return profile ? (
     <ScrollView contentContainerStyle={styles.container}>
       <View style={styles.avatarContainer}>
-        <UserAvatar name={profile["username"]} style={styles.avatar} />
+        <UserAvatar
+          name={profile["username"]}
+          size={scale(80)}
+          style={styles.avatar}
+        />
       </View>
       <View style={styles.textContainer}>
         <Text style={styles.username}>{profile["username"]}</Text>
@@ -46,9 +50,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   avatarContainer: {
-    width: scale(90),
+    width: scale(100),
     aspectRatio: 1,
-    marginBottom: scale(150),
+    marginBottom: scale(30),
   },
   avatar: {
     flex: 1,
@@ -59,8 +63,8 @@ const styles = StyleSheet.create({
   },
   username: {
     textAlign: "center",
-    fontSize: scale(15),
-    marginBottom: scale(75),
+    fontSize: scale(50),
+    marginBottom: scale(15),
   },
   principal: {
     textAlign: "center",

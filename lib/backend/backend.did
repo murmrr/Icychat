@@ -91,6 +91,7 @@ type CreateChatError =
 type ChatHeader = 
  record {
    id: nat;
+   lastMessage: opt Message;
    otherUsers: vec principal;
  };
 service : {

@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { ActivityIndicator, Button, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  Button,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { POLLING_INTERVAL } from "../../data/constants";
 import { getBackendActor } from "../../lib/actor";
 import { scale } from "../../utility/scalingUtils";
@@ -24,23 +31,35 @@ const FindBarModalTile = ({ principal, setModalVisible }) => {
     const response = await getBackendActor().createChat(principal);
     setLoading(false);
     setModalVisible(false);
-  }
+  };
 
   return (
-    <TouchableOpacity disabled={loading} onPress={() => {setModalVisible(false)}} style={styles.touchableView}>
-    <View style={styles.container}>
-      {profile ? (
-        <View style={styles.profileContainer}>
-          <UserAvatar name={profile["username"]} style={styles.avatar} />
-          <Text style={styles.username}>{profile["username"]}</Text>
-          {
-            loading ? <ActivityIndicator /> : <Button title="Create Chat!" onPress={createChat}/>
-          }
-        </View>
-      ) : (
-        <ActivityIndicator />
-      )}
-    </View>
+    <TouchableOpacity
+      disabled={loading}
+      onPress={() => {
+        setModalVisible(false);
+      }}
+      style={styles.touchableView}
+    >
+      <View style={styles.container}>
+        {profile ? (
+          <View style={styles.profileContainer}>
+            <UserAvatar
+              name={profile["username"]}
+              size={scale(80)}
+              style={styles.avatar}
+            />
+            <Text style={styles.username}>{profile["username"]}</Text>
+            {loading ? (
+              <ActivityIndicator />
+            ) : (
+              <Button title="Create Chat!" onPress={createChat} />
+            )}
+          </View>
+        ) : (
+          <ActivityIndicator />
+        )}
+      </View>
     </TouchableOpacity>
   );
 };
@@ -71,7 +90,7 @@ const styles = StyleSheet.create({
   },
   username: {
     fontSize: scale(15),
-  }
-})
+  },
+});
 
 export default FindBarModalTile;

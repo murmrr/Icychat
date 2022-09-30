@@ -22,7 +22,11 @@ const Message = ({ message }) => {
     <View style={styles.container}>
       <Text style={styles.text}>{message["content"]["message"]}</Text>
       {profile ? (
-        <UserAvatar name={profile["username"]} style={styles.avatar} />
+        <UserAvatar
+          name={profile["username"]}
+          size={scale(80)}
+          style={styles.avatar}
+        />
       ) : (
         <ActivityIndicator />
       )}

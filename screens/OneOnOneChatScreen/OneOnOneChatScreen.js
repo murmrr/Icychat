@@ -28,7 +28,11 @@ const CustomHeader = ({ principal }) => {
     }
   }, POLLING_INTERVAL);
 
-  return otherUserProfile ? (<Text style={styles.headerUsername}>{otherUserProfile["username"]}</Text>) : (<ActivityIndicator />);
+  return otherUserProfile ? (
+    <Text style={styles.headerUsername}>{otherUserProfile["username"]}</Text>
+  ) : (
+    <ActivityIndicator />
+  );
 };
 
 const OneOnOneChatScreen = ({ navigation, route }) => {
@@ -81,7 +85,7 @@ const OneOnOneChatScreen = ({ navigation, route }) => {
 
 const styles = StyleSheet.create({
   headerUsername: {
-    fontSize: verticalScale(10)
+    fontSize: verticalScale(10),
   },
   container: {
     flex: 1,
