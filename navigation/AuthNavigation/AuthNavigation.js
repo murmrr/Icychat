@@ -6,21 +6,23 @@ const Stack = createStackNavigator();
 
 const AuthNavigation = ({ setIsSignedIn }) => {
   return (
-    <Stack.Navigator       screenOptions={{
-      headerStyle: {
-        backgroundColor: colors.LIGHT_PRIMARY,
-      },
-      headerTitleStyle: {
-        color: "#FFFFFF",
-        fontSize: 20,
-        fontFamily: "Poppins-Medium",
-      },
-      tabBarStyle: {
-        backgroundColor: colors.LIGHT_PRIMARY,
-        borderTopWidth: 0,
-      },
-      headerShadowVisible: false,
-    }}>
+    <Stack.Navigator
+      screenOptions={{
+        headerStyle: {
+          backgroundColor: colors.LIGHT_PRIMARY,
+        },
+        headerTitleStyle: {
+          color: "#FFFFFF",
+          fontSize: 20,
+          fontFamily: "Poppins-Medium",
+        },
+        tabBarStyle: {
+          backgroundColor: colors.LIGHT_PRIMARY,
+          borderTopWidth: 0,
+        },
+        headerShadowVisible: false,
+      }}
+    >
       <Stack.Screen name="Sign Up">
         {(props) => <SignUpScreen setIsSignedIn={setIsSignedIn} />}
       </Stack.Screen>

@@ -1,7 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, Alert, KeyboardAvoidingView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  Alert,
+  KeyboardAvoidingView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
-import UserAvatar from "react-native-user-avatar";
 import InputWrapper from "../../components/InputWrapper/InputWrapper";
 import colors from "../../data/colors";
 import { POLLING_INTERVAL } from "../../data/constants";
@@ -9,6 +16,7 @@ import { getBackendActor } from "../../lib/actor";
 import { scale } from "../../utility/scalingUtils";
 import { useInterval } from "../../utility/utils";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import CustomProfilePicture from "../../components/CustomProfilePicture/CustomProfilePicture";
 
 const MeScreen = ({ setIsSignedIn }) => {
   const [profile, setProfile] = useState(null);
@@ -21,7 +29,6 @@ const MeScreen = ({ setIsSignedIn }) => {
       setProfile(null);
     }
   }, POLLING_INTERVAL);
-
 
   const handleDelete = async () => {
     Alert.alert(
@@ -38,8 +45,7 @@ const MeScreen = ({ setIsSignedIn }) => {
             try {
               await AsyncStorage.removeItem("@identity");
               setIsSignedIn(false);
-          }
-          catch(exception) {}
+            } catch (exception) {}
           },
         },
       ]
@@ -47,43 +53,48 @@ const MeScreen = ({ setIsSignedIn }) => {
   };
 
   return (
-    <KeyboardAvoidingView      style={{ flex: 1, flexDirection: "column", justifyContent: "center" }}
-    behavior="padding"
-    enabled
-    keyboardVerticalOffset={100}>
-      {profile ? (
-    <ScrollView
-      style={{ backgroundColor: colors.DARK_PRIMARY }}
-      contentContainerStyle={styles.container}
+    <KeyboardAvoidingView
+      style={{ flex: 1, flexDirection: "column", justifyContent: "center" }}
+      behavior="padding"
+      enabled
+      keyboardVerticalOffset={100}
     >
-      <View style={styles.avatarContainer}>
-        <UserAvatar name={profile["username"]} style={styles.avatar} />
-      </View>
-      <View style={styles.textContainer}>
-        <InputWrapper label="Principal">
-          <TextInput 
-            value={profile["userPrincipal"].toText()}
-            editable={false}
-            style={styles.principalInput}
-          />
-        </InputWrapper>
-        <InputWrapper label="Username">
-          <TextInput 
-            value={profile["username"]}
-            editable={false}
-            style={styles.usernameInput}
-          />
-        </InputWrapper>
-      </View>
-      <TouchableOpacity onPress={handleDelete} style={styles.button}>
-        <Text style={styles.buttonText}>Delete Account</Text>
-      </TouchableOpacity>
-    </ScrollView>
-  ) : (
-    <View style={styles.loadingContainer}>
-      <ActivityIndicator />
-    </View>
-  )}
+      {profile ? (
+        <ScrollView
+          style={{ backgroundColor: colors.DARK_PRIMARY }}
+          contentContainerStyle={styles.container}
+        >
+          <View style={styles.avatarContainer}>
+            <CustomProfilePicture
+              principal={profile["userPrincipal"]}
+              style={styles.avatar}
+            />
+          </View>
+          <View style={styles.textContainer}>
+            <InputWrapper label="Principal">
+              <TextInput
+                value={profile["userPrincipal"].toText()}
+                editable={false}
+                style={styles.principalInput}
+              />
+            </InputWrapper>
+            <InputWrapper label="Username">
+              <TextInput
+                value={profile["username"]}
+                editable={false}
+                style={styles.usernameInput}
+              />
+            </InputWrapper>
+          </View>
+          <TouchableOpacity onPress={handleDelete} style={styles.button}>
+            <Text style={styles.buttonText}>Delete Account</Text>
+          </TouchableOpacity>
+        </ScrollView>
+      ) : (
+        <View style={styles.loadingContainer}>
+          <ActivityIndicator />
+        </View>
+      )}
     </KeyboardAvoidingView>
   );
 };

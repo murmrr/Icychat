@@ -12,8 +12,8 @@ import { POLLING_INTERVAL } from "../../data/constants";
 import { getBackendActor } from "../../lib/actor";
 import { scale } from "../../utility/scalingUtils";
 import { useInterval } from "../../utility/utils";
-import UserAvatar from "react-native-user-avatar";
 import colors from "../../data/colors";
+import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
 
 const FindBarModalTile = ({ principal, setModalVisible }) => {
   const [profile, setProfile] = useState(null);
@@ -46,7 +46,10 @@ const FindBarModalTile = ({ principal, setModalVisible }) => {
       <View style={styles.container}>
         {profile ? (
           <View style={styles.profileContainer}>
-            <UserAvatar name={profile["username"]} style={styles.avatar} />
+            <CustomProfilePicture
+              principal={profile["userPrincipal"]}
+              style={styles.avatar}
+            />
             <Text style={styles.username}>{profile["username"]}</Text>
             {loading ? (
               <ActivityIndicator />

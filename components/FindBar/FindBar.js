@@ -5,10 +5,10 @@ import { POLLING_INTERVAL } from "../../data/constants";
 import { getBackendActor } from "../../lib/actor";
 import { moderateScale, scale } from "../../utility/scalingUtils";
 import { useInterval } from "../../utility/utils";
-import UserAvatar from "react-native-user-avatar";
 import FindBarModalTile from "../FindBarModalTile/FindBarModalTile";
 import colors from "../../data/colors";
 import { BlurView } from "expo-blur";
+import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
 
 const FindBar = ({ principal }) => {
   const [profile, setProfile] = useState(null);
@@ -36,11 +36,7 @@ const FindBar = ({ principal }) => {
       <TouchableOpacity onPress={() => setModalVisible(true)}>
         <View style={styles.container}>
           <View style={styles.avatarContainer}>
-            {profile ? (
-              <UserAvatar name={profile["username"]} style={styles.avatar} />
-            ) : (
-              <ActivityIndicator />
-            )}
+            <CustomProfilePicture principal={principal} style={styles.avatar} />
           </View>
           <View style={styles.textContainer}>
             {profile ? (

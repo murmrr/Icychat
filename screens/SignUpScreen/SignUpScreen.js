@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { ActivityIndicator, Button, KeyboardAvoidingView, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  ActivityIndicator,
+  Button,
+  KeyboardAvoidingView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
 import { scale, verticalScale } from "../../utility/scalingUtils";
 import { Ed25519KeyIdentity } from "@dfinity/identity";
@@ -20,8 +28,11 @@ const SignUpScreen = ({ setIsSignedIn }) => {
     if (regUsername.test(username)) {
       setLoading(true);
       const identity = Ed25519KeyIdentity.generate();
-  
-      await AsyncStorage.setItem("@identity", JSON.stringify(identity.toJSON()));
+
+      await AsyncStorage.setItem(
+        "@identity",
+        JSON.stringify(identity.toJSON())
+      );
       const profileUpdate = {
         username: username,
       };
@@ -41,7 +52,7 @@ const SignUpScreen = ({ setIsSignedIn }) => {
           backgroundColor: colors.DARK_PRIMARY,
           textColor: colors.WHITE,
           opacity: 1,
-          duration: 250
+          duration: 250,
         });
         clearTimeout(timeToNotify);
       }, 100);
@@ -49,26 +60,31 @@ const SignUpScreen = ({ setIsSignedIn }) => {
   };
 
   return (
-    <ScrollView contentContainerStyle={{flexGrow: 1}}
-    keyboardShouldPersistTaps='handled'>
-          <View style={styles.container}>
-              <InputWrapper label="Username">
-          <TextInput 
-        placeholder="Pick a username"
-        editable={!loading}
-        onChangeText={setUsername}
-        style={styles.usernameInput}
+    <ScrollView
+      contentContainerStyle={{ flexGrow: 1 }}
+      keyboardShouldPersistTaps="handled"
+    >
+      <View style={styles.container}>
+        <InputWrapper label="Username">
+          <TextInput
+            placeholder="Pick a username"
+            editable={!loading}
+            onChangeText={setUsername}
+            style={styles.usernameInput}
           />
         </InputWrapper>
-        <TouchableOpacity disabled={loading} onPress={register} style={styles.button}>
-        {loading ? (
-        <ActivityIndicator />
-      ) : (
-        <Text style={styles.buttonText}>Register</Text>
-      )}
-      </TouchableOpacity>
-
-    </View>
+        <TouchableOpacity
+          disabled={loading}
+          onPress={register}
+          style={styles.button}
+        >
+          {loading ? (
+            <ActivityIndicator />
+          ) : (
+            <Text style={styles.buttonText}>Register</Text>
+          )}
+        </TouchableOpacity>
+      </View>
     </ScrollView>
   );
 };
@@ -78,7 +94,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: colors.DARK_PRIMARY
+    backgroundColor: colors.DARK_PRIMARY,
   },
   usernameInput: {
     height: "100%",

@@ -16,7 +16,7 @@ const AppNavigation = () => {
   }, []);
 
   return isSignedIn ? (
-    <MainNavigation setIsSignedIn={setIsSignedIn}/>
+    <MainNavigation setIsSignedIn={setIsSignedIn} />
   ) : (
     <AuthNavigation setIsSignedIn={setIsSignedIn} />
   );

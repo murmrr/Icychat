@@ -45,16 +45,9 @@ const ChatInput = ({ id, setData }) => {
           style={styles.input}
         />
       </View>
-      <TouchableOpacity
-          onPress={sendMessage}
-          style={styles.buttonContainer}
-        >
-                {sending ? (
-        <ActivityIndicator />
-      ) : (
-        <></>
-      )}
-        </TouchableOpacity>
+      <TouchableOpacity onPress={sendMessage} style={styles.buttonContainer}>
+        {sending ? <ActivityIndicator /> : <></>}
+      </TouchableOpacity>
     </View>
   );
 };
@@ -88,7 +81,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.EXTRA_LIGHT_PRIMARY,
     marginLeft: scale(9),
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
 });
 

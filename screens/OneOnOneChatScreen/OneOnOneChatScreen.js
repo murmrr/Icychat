@@ -71,9 +71,9 @@ const OneOnOneChatScreen = ({ navigation, route }) => {
   useLayoutEffect(() => {
     navigation.getParent().setOptions({
       tabBarStyle: {
-        display: "none"
-      }
-    })
+        display: "none",
+      },
+    });
 
     return () => {
       navigation.getParent().setOptions({
@@ -81,9 +81,9 @@ const OneOnOneChatScreen = ({ navigation, route }) => {
           backgroundColor: colors.LIGHT_PRIMARY,
           borderTopWidth: 0,
         },
-      })
-    }
-  }, [])
+      });
+    };
+  }, []);
 
   const renderItem = ({ item }) => <Message message={item} />;
 

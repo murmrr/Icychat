@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 import { moderateScale, scale } from "../../utility/scalingUtils";
-import UserAvatar from "react-native-user-avatar";
 import { convertTime, useInterval } from "../../utility/utils";
 import { POLLING_INTERVAL } from "../../data/constants";
 import { getBackendActor } from "../../lib/actor";
@@ -9,6 +8,7 @@ import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import colors from "../../data/colors";
 import Identicon from "@polkadot/reactnative-identicon";
+import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
 
 const ChatBar = ({ chatHeader }) => {
   const [otherUserProfile, setOtherUserProfile] = useState(null);
@@ -37,14 +37,10 @@ const ChatBar = ({ chatHeader }) => {
     >
       <View style={styles.container}>
         <View style={styles.avatarContainer}>
-          {otherUserProfile ? (
-            <UserAvatar
-              name={otherUserProfile["username"]}
-              style={styles.avatar}
-            />
-          ) : (
-            <ActivityIndicator />
-          )}
+          <CustomProfilePicture
+            principal={chatHeader["otherUsers"][0]}
+            style={styles.avatar}
+          />
         </View>
         <View style={styles.textContainer}>
           {otherUserProfile ? (

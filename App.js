@@ -6,7 +6,7 @@ import { NavigationContainer } from "@react-navigation/native";
 import AppNavigation from "./navigation/AppNavigation/AppNavigation";
 import { useFonts } from "expo-font";
 import { useCallback } from "react";
-import * as SplashScreen from 'expo-splash-screen';
+import * as SplashScreen from "expo-splash-screen";
 
 LogBox.ignoreLogs(["Warning: ..."]);
 LogBox.ignoreAllLogs();
@@ -22,7 +22,7 @@ export default function App() {
     if (fontsLoaded) {
       await SplashScreen.hideAsync();
     }
-  }, [fontsLoaded])
+  }, [fontsLoaded]);
 
   if (!fontsLoaded) {
     return null;

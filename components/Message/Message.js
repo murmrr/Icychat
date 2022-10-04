@@ -4,10 +4,10 @@ import { POLLING_INTERVAL } from "../../data/constants";
 import { getBackendActor } from "../../lib/actor";
 import { scale } from "../../utility/scalingUtils";
 import { convertTime, useInterval } from "../../utility/utils";
-import UserAvatar from "react-native-user-avatar";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ed25519KeyIdentity } from "@dfinity/identity";
 import colors from "../../data/colors";
+import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
 
 const Message = ({ message }) => {
   const [profile, setProfile] = useState(null);
@@ -45,7 +45,10 @@ const Message = ({ message }) => {
       <View style={styles.avatarContainer(isMe)}>
         <View style={styles.nestedContainer}>
           {profile ? (
-            <UserAvatar name={profile["username"]} style={styles.avatar} />
+            <CustomProfilePicture
+              principal={profile["userPrincipal"]}
+              style={styles.avatar}
+            />
           ) : (
             <ActivityIndicator />
           )}
