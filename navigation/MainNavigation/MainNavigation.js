@@ -7,7 +7,7 @@ import colors from "../../data/colors";
 
 const Tab = createBottomTabNavigator();
 
-const MainNavigation = () => {
+const MainNavigation = ({ setIsSignedIn }) => {
   return (
     <Tab.Navigator
       screenOptions={{
@@ -23,7 +23,9 @@ const MainNavigation = () => {
     >
       <Tab.Screen name="Chats" component={ChatsNavigation} />
       <Tab.Screen name="Find" component={FindScreen} />
-      <Tab.Screen name="Me" component={MeScreen} />
+      <Tab.Screen name="Me">
+        {(props) => <MeScreen setIsSignedIn={setIsSignedIn} />}
+      </Tab.Screen>
     </Tab.Navigator>
   );
 };
