@@ -68,6 +68,23 @@ const OneOnOneChatScreen = ({ navigation, route }) => {
   }, [navigation]);
   */
 
+  useLayoutEffect(() => {
+    navigation.getParent().setOptions({
+      tabBarStyle: {
+        display: "none"
+      }
+    })
+
+    return () => {
+      navigation.getParent().setOptions({
+        tabBarStyle: {
+          backgroundColor: colors.LIGHT_PRIMARY,
+          borderTopWidth: 0,
+        },
+      })
+    }
+  }, [])
+
   const renderItem = ({ item }) => <Message message={item} />;
 
   const keyExtractor = (item) => item["id"];
