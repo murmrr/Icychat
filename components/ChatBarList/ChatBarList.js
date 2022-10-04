@@ -25,7 +25,12 @@ const ChatBarList = () => {
     <View style={styles.container}>
       {data ? (
         <FlatList
-          data={data}
+          data={data.sort((a, b) => {
+            if (a["lastMessage"].length > 0 && a["lastMessage"].length > 0) {
+              return a["lastMessage"][0]["time"] < b["lastMessage"][0]["time"];
+            };
+            return 0;
+          })}
           renderItem={renderItem}
           keyExtractor={keyExtractor}
         />

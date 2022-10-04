@@ -14,11 +14,7 @@ const SignUpScreen = ({ setIsSignedIn }) => {
     setLoading(true);
     const identity = Ed25519KeyIdentity.generate();
 
-    //console.log(identity.toJSON());
-    //const a = ;
     await AsyncStorage.setItem("@identity", JSON.stringify(identity.toJSON()));
-    //console.log('write')
-    //console.log(identity);
     const profileUpdate = {
       username: username,
     };

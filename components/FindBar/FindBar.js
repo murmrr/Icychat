@@ -7,6 +7,8 @@ import { moderateScale, scale } from "../../utility/scalingUtils";
 import { useInterval } from "../../utility/utils";
 import UserAvatar from "react-native-user-avatar";
 import FindBarModalTile from "../FindBarModalTile/FindBarModalTile";
+import colors from "../../data/colors";
+import { BlurView } from 'expo-blur';
 
 const FindBar = ({ principal }) => {
   const [profile, setProfile] = useState(null);
@@ -24,22 +26,18 @@ const FindBar = ({ principal }) => {
   return (
     <>
       <Modal animationType="fade" transparent={true} visible={modalVisible}>
-        <View style={styles.modalTileContainer}>
+        <BlurView intensity={5} tint="dark" style={styles.modalTileContainer}>
           <FindBarModalTile
             principal={principal}
             setModalVisible={setModalVisible}
           />
-        </View>
+        </BlurView>
       </Modal>
       <TouchableOpacity onPress={() => setModalVisible(true)}>
         <View style={styles.container}>
           <View style={styles.avatarContainer}>
             {profile ? (
-              <UserAvatar
-                name={profile["username"]}
-                size={scale(80)}
-                style={styles.avatar}
-              />
+              <UserAvatar name={profile["username"]} style={styles.avatar} />
             ) : (
               <ActivityIndicator />
             )}
@@ -88,14 +86,16 @@ const styles = StyleSheet.create({
   textContainer: {
     flex: 1,
     marginLeft: moderateScale(9.5),
-    alignItems: "center",
-    justifyContent: "center",
   },
   username: {
-    fontSize: moderateScale(14),
+    color: colors.WHITE,
+    fontSize: moderateScale(18),
+    fontFamily: "Poppins-Medium"
   },
   principal: {
     fontSize: moderateScale(6),
+    color: colors.GRAY,
+    fontFamily: "Poppins-Regular",
   },
 });
 

@@ -1,4 +1,5 @@
 import { useEffect, useRef } from "react";
+import moment from "moment";
 
 export const useInterval = (callback, delay) => {
   const savedCallback = useRef();
@@ -17,4 +18,12 @@ export const useInterval = (callback, delay) => {
       return () => clearInterval(id);
     }
   }, [delay]);
+};
+
+export const convertTime = (bigTime) => {
+  const utc = Number(bigTime) / 1000000;
+  if (utc) {
+    return moment(utc).format("h:mm a");
+  }
+  return utc;
 };

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ActivityIndicator, FlatList, StyleSheet, View } from "react-native";
 import FindBar from "../../components/FindBar/FindBar";
+import colors from "../../data/colors";
 import { POLLING_INTERVAL } from "../../data/constants";
 import { getBackendActor } from "../../lib/actor";
 import { useInterval } from "../../utility/utils";
@@ -41,6 +42,7 @@ const FindScreen = () => {
 const styles = StyleSheet.create({
   container: {
     height: "100%",
+    backgroundColor: colors.DARK_PRIMARY,
   },
   loadingContainer: {
     flex: 1,

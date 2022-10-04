@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import UserAvatar from "react-native-user-avatar";
+import colors from "../../data/colors";
 import { POLLING_INTERVAL } from "../../data/constants";
 import { getBackendActor } from "../../lib/actor";
 import { scale } from "../../utility/scalingUtils";
@@ -20,13 +21,9 @@ const MeScreen = () => {
   }, POLLING_INTERVAL);
 
   return profile ? (
-    <ScrollView contentContainerStyle={styles.container}>
+    <ScrollView style={{backgroundColor: colors.DARK_PRIMARY}} contentContainerStyle={styles.container}>
       <View style={styles.avatarContainer}>
-        <UserAvatar
-          name={profile["username"]}
-          size={scale(80)}
-          style={styles.avatar}
-        />
+        <UserAvatar name={profile["username"]} style={styles.avatar} />
       </View>
       <View style={styles.textContainer}>
         <Text style={styles.username}>{profile["username"]}</Text>
@@ -48,6 +45,7 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: colors.DARK_PRIMARY,
   },
   avatarContainer: {
     width: scale(100),
@@ -74,6 +72,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: colors.DARK_PRIMARY,
   },
 });
 

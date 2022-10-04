@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  Dimensions,
   ActivityIndicator,
   Button,
   StyleSheet,
@@ -12,6 +13,7 @@ import { getBackendActor } from "../../lib/actor";
 import { scale } from "../../utility/scalingUtils";
 import { useInterval } from "../../utility/utils";
 import UserAvatar from "react-native-user-avatar";
+import colors from "../../data/colors";
 
 const FindBarModalTile = ({ principal, setModalVisible }) => {
   const [profile, setProfile] = useState(null);
@@ -44,16 +46,14 @@ const FindBarModalTile = ({ principal, setModalVisible }) => {
       <View style={styles.container}>
         {profile ? (
           <View style={styles.profileContainer}>
-            <UserAvatar
-              name={profile["username"]}
-              size={scale(80)}
-              style={styles.avatar}
-            />
+            <UserAvatar name={profile["username"]} style={styles.avatar} />
             <Text style={styles.username}>{profile["username"]}</Text>
             {loading ? (
               <ActivityIndicator />
             ) : (
-              <Button title="Create Chat!" onPress={createChat} />
+              <TouchableOpacity onPress={createChat}  style={styles.button}>
+              <Text style={styles.buttonText}> Create Chat! </Text>
+            </TouchableOpacity>
             )}
           </View>
         ) : (
@@ -72,25 +72,41 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   container: {
-    backgroundColor: "gray",
+    backgroundColor: colors.LIGHT_PRIMARY,
     width: scale(200),
     height: scale(200),
-    borderRadius: 10,
+    borderRadius: 15,
     alignItems: "center",
     justifyContent: "center",
   },
   profileContainer: {
     alignItems: "center",
-    justifyContent: "center",
   },
   avatar: {
     height: scale(80),
     aspectRatio: 1,
     borderRadius: scale(80),
+    marginBottom: scale(5),
   },
   username: {
-    fontSize: scale(15),
+    fontFamily: "Poppins-SemiBold",
+    color: "#FFFFFF",
+    fontSize: scale(16),
+    marginBottom: scale(15),
   },
+  button: {
+    width: scale(100),
+    height: scale(50),
+    backgroundColor: colors.LIGHT_ORANGE,
+    borderRadius: 15,
+    justifyContent: "center"
+  },
+  buttonText: {
+    fontFamily: "Poppins-SemiBold",
+    color: "#FFFFFF",
+    fontSize: scale(14),
+    textAlign: "center",
+  }
 });
 
 export default FindBarModalTile;

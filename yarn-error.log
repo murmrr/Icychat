@@ -1,8 +1,8 @@
 Arguments: 
-  /opt/local/bin/node /opt/local/bin/yarnpkg add nfid-sdk-react
+  /opt/local/bin/node /opt/local/bin/yarnpkg add expo-fonts
 
 PATH: 
-  /opt/homebrew/bin:/opt/homebrew/sbin:/opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/go/bin:/opt/X11/bin:/Library/Apple/usr/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/opt/local/bin:/opt/local/sbin
+  /opt/local/bin:/opt/local/sbin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin:/usr/local/go/bin:/opt/X11/bin:/Library/Apple/usr/bin:/opt/local/bin:/opt/local/sbin
 
 Yarn version: 
   1.22.18
@@ -14,7 +14,7 @@ Platform:
   darwin arm64
 
 Trace: 
-  Error: https://registry.yarnpkg.com/nfid-sdk-react: Not found
+  Error: https://registry.yarnpkg.com/expo-fonts: Not found
       at Request.params.callback [as _callback] (/opt/local/libexec/yarn/lib/cli.js:66138:18)
       at Request.self.callback (/opt/local/libexec/yarn/lib/cli.js:140883:22)
       at Request.emit (node:events:527:28)
@@ -51,7 +51,7 @@ npm manifest:
       "@react-native-async-storage/async-storage": "~1.15.0",
       "@react-native-community/masked-view": "^0.1.11",
       "@react-native-community/slider": "4.1.12",
-      "@react-navigation/bottom-tabs": "^6.2.0",
+      "@react-navigation/bottom-tabs": "^6.4.0",
       "@react-navigation/native": "^6.0.8",
       "@react-navigation/native-stack": "^6.5.0",
       "@react-navigation/stack": "^6.3.1",
@@ -2061,7 +2061,7 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/@react-native/polyfills/-/polyfills-1.0.0.tgz#05bb0031533598f9458cf65a502b8df0eecae780"
     integrity sha512-0jbp4RxjYopTsIdLl+/Fy2TiwVYHy4mgeu07DG4b/LyM0OS/+lPP5c9sbnt/AMlnF6qz2JRZpPpGw1eMNS6A4w==
   
-  "@react-navigation/bottom-tabs@^6.2.0":
+  "@react-navigation/bottom-tabs@^6.4.0":
     version "6.4.0"
     resolved "https://registry.yarnpkg.com/@react-navigation/bottom-tabs/-/bottom-tabs-6.4.0.tgz#63743874648f92adedf37186cb7cedcd47826ee9"
     integrity sha512-90CapiXjiWudbCiki9e6fOr/CECQRguIxv5OD7IBfbAMGX5GGiJpX8aqiHAz2DxpAz31v4JZcUr945+lFhXBfA==

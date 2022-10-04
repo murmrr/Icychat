@@ -1,0 +1,9 @@
+export default {
+  DARK_PRIMARY: "#19162D",
+  LIGHT_PRIMARY: "#3A3558",
+  EXTRA_LIGHT_PRIMARY: "#C2AFD5",
+  GRAY: "#9D9AAC",
+  WHITE: "#fff",
+  BLACK: "#000",
+  LIGHT_ORANGE: "#EEC18C",
+};

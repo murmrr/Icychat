@@ -11,6 +11,7 @@ import {
 } from "react-native";
 import ChatInput from "../../components/ChatInput/ChatInput";
 import Message from "../../components/Message/Message";
+import colors from "../../data/colors";
 import { POLLING_INTERVAL } from "../../data/constants";
 import { getBackendActor } from "../../lib/actor";
 import { verticalScale } from "../../utility/scalingUtils";
@@ -48,11 +49,24 @@ const OneOnOneChatScreen = ({ navigation, route }) => {
     }
   }, POLLING_INTERVAL);
 
+  /*
   useLayoutEffect(() => {
-    navigation.getParent().setOptions({
-      //headerTitle: (props) => <CustomHeader principal={principal}/>,
+    const parent = navigation.getParent();
+    parent.setOptions({
+      headerTitle: (props) => <CustomHeader principal={principal}/>,
+      tabBarStyle: {
+        display: "none",
+      },
     });
-  }, [navigation, data]);
+
+    return () => {
+      parent.setOptions({
+        headerTitle: () => <Text>Chats</Text>,
+        tabBarStyle: {}
+      });
+    };
+  }, [navigation]);
+  */
 
   const renderItem = ({ item }) => <Message message={item} />;
 
@@ -62,7 +76,7 @@ const OneOnOneChatScreen = ({ navigation, route }) => {
     <View style={styles.container}>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={Platform.OS === "ios" ? 110 : 100}
+        keyboardVerticalOffset={80}
         style={styles.keyboardContainer}
       >
         <FlatList
@@ -73,7 +87,7 @@ const OneOnOneChatScreen = ({ navigation, route }) => {
           renderItem={renderItem}
           keyExtractor={keyExtractor}
         />
-        <ChatInput id={id} />
+        <ChatInput id={id} setData={setData} />
       </KeyboardAvoidingView>
     </View>
   ) : (
@@ -84,19 +98,21 @@ const OneOnOneChatScreen = ({ navigation, route }) => {
 };
 
 const styles = StyleSheet.create({
-  headerUsername: {
-    fontSize: verticalScale(10),
-  },
   container: {
     flex: 1,
+    backgroundColor: colors.DARK_PRIMARY,
   },
   keyboardContainer: {
     flex: 1,
+  },
+  headerUsername: {
+    fontSize: verticalScale(10),
   },
   loadingContainer: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    backgroundColor: colors.DARK_PRIMARY
   },
 });
 

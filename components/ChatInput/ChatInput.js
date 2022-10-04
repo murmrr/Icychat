@@ -6,21 +6,28 @@ import {
   TextInput,
   View,
 } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import colors from "../../data/colors";
 import { getBackendActor } from "../../lib/actor";
-import { verticalScale } from "../../utility/scalingUtils";
+import { scale, verticalScale } from "../../utility/scalingUtils";
 
-const ChatInput = ({ id }) => {
+const ChatInput = ({ id, setData }) => {
   const [message, setMessage] = useState("");
   const [sending, setSending] = useState(false);
   const inputRef = useRef();
 
   const sendMessage = async () => {
+    setSending(true);
     const messageContent = {
       message: message,
     };
-
-    setSending(true);
     await (await getBackendActor()).sendMessage(id, messageContent);
+    const response = await (await getBackendActor()).getMyChat(id);
+    if (response["ok"]) {
+      setData(response["ok"]);
+    } else if (response["#err"]) {
+      setData(null);
+    }
     setSending(false);
     inputRef.current.clear();
   };
@@ -30,6 +37,8 @@ const ChatInput = ({ id }) => {
       <View style={styles.inputContainer}>
         <TextInput
           placeholder="Message"
+          placeholderTextColor={colors.GRAY}
+          multiline={true}
           editable={!sending}
           onChangeText={setMessage}
           ref={inputRef}
@@ -39,7 +48,9 @@ const ChatInput = ({ id }) => {
       {sending ? (
         <ActivityIndicator />
       ) : (
-        <Button title="Send!" onPress={sendMessage} style={styles.send} />
+        <TouchableOpacity onPress={sendMessage} style={styles.buttonContainer}>
+        </TouchableOpacity>
+        
       )}
     </View>
   );
@@ -54,14 +65,25 @@ const styles = StyleSheet.create({
   inputContainer: {
     backgroundColor: "gray",
     flex: 1,
-    borderRadius: 10,
+    borderRadius: 15,
+    height: 52,
+    backgroundColor: colors.LIGHT_PRIMARY
   },
   input: {
+    fontSize: 13,
+    fontFamily: "Poppins-Regular",
     width: "100%",
-    marginLeft: 10,
-    height: verticalScale(30),
+    paddingLeft: 10,
+    height: 52,
+    borderRadius: 15,
   },
-  button: {},
+  buttonContainer: {
+    borderRadius: 15,
+    width: 52,
+    height: 52,
+    backgroundColor: colors.EXTRA_LIGHT_PRIMARY,
+    marginLeft: scale(9),
+  }
 });
 
 export default ChatInput;

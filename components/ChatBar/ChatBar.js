@@ -2,11 +2,12 @@ import React, { useState } from "react";
 import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
 import { moderateScale, scale } from "../../utility/scalingUtils";
 import UserAvatar from "react-native-user-avatar";
-import { useInterval } from "../../utility/utils";
+import { convertTime, useInterval } from "../../utility/utils";
 import { POLLING_INTERVAL } from "../../data/constants";
 import { getBackendActor } from "../../lib/actor";
 import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import colors from "../../data/colors";
 
 const ChatBar = ({ chatHeader }) => {
   const [otherUserProfile, setOtherUserProfile] = useState(null);
@@ -38,7 +39,6 @@ const ChatBar = ({ chatHeader }) => {
           {otherUserProfile ? (
             <UserAvatar
               name={otherUserProfile["username"]}
-              size={scale(80)}
               style={styles.avatar}
             />
           ) : (
@@ -52,7 +52,7 @@ const ChatBar = ({ chatHeader }) => {
             <ActivityIndicator />
           )}
           {chatHeader["lastMessage"].length > 0 ? (
-            <Text style={styles.lastMessage}>
+            <Text style={styles.lastMessage} numberOfLines={2}>
               {chatHeader["lastMessage"][0]["content"]["message"]}
             </Text>
           ) : (
@@ -60,15 +60,14 @@ const ChatBar = ({ chatHeader }) => {
           )}
         </View>
         <View style={styles.timeContainer}>
-          {chatHeader["lastMessage"].length > 0 ? (
-            <Text style={styles.time}>
-              {new Date(
-                Number(chatHeader["lastMessage"][0]["time"]) / 1000
-              ).toLocaleTimeString()}
-            </Text>
+        <Text style={styles.time}>
+        {chatHeader["lastMessage"].length > 0 ? (
+              convertTime(chatHeader["lastMessage"][0]["time"])
           ) : (
-            <></>
+            "New Chat!"
           )}
+            </Text>
+
         </View>
       </View>
     </TouchableOpacity>
@@ -99,17 +98,27 @@ const styles = StyleSheet.create({
     marginLeft: moderateScale(9.5),
   },
   username: {
-    fontSize: moderateScale(18),
+    color: colors.WHITE,
+    fontSize: moderateScale(14),
+    fontFamily: "Poppins-Medium"
   },
   lastMessage: {
-    fontSize: moderateScale(12),
+    color: colors.GRAY,
+    fontSize: moderateScale(13),
     lineHeight: moderateScale(20),
+    fontFamily: "Poppins-Regular",
+    height: moderateScale(42),
+    width: moderateScale(170),
   },
   timeContainer: {
-    width: scale(60),
+    width: moderateScale(60),
   },
   time: {
-    fontSize: scale(10),
+    color: colors.GRAY,
+    fontSize: moderateScale(10),
+    fontFamily: "Poppins-Regular",
+    position: "absolute",
+    bottom: moderateScale(10)
   },
 });
 
