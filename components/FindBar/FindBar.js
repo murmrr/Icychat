@@ -39,14 +39,14 @@ const FindBar = ({ principal }) => {
             <CustomProfilePicture principal={principal} style={styles.avatar} />
           </View>
           <View style={styles.textContainer}>
+            <View style={styles.usernameContainer}>
             {profile ? (
-              <>
-                <Text style={styles.username}>{profile["username"]}</Text>
-                <Text style={styles.principal}>{principal.toText()}</Text>
-              </>
+              <Text style={styles.username}>{profile["username"]}</Text>
             ) : (
               <ActivityIndicator />
             )}
+            </View>
+            <Text style={styles.principal}>{principal.toText()}</Text>
           </View>
         </View>
       </TouchableOpacity>
@@ -83,6 +83,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: moderateScale(9.5),
   },
+  usernameContainer: {alignItems: "flex-start"},
   username: {
     color: colors.WHITE,
     fontSize: moderateScale(18),

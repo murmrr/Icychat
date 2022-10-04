@@ -4,6 +4,7 @@ import { POLLING_INTERVAL } from "../../data/constants";
 import { getBackendActor } from "../../lib/actor";
 import { useInterval } from "../../utility/utils";
 import ChatBar from "../ChatBar/ChatBar";
+import ItemDivider from "../ItemDivider/ItemDivider";
 
 const ChatBarList = () => {
   const [data, setData] = useState(null);
@@ -33,6 +34,7 @@ const ChatBarList = () => {
           })}
           renderItem={renderItem}
           keyExtractor={keyExtractor}
+          ItemSeparatorComponent={ItemDivider}
         />
       ) : (
         <View style={styles.loadingContainer}>

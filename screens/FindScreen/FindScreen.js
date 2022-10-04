@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { ActivityIndicator, FlatList, StyleSheet, View } from "react-native";
 import FindBar from "../../components/FindBar/FindBar";
+import ItemDivider from "../../components/ItemDivider/ItemDivider";
 import colors from "../../data/colors";
 import { POLLING_INTERVAL } from "../../data/constants";
 import { getBackendActor } from "../../lib/actor";
@@ -29,6 +30,7 @@ const FindScreen = () => {
           data={allUsers}
           renderItem={renderItem}
           keyExtractor={keyExtractor}
+          ItemSeparatorComponent={ItemDivider}
         />
       ) : (
         <View style={styles.loadingContainer}>

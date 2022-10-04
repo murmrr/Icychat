@@ -90,6 +90,10 @@ const styles = StyleSheet.create({
     aspectRatio: 1,
     borderRadius: scale(80),
     marginBottom: scale(5),
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
   },
   username: {
     fontFamily: "Poppins-SemiBold",
