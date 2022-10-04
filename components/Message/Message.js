@@ -44,14 +44,10 @@ const Message = ({ message }) => {
     <View style={styles.root(isMe)}>
       <View style={styles.avatarContainer(isMe)}>
         <View style={styles.nestedContainer}>
-          {profile ? (
-            <CustomProfilePicture
-              principal={profile["userPrincipal"]}
-              style={styles.avatar}
-            />
-          ) : (
-            <ActivityIndicator />
-          )}
+          <CustomProfilePicture
+            principal={message["sender"]}
+            style={styles.avatar}
+          />
         </View>
         <View style={styles.textsContainer(isMe)}>
           {profile ? (

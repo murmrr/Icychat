@@ -43,11 +43,15 @@ const ChatBar = ({ chatHeader }) => {
           />
         </View>
         <View style={styles.textContainer}>
-          {otherUserProfile ? (
-            <Text style={styles.username}>{otherUserProfile["username"]}</Text>
-          ) : (
-            <ActivityIndicator />
-          )}
+          <View style={styles.usernameContainer}>
+            {otherUserProfile ? (
+              <Text style={styles.username}>
+                {otherUserProfile["username"]}
+              </Text>
+            ) : (
+              <ActivityIndicator />
+            )}
+          </View>
           {chatHeader["lastMessage"].length > 0 ? (
             <Text style={styles.lastMessage} numberOfLines={2}>
               {chatHeader["lastMessage"][0]["content"]["message"]}
@@ -91,6 +95,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: moderateScale(9.5),
   },
+  usernameContainer: { alignItems: "flex-start" },
   username: {
     color: colors.WHITE,
     fontSize: moderateScale(14),

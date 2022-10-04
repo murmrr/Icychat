@@ -51,13 +51,13 @@ const FindBarModalTile = ({ principal, setModalVisible }) => {
               style={styles.avatar}
             />
             <Text style={styles.username}>{profile["username"]}</Text>
-            {loading ? (
-              <ActivityIndicator />
-            ) : (
-              <TouchableOpacity onPress={createChat} style={styles.button}>
+            <TouchableOpacity onPress={createChat} style={styles.button}>
+              {loading ? (
+                <ActivityIndicator />
+              ) : (
                 <Text style={styles.buttonText}> Create Chat! </Text>
-              </TouchableOpacity>
-            )}
+              )}
+            </TouchableOpacity>
           </View>
         ) : (
           <ActivityIndicator />
