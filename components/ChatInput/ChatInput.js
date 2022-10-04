@@ -48,9 +48,10 @@ const ChatInput = ({ id, setData }) => {
       {sending ? (
         <ActivityIndicator />
       ) : (
-        <TouchableOpacity onPress={sendMessage} style={styles.buttonContainer}>
-        </TouchableOpacity>
-        
+        <TouchableOpacity
+          onPress={sendMessage}
+          style={styles.buttonContainer}
+        ></TouchableOpacity>
       )}
     </View>
   );
@@ -67,7 +68,7 @@ const styles = StyleSheet.create({
     flex: 1,
     borderRadius: 15,
     height: 52,
-    backgroundColor: colors.LIGHT_PRIMARY
+    backgroundColor: colors.LIGHT_PRIMARY,
   },
   input: {
     fontSize: 13,
@@ -83,7 +84,7 @@ const styles = StyleSheet.create({
     height: 52,
     backgroundColor: colors.EXTRA_LIGHT_PRIMARY,
     marginLeft: scale(9),
-  }
+  },
 });
 
 export default ChatInput;

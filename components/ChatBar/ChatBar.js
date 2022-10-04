@@ -8,7 +8,7 @@ import { getBackendActor } from "../../lib/actor";
 import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import colors from "../../data/colors";
-import Identicon from '@polkadot/reactnative-identicon';
+import Identicon from "@polkadot/reactnative-identicon";
 
 const ChatBar = ({ chatHeader }) => {
   const [otherUserProfile, setOtherUserProfile] = useState(null);
@@ -61,14 +61,11 @@ const ChatBar = ({ chatHeader }) => {
           )}
         </View>
         <View style={styles.timeContainer}>
-        <Text style={styles.time}>
-        {chatHeader["lastMessage"].length > 0 ? (
-              convertTime(chatHeader["lastMessage"][0]["time"])
-          ) : (
-            "New Chat!"
-          )}
-            </Text>
-
+          <Text style={styles.time}>
+            {chatHeader["lastMessage"].length > 0
+              ? convertTime(chatHeader["lastMessage"][0]["time"])
+              : "New Chat!"}
+          </Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -101,7 +98,7 @@ const styles = StyleSheet.create({
   username: {
     color: colors.WHITE,
     fontSize: moderateScale(14),
-    fontFamily: "Poppins-Medium"
+    fontFamily: "Poppins-Medium",
   },
   lastMessage: {
     color: colors.GRAY,
@@ -119,7 +116,7 @@ const styles = StyleSheet.create({
     fontSize: moderateScale(10),
     fontFamily: "Poppins-Regular",
     position: "absolute",
-    bottom: moderateScale(10)
+    bottom: moderateScale(10),
   },
 });
 

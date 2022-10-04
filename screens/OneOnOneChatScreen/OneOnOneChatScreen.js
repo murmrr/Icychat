@@ -81,11 +81,13 @@ const OneOnOneChatScreen = ({ navigation, route }) => {
       >
         <FlatList
           data={data["messages"].sort((a, b) => {
-            return a["time"] > b["time"];
+            return a["time"] < b["time"];
           })}
+          inverted={true}
           extraData={data["messages"]}
           renderItem={renderItem}
           keyExtractor={keyExtractor}
+          style={styles.messagesContainer}
         />
         <ChatInput id={id} setData={setData} />
       </KeyboardAvoidingView>
@@ -105,6 +107,9 @@ const styles = StyleSheet.create({
   keyboardContainer: {
     flex: 1,
   },
+  messagesContainer: {
+    marginBottom: 39,
+  },
   headerUsername: {
     fontSize: verticalScale(10),
   },
@@ -112,7 +117,7 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    backgroundColor: colors.DARK_PRIMARY
+    backgroundColor: colors.DARK_PRIMARY,
   },
 });
 

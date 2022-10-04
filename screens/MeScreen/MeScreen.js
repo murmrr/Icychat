@@ -21,7 +21,10 @@ const MeScreen = () => {
   }, POLLING_INTERVAL);
 
   return profile ? (
-    <ScrollView style={{backgroundColor: colors.DARK_PRIMARY}} contentContainerStyle={styles.container}>
+    <ScrollView
+      style={{ backgroundColor: colors.DARK_PRIMARY }}
+      contentContainerStyle={styles.container}
+    >
       <View style={styles.avatarContainer}>
         <UserAvatar name={profile["username"]} style={styles.avatar} />
       </View>
@@ -48,7 +51,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.DARK_PRIMARY,
   },
   avatarContainer: {
-    width: scale(100),
+    width: scale(121),
     aspectRatio: 1,
     marginBottom: scale(30),
   },
@@ -60,13 +63,17 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   username: {
+    fontFamily: "Poppins-Medium",
+    color: colors.WHITE,
     textAlign: "center",
-    fontSize: scale(50),
+    fontSize: scale(25),
     marginBottom: scale(15),
   },
   principal: {
+    fontFamily: "Poppins-Regular",
+    color: colors.WHITE,
     textAlign: "center",
-    fontSize: scale(12),
+    fontSize: scale(8),
   },
   loadingContainer: {
     flex: 1,

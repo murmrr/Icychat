@@ -8,7 +8,7 @@ import { useInterval } from "../../utility/utils";
 import UserAvatar from "react-native-user-avatar";
 import FindBarModalTile from "../FindBarModalTile/FindBarModalTile";
 import colors from "../../data/colors";
-import { BlurView } from 'expo-blur';
+import { BlurView } from "expo-blur";
 
 const FindBar = ({ principal }) => {
   const [profile, setProfile] = useState(null);
@@ -90,7 +90,7 @@ const styles = StyleSheet.create({
   username: {
     color: colors.WHITE,
     fontSize: moderateScale(18),
-    fontFamily: "Poppins-Medium"
+    fontFamily: "Poppins-Medium",
   },
   principal: {
     fontSize: moderateScale(6),

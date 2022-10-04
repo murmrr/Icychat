@@ -51,9 +51,9 @@ const FindBarModalTile = ({ principal, setModalVisible }) => {
             {loading ? (
               <ActivityIndicator />
             ) : (
-              <TouchableOpacity onPress={createChat}  style={styles.button}>
-              <Text style={styles.buttonText}> Create Chat! </Text>
-            </TouchableOpacity>
+              <TouchableOpacity onPress={createChat} style={styles.button}>
+                <Text style={styles.buttonText}> Create Chat! </Text>
+              </TouchableOpacity>
             )}
           </View>
         ) : (
@@ -99,14 +99,14 @@ const styles = StyleSheet.create({
     height: scale(50),
     backgroundColor: colors.LIGHT_ORANGE,
     borderRadius: 15,
-    justifyContent: "center"
+    justifyContent: "center",
   },
   buttonText: {
     fontFamily: "Poppins-SemiBold",
     color: "#FFFFFF",
     fontSize: scale(14),
     textAlign: "center",
-  }
+  },
 });
 
 export default FindBarModalTile;

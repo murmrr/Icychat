@@ -13,8 +13,8 @@ const ChatsScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colors.DARK_PRIMARY
-  }
-})
+    backgroundColor: colors.DARK_PRIMARY,
+  },
+});
 
 export default ChatsScreen;
