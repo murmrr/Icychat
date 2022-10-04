@@ -8,6 +8,7 @@ import { getBackendActor } from "../../lib/actor";
 import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import colors from "../../data/colors";
+import Identicon from '@polkadot/reactnative-identicon';
 
 const ChatBar = ({ chatHeader }) => {
   const [otherUserProfile, setOtherUserProfile] = useState(null);
