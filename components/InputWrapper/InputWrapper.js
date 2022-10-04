@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     width: "90%",
     alignSelf: "center",
     borderRadius: 10,
-    borderColor: "rgba(255, 255, 255, 0.14901960784313725)",
+    borderColor: colors.GRAY,
   },
   labelContainer: {
     position: "absolute",

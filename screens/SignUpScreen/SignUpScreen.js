@@ -60,13 +60,14 @@ const SignUpScreen = ({ setIsSignedIn }) => {
         style={styles.usernameInput}
           />
         </InputWrapper>
-      {loading ? (
+        <TouchableOpacity disabled={loading} onPress={register} style={styles.button}>
+        {loading ? (
         <ActivityIndicator />
       ) : (
-        <TouchableOpacity onPress={register} style={styles.button}>
         <Text style={styles.buttonText}>Register</Text>
-      </TouchableOpacity>
       )}
+      </TouchableOpacity>
+
     </View>
     </ScrollView>
   );
@@ -90,7 +91,7 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 50,
-    backgroundColor: colors.LIGHT_ORANGE,
+    backgroundColor: colors.LIGHT_SECONDARY,
     width: scale(200),
     height: scale(40),
     alignSelf: "center",

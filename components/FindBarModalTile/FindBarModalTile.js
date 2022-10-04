@@ -97,7 +97,7 @@ const styles = StyleSheet.create({
   button: {
     width: scale(100),
     height: scale(50),
-    backgroundColor: colors.LIGHT_ORANGE,
+    backgroundColor: colors.LIGHT_SECONDARY,
     borderRadius: 15,
     justifyContent: "center",
   },

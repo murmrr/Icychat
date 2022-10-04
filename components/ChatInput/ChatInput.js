@@ -73,6 +73,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.LIGHT_PRIMARY,
   },
   input: {
+    color: colors.WHITE,
     fontSize: 13,
     fontFamily: "Poppins-Regular",
     width: "100%",

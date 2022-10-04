@@ -14,9 +14,12 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.murmrr.CrypchatApp"
     },
     "android": {
       "adaptiveIcon": {
@@ -26,6 +29,11 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "d234e3ae-357f-44e6-bb85-493c8144b858"
+      }
     }
   }
 }
