@@ -36,6 +36,10 @@ const OneOnOneChatScreen = ({ navigation, route }) => {
     navigation.getParent().setOptions({
       headerTitle: (props) => <CustomHeader principal={principal}/>,
       headerLeft: (props) => <CustomBackButton navigation={navigation}/>,
+      headerStyle: {
+        backgroundColor: colors.LIGHT_PRIMARY,
+        height: 110,
+      },
       tabBarStyle: {
         display: "none",
       },
@@ -47,6 +51,7 @@ const OneOnOneChatScreen = ({ navigation, route }) => {
         headerLeft: () => {},
         headerStyle: {
           backgroundColor: colors.LIGHT_PRIMARY,
+          height: 110,
         },
         headerTitleStyle: {
           color: "#FFFFFF",

@@ -27,7 +27,7 @@ const ChatBarList = () => {
       {data ? (
         <FlatList
           data={data.sort((a, b) => {
-            if (a["lastMessage"].length > 0 && a["lastMessage"].length > 0) {
+            if (a["lastMessage"].length > 0 && b["lastMessage"].length > 0) {
               return a["lastMessage"][0]["time"] < b["lastMessage"][0]["time"];
             }
             return 0;

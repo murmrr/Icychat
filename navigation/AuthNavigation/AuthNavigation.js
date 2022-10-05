@@ -10,6 +10,7 @@ const AuthNavigation = ({ setIsSignedIn }) => {
       screenOptions={{
         headerStyle: {
           backgroundColor: colors.LIGHT_PRIMARY,
+          height: 110,
         },
         headerTitleStyle: {
           color: "#FFFFFF",
