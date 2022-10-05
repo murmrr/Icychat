@@ -1,4 +1,4 @@
-import React, { useLayoutEffect, useState } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 import {
   ActivityIndicator,
   Button,
@@ -17,8 +17,8 @@ import Message from "../../components/Message/Message";
 import colors from "../../data/colors";
 import { POLLING_INTERVAL } from "../../data/constants";
 import { getBackendActor } from "../../lib/actor";
-import { verticalScale } from "../../utility/scalingUtils";
 import { useInterval } from "../../utility/utils";
+import { useIsFocused } from "@react-navigation/native";
 
 const OneOnOneChatScreen = ({ navigation, route }) => {
   const { id, principals } = route.params;
@@ -33,11 +33,11 @@ const OneOnOneChatScreen = ({ navigation, route }) => {
     }
   }, POLLING_INTERVAL);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     navigation.getParent().setOptions({
       headerTitle: (props) => <CustomHeader principals={principals} />,
       headerLeft: (props) => <CustomBackButton navigation={navigation} />,
-      headerRight: (props) => <AddToChatButton />,
+      headerRight: (props) => <AddToChatButton navigation={navigation}/>,
       headerStyle: {
         backgroundColor: colors.LIGHT_PRIMARY,
         height: 110,
