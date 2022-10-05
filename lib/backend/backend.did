@@ -10,6 +10,11 @@ type SendMessageError =
    IdNotFound;
    UserNotFound;
  };
+type Result_9 = 
+ variant {
+   err: AddToChatError;
+   ok;
+ };
 type Result_8 = 
  variant {
    err: CreateChatError;
@@ -94,7 +99,14 @@ type ChatHeader =
    lastMessage: opt Message;
    otherUsers: vec principal;
  };
+type AddToChatError = 
+ variant {
+   IdNotFound;
+   UserAlreadyInChat;
+   UserNotFound;
+ };
 service : {
+  addToChat: (nat, principal) -> (Result_9);
   createChat: (principal) -> (Result_8);
   getMyChat: (nat) -> (Result_7) query;
   getMyChatHeaders: () -> (Result_6) query;

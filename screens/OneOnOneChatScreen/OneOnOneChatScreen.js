@@ -78,7 +78,7 @@ const OneOnOneChatScreen = ({ navigation, route }) => {
     <View style={styles.container}>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={80}
+        keyboardVerticalOffset={100}
         style={styles.keyboardContainer}
       >
         <FlatList

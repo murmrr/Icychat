@@ -19,8 +19,6 @@ const FindBarModalTile = ({ id, principal, forAdd, setModalVisible }) => {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  console.log(id)
-
   useInterval(async () => {
     const response = await (await getBackendActor()).getProfile(principal);
     if (response["ok"]) {
@@ -34,6 +32,7 @@ const FindBarModalTile = ({ id, principal, forAdd, setModalVisible }) => {
     setLoading(true);
     if (forAdd) {
       //TODO
+      const response = await (await getBackendActor()).addToChat(id, principal);
     } else {
       const response = await (await getBackendActor()).createChat(principal);
     }
