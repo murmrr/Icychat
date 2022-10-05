@@ -1,19 +1,23 @@
-import React, { useState } from 'react'
-import { StyleSheet } from 'react-native';
-import { SearchBar } from 'react-native-elements';
-import colors from '../../data/colors';
+import React, { useState } from "react";
+import { StyleSheet } from "react-native";
+import { SearchBar } from "react-native-elements";
+import colors from "../../data/colors";
 
-const FindSearchBar = ({ query, setQuery, searchBarLoading, setSearchBarLoading }) => {
-
+const FindSearchBar = ({
+  query,
+  setQuery,
+  searchBarLoading,
+  setSearchBarLoading,
+}) => {
   const onChangeText = (text) => {
     setQuery(text);
     setSearchBarLoading(true);
-  }
+  };
 
   return (
-    <SearchBar 
+    <SearchBar
       lightTheme={false}
-      placeholder='Search'
+      placeholder="Search"
       onChangeText={onChangeText}
       value={query}
       containerStyle={styles.containerStyle}
@@ -21,7 +25,7 @@ const FindSearchBar = ({ query, setQuery, searchBarLoading, setSearchBarLoading 
       showLoading={searchBarLoading}
     />
   );
-}
+};
 
 const styles = StyleSheet.create({
   containerStyle: {
@@ -30,7 +34,7 @@ const styles = StyleSheet.create({
   inputContainerStyle: {
     borderRadius: 15,
     height: 40,
-  }
-})
+  },
+});
 
-export default FindSearchBar
+export default FindSearchBar;

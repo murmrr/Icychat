@@ -7,23 +7,11 @@ import { getBackendActor } from "../../lib/actor";
 import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import colors from "../../data/colors";
-import Identicon from "@polkadot/reactnative-identicon";
 import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
+import ProfilePictureStack from "../ProfilePictureStack/ProfilePictureStack";
+import ChatUsernames from "../ChatUsernames/ChatUsernames";
 
 const ChatBar = ({ chatHeader }) => {
-  const [otherUserProfile, setOtherUserProfile] = useState(null);
-
-  useInterval(async () => {
-    const response = await (
-      await getBackendActor()
-    ).getProfile(chatHeader["otherUsers"][0]);
-    if (response["ok"]) {
-      setOtherUserProfile(response["ok"]);
-    } else if (response["#err"]) {
-      setOtherUserProfile(null);
-    }
-  }, POLLING_INTERVAL);
-
   const navigation = useNavigation();
 
   return (
@@ -31,26 +19,23 @@ const ChatBar = ({ chatHeader }) => {
       onPress={() =>
         navigation.navigate("OneOnOneChat", {
           id: chatHeader["id"],
-          principal: chatHeader["otherUsers"][0],
+          principals: chatHeader["otherUsers"],
         })
       }
     >
       <View style={styles.container}>
         <View style={styles.avatarContainer}>
-          <CustomProfilePicture
-            principal={chatHeader["otherUsers"][0]}
+          <ProfilePictureStack
+            principals={chatHeader["otherUsers"]}
             style={styles.avatar}
           />
         </View>
         <View style={styles.textContainer}>
           <View style={styles.usernameContainer}>
-            {otherUserProfile ? (
-              <Text style={styles.username}>
-                {otherUserProfile["username"]}
-              </Text>
-            ) : (
-              <ActivityIndicator />
-            )}
+            <ChatUsernames
+              principals={chatHeader["otherUsers"]}
+              style={styles.username}
+            />
           </View>
           {chatHeader["lastMessage"].length > 0 ? (
             <Text style={styles.lastMessage} numberOfLines={2}>

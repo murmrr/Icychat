@@ -33,7 +33,14 @@ const FindScreen = () => {
     <View style={styles.container}>
       {allUsers ? (
         <FlatList
-          ListHeaderComponent={<FindSearchBar query={query} setQuery={setQuery} searchBarLoading={searchBarLoading} setSearchBarLoading={setSearchBarLoading}/>}
+          ListHeaderComponent={
+            <FindSearchBar
+              query={query}
+              setQuery={setQuery}
+              searchBarLoading={searchBarLoading}
+              setSearchBarLoading={setSearchBarLoading}
+            />
+          }
           data={allUsers}
           renderItem={renderItem}
           keyExtractor={keyExtractor}

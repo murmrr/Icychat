@@ -9,6 +9,7 @@ import {
   View,
   Text,
 } from "react-native";
+import AddToChatButton from "../../components/AddToChatButton/AddToChatButton";
 import ChatInput from "../../components/ChatInput/ChatInput";
 import CustomBackButton from "../../components/CustomBackButton/CustomBackButton";
 import CustomHeader from "../../components/CustomHeader/CustomHeader";
@@ -20,7 +21,7 @@ import { verticalScale } from "../../utility/scalingUtils";
 import { useInterval } from "../../utility/utils";
 
 const OneOnOneChatScreen = ({ navigation, route }) => {
-  const { id, principal } = route.params;
+  const { id, principals } = route.params;
   const [data, setData] = useState(null);
 
   useInterval(async () => {
@@ -34,8 +35,9 @@ const OneOnOneChatScreen = ({ navigation, route }) => {
 
   useLayoutEffect(() => {
     navigation.getParent().setOptions({
-      headerTitle: (props) => <CustomHeader principal={principal}/>,
-      headerLeft: (props) => <CustomBackButton navigation={navigation}/>,
+      headerTitle: (props) => <CustomHeader principals={principals} />,
+      headerLeft: (props) => <CustomBackButton navigation={navigation} />,
+      headerRight: (props) => <AddToChatButton />,
       headerStyle: {
         backgroundColor: colors.LIGHT_PRIMARY,
         height: 110,
@@ -49,6 +51,7 @@ const OneOnOneChatScreen = ({ navigation, route }) => {
       navigation.getParent().setOptions({
         headerTitle: "Chat",
         headerLeft: () => {},
+        headerRight: () => {},
         headerStyle: {
           backgroundColor: colors.LIGHT_PRIMARY,
           height: 110,

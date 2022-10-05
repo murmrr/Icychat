@@ -1,16 +1,17 @@
-import React, { useState } from 'react'
-import { ActivityIndicator, StyleSheet, Text } from 'react-native';
-import colors from '../../data/colors';
-import { POLLING_INTERVAL } from '../../data/constants';
-import { getBackendActor } from '../../lib/actor';
-import { useInterval } from '../../utility/utils';
-import CustomProfilePicture from '../CustomProfilePicture/CustomProfilePicture';
+import React, { useState } from "react";
+import { ActivityIndicator, StyleSheet, Text } from "react-native";
+import colors from "../../data/colors";
+import { POLLING_INTERVAL } from "../../data/constants";
+import { getBackendActor } from "../../lib/actor";
+import { useInterval } from "../../utility/utils";
+import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
+import ProfilePictureStack from "../ProfilePictureStack/ProfilePictureStack";
 
-const CustomHeader = ({ principal }) => {
+const CustomHeader = ({ principals }) => {
   const [otherUserProfile, setOtherUserProfile] = useState(null);
 
   useInterval(async () => {
-    const response = await (await getBackendActor()).getProfile(principal);
+    const response = await (await getBackendActor()).getProfile(principals[0]);
     if (response["ok"]) {
       setOtherUserProfile(response["ok"]);
     } else if (response["#err"]) {
@@ -18,16 +19,7 @@ const CustomHeader = ({ principal }) => {
     }
   }, POLLING_INTERVAL);
 
-  /*
-  return otherUserProfile ? (
-    <Text style={styles.headerUsername}>{otherUserProfile["username"]}</Text>
-  ) : (
-    <ActivityIndicator />
-  );
-  */
- return (
-  <CustomProfilePicture principal={principal} style={styles.avatar}/>
- );
+  return <ProfilePictureStack principals={principals} style={styles.avatar} />;
 };
 
 const styles = StyleSheet.create({
@@ -39,8 +31,8 @@ const styles = StyleSheet.create({
   headerUsername: {
     fontSize: 24,
     fontFamily: "Poppins-Medium",
-    color: colors.WHITE
+    color: colors.WHITE,
   },
-})
+});
 
-export default CustomHeader
+export default CustomHeader;
