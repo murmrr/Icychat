@@ -33,25 +33,25 @@ const OneOnOneChatScreen = ({ navigation, route }) => {
     }
   }, POLLING_INTERVAL);
 
-  useEffect(() => {
-    navigation.getParent().setOptions({
+  useLayoutEffect(() => {
+    navigation.setOptions({
       headerTitle: (props) => <CustomHeader principals={principals} />,
       headerLeft: (props) => <CustomBackButton navigation={navigation} />,
-      headerRight: (props) => <AddToChatButton navigation={navigation}/>,
+      headerRight: (props) => <AddToChatButton id={id} navigation={navigation}/>,
       headerStyle: {
         backgroundColor: colors.LIGHT_PRIMARY,
         height: 110,
       },
+    });
+
+    navigation.getParent().setOptions({
       tabBarStyle: {
         display: "none",
       },
-    });
+    })
 
     return () => {
       navigation.getParent().setOptions({
-        headerTitle: "Chat",
-        headerLeft: () => {},
-        headerRight: () => {},
         headerStyle: {
           backgroundColor: colors.LIGHT_PRIMARY,
           height: 110,
@@ -66,8 +66,8 @@ const OneOnOneChatScreen = ({ navigation, route }) => {
           borderTopWidth: 0,
         },
         headerShadowVisible: false,
-      });
-    };
+      })
+    }
   }, []);
 
   const renderItem = ({ item }) => <Message message={item} />;

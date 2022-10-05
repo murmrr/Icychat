@@ -11,10 +11,25 @@ import { POLLING_INTERVAL } from "../../data/constants";
 import { getBackendActor } from "../../lib/actor";
 import { useInterval } from "../../utility/utils";
 
-const FindScreen = ({ forAdd }) => {
+const FindScreen = ({ forAdd, navigation, route }) => {
+  const id = forAdd ? route.params.id : null;
+
   const [allUsers, setAllUsers] = useState(null);
   const [query, setQuery] = useState("");
   const [searchBarLoading, setSearchBarLoading] = useState(false);
+
+  useLayoutEffect(() => {
+    if (forAdd) {
+      navigation.setOptions({
+        headerTitle: "Add",
+        headerLeft: (props) => <CustomBackButton navigation={navigation} />,
+        headerStyle: {
+          backgroundColor: colors.LIGHT_PRIMARY,
+          height: 110,
+        },
+      });
+    }
+  }, [])
 
   useInterval(async () => {
     const response = await (await getBackendActor()).getUsers(query);
@@ -28,7 +43,7 @@ const FindScreen = ({ forAdd }) => {
     }
   }, POLLING_INTERVAL);
 
-  const renderItem = ({ item }) => <FindBar principal={item} />;
+  const renderItem = ({ item }) => <FindBar id={forAdd ? id : null} principal={item} forAdd={forAdd}/>;
 
   const keyExtractor = (item) => item;
 

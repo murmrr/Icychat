@@ -1,21 +1,44 @@
 import { createStackNavigator } from "@react-navigation/stack";
+import { useLayoutEffect } from "react";
+import colors from "../../data/colors";
 import ChatsScreen from "../../screens/ChatsScreen/ChatsScreen";
 import FindScreen from "../../screens/FindScreen/FindScreen";
 import OneOnOneChatScreen from "../../screens/OneOnOneChatScreen/OneOnOneChatScreen";
 
 const Stack = createStackNavigator();
 
-const ChatsNavigation = () => {
+const ChatsNavigation = ({ navigation }) => {
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerShown: false,
+    })
+  }, [])
+
   return (
     <Stack.Navigator
       screenOptions={{
-        headerShown: false,
+        headerTitle: "Chats",
+        headerStyle: {
+          backgroundColor: colors.LIGHT_PRIMARY,
+          height: 110,
+        },
+        headerTitleStyle: {
+          color: "#FFFFFF",
+          fontSize: 20,
+          fontFamily: "Poppins-Medium",
+        },
+        tabBarStyle: {
+          backgroundColor: colors.LIGHT_PRIMARY,
+          borderTopWidth: 0,
+        },
+        headerShadowVisible: false,
       }}
     >
       <Stack.Screen name="ChatsScreen" component={ChatsScreen} />
       <Stack.Screen name="OneOnOneChat" component={OneOnOneChatScreen} />
       <Stack.Screen name="Add">
-        {(props) => <FindScreen forAdd={true} />}
+        {(props) => <FindScreen forAdd={true} {...props}/>}
       </Stack.Screen>
     </Stack.Navigator>
   );

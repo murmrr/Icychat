@@ -4,13 +4,11 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/FontAwesome";
 import colors from "../../data/colors";
 
-const AddToChatButton = ({ navigation }) => {
+const AddToChatButton = ({ id, navigation }) => {
 
   const onPress = () => {
-    navigation.navigate("Add")
-    navigation.getParent().setOptions({
-      headerTitle: "Add",
-      headerRight: () => {}
+    navigation.navigate("Add", {
+      id: id,
     })
   }
 

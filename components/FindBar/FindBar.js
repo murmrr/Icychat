@@ -10,7 +10,7 @@ import colors from "../../data/colors";
 import { BlurView } from "expo-blur";
 import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
 
-const FindBar = ({ principal }) => {
+const FindBar = ({ id, principal, forAdd }) => {
   const [profile, setProfile] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -28,7 +28,9 @@ const FindBar = ({ principal }) => {
       <Modal animationType="fade" transparent={true} visible={modalVisible}>
         <BlurView intensity={5} tint="dark" style={styles.modalTileContainer}>
           <FindBarModalTile
+            id={id}
             principal={principal}
+            forAdd={forAdd}
             setModalVisible={setModalVisible}
           />
         </BlurView>

@@ -15,9 +15,11 @@ import { useInterval } from "../../utility/utils";
 import colors from "../../data/colors";
 import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
 
-const FindBarModalTile = ({ principal, setModalVisible }) => {
+const FindBarModalTile = ({ id, principal, forAdd, setModalVisible }) => {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  console.log(id)
 
   useInterval(async () => {
     const response = await (await getBackendActor()).getProfile(principal);
@@ -30,7 +32,11 @@ const FindBarModalTile = ({ principal, setModalVisible }) => {
 
   const createChat = async () => {
     setLoading(true);
-    const response = await (await getBackendActor()).createChat(principal);
+    if (forAdd) {
+      //TODO
+    } else {
+      const response = await (await getBackendActor()).createChat(principal);
+    }
     setLoading(false);
     setModalVisible(false);
   };
@@ -55,7 +61,7 @@ const FindBarModalTile = ({ principal, setModalVisible }) => {
               {loading ? (
                 <ActivityIndicator />
               ) : (
-                <Text style={styles.buttonText}> Create Chat! </Text>
+                <Text style={styles.buttonText}>{forAdd ? "Add" : "Create Chat!"}</Text>
               )}
             </TouchableOpacity>
           </View>
