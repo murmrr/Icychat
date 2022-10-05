@@ -10,31 +10,14 @@ import {
   Text,
 } from "react-native";
 import ChatInput from "../../components/ChatInput/ChatInput";
+import CustomBackButton from "../../components/CustomBackButton/CustomBackButton";
+import CustomHeader from "../../components/CustomHeader/CustomHeader";
 import Message from "../../components/Message/Message";
 import colors from "../../data/colors";
 import { POLLING_INTERVAL } from "../../data/constants";
 import { getBackendActor } from "../../lib/actor";
 import { verticalScale } from "../../utility/scalingUtils";
 import { useInterval } from "../../utility/utils";
-
-const CustomHeader = ({ principal }) => {
-  const [otherUserProfile, setOtherUserProfile] = useState(null);
-
-  useInterval(async () => {
-    const response = await (await getBackendActor()).getProfile(principal);
-    if (response["ok"]) {
-      setOtherUserProfile(response["ok"]);
-    } else if (response["#err"]) {
-      setOtherUserProfile(null);
-    }
-  }, POLLING_INTERVAL);
-
-  return otherUserProfile ? (
-    <Text style={styles.headerUsername}>{otherUserProfile["username"]}</Text>
-  ) : (
-    <ActivityIndicator />
-  );
-};
 
 const OneOnOneChatScreen = ({ navigation, route }) => {
   const { id, principal } = route.params;
@@ -49,27 +32,10 @@ const OneOnOneChatScreen = ({ navigation, route }) => {
     }
   }, POLLING_INTERVAL);
 
-  /*
-  useLayoutEffect(() => {
-    const parent = navigation.getParent();
-    parent.setOptions({
-      headerTitle: (props) => <CustomHeader principal={principal}/>,
-      tabBarStyle: {
-        display: "none",
-      },
-    });
-
-    return () => {
-      parent.setOptions({
-        headerTitle: () => <Text>Chats</Text>,
-        tabBarStyle: {}
-      });
-    };
-  }, [navigation]);
-  */
-
   useLayoutEffect(() => {
     navigation.getParent().setOptions({
+      headerTitle: (props) => <CustomHeader principal={principal}/>,
+      headerLeft: (props) => <CustomBackButton navigation={navigation}/>,
       tabBarStyle: {
         display: "none",
       },
@@ -77,10 +43,21 @@ const OneOnOneChatScreen = ({ navigation, route }) => {
 
     return () => {
       navigation.getParent().setOptions({
+        headerTitle: "Chat",
+        headerLeft: () => {},
+        headerStyle: {
+          backgroundColor: colors.LIGHT_PRIMARY,
+        },
+        headerTitleStyle: {
+          color: "#FFFFFF",
+          fontSize: 20,
+          fontFamily: "Poppins-Medium",
+        },
         tabBarStyle: {
           backgroundColor: colors.LIGHT_PRIMARY,
           borderTopWidth: 0,
         },
+        headerShadowVisible: false,
       });
     };
   }, []);
@@ -126,9 +103,6 @@ const styles = StyleSheet.create({
   },
   messagesContainer: {
     marginBottom: 39,
-  },
-  headerUsername: {
-    fontSize: verticalScale(10),
   },
   loadingContainer: {
     flex: 1,
