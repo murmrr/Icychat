@@ -17,28 +17,28 @@ type Result_8 =
  };
 type Result_7 = 
  variant {
-   err: GetAllUsersError;
-   ok: vec principal;
- };
-type Result_6 = 
- variant {
    err: GetMyChatError;
    ok: SharedChat;
  };
-type Result_5 = 
+type Result_6 = 
  variant {
    err: GetMyChatHeadersError;
    ok: vec ChatHeader;
  };
-type Result_4 = 
+type Result_5 = 
  variant {
    err: GetMyProfileError;
    ok: Profile;
  };
-type Result_3 = 
+type Result_4 = 
  variant {
    err: GetProfileError;
    ok: Profile;
+ };
+type Result_3 = 
+ variant {
+   err: GetUsersError;
+   ok: vec principal;
  };
 type Result_2 = 
  variant {
@@ -74,6 +74,7 @@ type Message =
    sender: principal;
    time: Time;
  };
+type GetUsersError = variant {UserNotFound;};
 type GetProfileError = variant {UserNotFound;};
 type GetMyProfileError = variant {UserNotFound;};
 type GetMyChatHeadersError = variant {UserNotFound;};
@@ -82,7 +83,6 @@ type GetMyChatError =
    IdNotFound;
    UserNotFound;
  };
-type GetAllUsersError = variant {UserNotFound;};
 type CreateChatError = 
  variant {
    ChatAlreadyExists;
@@ -96,11 +96,11 @@ type ChatHeader =
  };
 service : {
   createChat: (principal) -> (Result_8);
-  getAllUsers: () -> (Result_7) query;
-  getMyChat: (nat) -> (Result_6) query;
-  getMyChatHeaders: () -> (Result_5) query;
-  getMyProfile: () -> (Result_4) query;
-  getProfile: (principal) -> (Result_3) query;
+  getMyChat: (nat) -> (Result_7) query;
+  getMyChatHeaders: () -> (Result_6) query;
+  getMyProfile: () -> (Result_5) query;
+  getProfile: (principal) -> (Result_4) query;
+  getUsers: (text) -> (Result_3) query;
   register: (ProfileUpdate) -> (Result_2);
   registerHelper: (principal, ProfileUpdate) -> (Result_2);
   sendMessage: (nat, MessageContent) -> (Result_1);

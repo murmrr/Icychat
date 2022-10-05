@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ActivityIndicator, FlatList, StyleSheet, View } from "react-native";
 import FindBar from "../../components/FindBar/FindBar";
+import FindSearchBar from "../../components/FindSearchBar/FindSearchBar";
 import ItemDivider from "../../components/ItemDivider/ItemDivider";
 import colors from "../../data/colors";
 import { POLLING_INTERVAL } from "../../data/constants";
@@ -9,11 +10,16 @@ import { useInterval } from "../../utility/utils";
 
 const FindScreen = () => {
   const [allUsers, setAllUsers] = useState(null);
+  const [query, setQuery] = useState("");
+  const [searchBarLoading, setSearchBarLoading] = useState(false);
 
   useInterval(async () => {
-    const response = await (await getBackendActor()).getAllUsers();
+    const response = await (await getBackendActor()).getUsers(query);
     if (response["ok"]) {
       setAllUsers(response["ok"]);
+      if (searchBarLoading) {
+        setSearchBarLoading(false);
+      }
     } else if (response["#err"]) {
       setAllUsers(null);
     }
@@ -27,6 +33,7 @@ const FindScreen = () => {
     <View style={styles.container}>
       {allUsers ? (
         <FlatList
+          ListHeaderComponent={<FindSearchBar query={query} setQuery={setQuery} searchBarLoading={searchBarLoading} setSearchBarLoading={setSearchBarLoading}/>}
           data={allUsers}
           renderItem={renderItem}
           keyExtractor={keyExtractor}
