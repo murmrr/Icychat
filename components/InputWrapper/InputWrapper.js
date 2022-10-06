@@ -1,5 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 import colors from "../../data/colors";
+import { scale } from "../../utility/scalingUtils";
 
 const InputWrapper = ({ label, children }) => {
   return (
@@ -17,7 +18,7 @@ const styles = StyleSheet.create({
     borderWidth: 1.7,
     marginTop: 30,
     height: 59,
-    width: "90%",
+    width: scale(304),
     alignSelf: "center",
     borderRadius: 10,
     borderColor: colors.GRAY,

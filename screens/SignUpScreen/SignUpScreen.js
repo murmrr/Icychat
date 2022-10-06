@@ -60,32 +60,38 @@ const SignUpScreen = ({ setIsSignedIn }) => {
   };
 
   return (
-    <ScrollView
-      contentContainerStyle={{ flexGrow: 1 }}
-      keyboardShouldPersistTaps="handled"
+    <KeyboardAvoidingView
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={-10}
+      style={{ flex: 1 }}
     >
-      <View style={styles.container}>
-        <InputWrapper label="Username">
-          <TextInput
-            placeholder="Pick a username"
-            editable={!loading}
-            onChangeText={setUsername}
-            style={styles.usernameInput}
-          />
-        </InputWrapper>
-        <TouchableOpacity
-          disabled={loading}
-          onPress={register}
-          style={styles.button}
-        >
-          {loading ? (
-            <ActivityIndicator />
-          ) : (
-            <Text style={styles.buttonText}>Register</Text>
-          )}
-        </TouchableOpacity>
-      </View>
-    </ScrollView>
+      <ScrollView
+        contentContainerStyle={{ flexGrow: 1 }}
+        keyboardShouldPersistTaps="handled"
+      >
+        <View style={styles.container}>
+          <InputWrapper label="Username">
+            <TextInput
+              placeholder="Pick a username"
+              editable={!loading}
+              onChangeText={setUsername}
+              style={styles.usernameInput}
+            />
+          </InputWrapper>
+          <TouchableOpacity
+            disabled={loading}
+            onPress={register}
+            style={styles.button}
+          >
+            {loading ? (
+              <ActivityIndicator />
+            ) : (
+              <Text style={styles.buttonText}>Register</Text>
+            )}
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -93,7 +99,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "flex-end",
     backgroundColor: colors.DARK_PRIMARY,
   },
   usernameInput: {
@@ -106,9 +112,10 @@ const styles = StyleSheet.create({
     paddingRight: 12,
   },
   button: {
-    marginTop: 50,
-    backgroundColor: colors.LIGHT_SECONDARY,
-    width: scale(200),
+    marginTop: scale(19),
+    marginBottom: scale(117),
+    backgroundColor: colors.BLUE,
+    width: scale(304),
     height: scale(40),
     alignSelf: "center",
     borderRadius: 22,
@@ -118,7 +125,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   buttonText: {
-    color: colors.DARK_PRIMARY,
+    color: colors.WHITE,
     fontFamily: "Poppins-SemiBold",
     fontSize: 16,
   },

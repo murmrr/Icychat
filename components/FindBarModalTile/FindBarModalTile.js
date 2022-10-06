@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { POLLING_INTERVAL } from "../../data/constants";
 import { getBackendActor } from "../../lib/actor";
-import { scale } from "../../utility/scalingUtils";
+import { scale, verticalScale } from "../../utility/scalingUtils";
 import { useInterval } from "../../utility/utils";
 import colors from "../../data/colors";
 import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
@@ -31,7 +31,6 @@ const FindBarModalTile = ({ id, principal, forAdd, setModalVisible }) => {
   const createChat = async () => {
     setLoading(true);
     if (forAdd) {
-      //TODO
       const response = await (await getBackendActor()).addToChat(id, principal);
     } else {
       const response = await (await getBackendActor()).createChat(principal);
@@ -48,19 +47,22 @@ const FindBarModalTile = ({ id, principal, forAdd, setModalVisible }) => {
       }}
       style={styles.touchableView}
     >
-      <View style={styles.container}>
+      <View style={styles.container(profile)}>
         {profile ? (
           <View style={styles.profileContainer}>
+            <Text style={styles.username}>{profile["username"]}</Text>
             <CustomProfilePicture
               principal={profile["userPrincipal"]}
               style={styles.avatar}
             />
-            <Text style={styles.username}>{profile["username"]}</Text>
+            <Text style={styles.principal}>{principal.toText()}</Text>
             <TouchableOpacity onPress={createChat} style={styles.button}>
               {loading ? (
                 <ActivityIndicator />
               ) : (
-                <Text style={styles.buttonText}>{forAdd ? "Add" : "Create Chat!"}</Text>
+                <Text style={styles.buttonText}>
+                  {forAdd ? "Add" : "Create Chat!"}
+                </Text>
               )}
             </TouchableOpacity>
           </View>
@@ -79,35 +81,42 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  container: {
-    backgroundColor: colors.LIGHT_PRIMARY,
-    width: scale(200),
-    height: scale(200),
+  container: (profile) => ({
+    backgroundColor: colors.LIGHT_GRAY,
+    width: scale(320),
+    height: scale(352),
     borderRadius: 15,
     alignItems: "center",
-    justifyContent: "center",
-  },
+    justifyContent: profile ? "" : "center",
+  }),
   profileContainer: {
     alignItems: "center",
-  },
-  avatar: {
-    height: scale(80),
-    aspectRatio: 1,
-    borderRadius: scale(80),
-    marginBottom: scale(5),
-    shadowColor: "#000",
-    shadowOffset: { width: 0, height: 4 },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
   },
   username: {
     fontFamily: "Poppins-SemiBold",
     color: "#FFFFFF",
     fontSize: scale(16),
-    marginBottom: scale(15),
+    marginTop: verticalScale(41),
+  },
+  avatar: {
+    height: scale(80),
+    aspectRatio: 1,
+    borderRadius: scale(80),
+    marginTop: verticalScale(8),
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+  },
+  principal: {
+    fontFamily: "Poppins-Regular",
+    color: "#FFFFFF",
+    fontSize: scale(8),
+    marginTop: verticalScale(30),
   },
   button: {
-    width: scale(100),
+    marginTop: verticalScale(40),
+    width: scale(280),
     height: scale(50),
     backgroundColor: colors.LIGHT_SECONDARY,
     borderRadius: 15,

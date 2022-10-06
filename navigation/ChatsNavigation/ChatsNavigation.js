@@ -8,20 +8,18 @@ import OneOnOneChatScreen from "../../screens/OneOnOneChatScreen/OneOnOneChatScr
 const Stack = createStackNavigator();
 
 const ChatsNavigation = ({ navigation }) => {
-
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: false,
-    })
-  }, [])
+    });
+  }, []);
 
   return (
     <Stack.Navigator
       screenOptions={{
         headerTitle: "Chats",
         headerStyle: {
-          backgroundColor: colors.LIGHT_PRIMARY,
-          height: 110,
+          backgroundColor: colors.BLUE,
         },
         headerTitleStyle: {
           color: "#FFFFFF",
@@ -38,7 +36,7 @@ const ChatsNavigation = ({ navigation }) => {
       <Stack.Screen name="ChatsScreen" component={ChatsScreen} />
       <Stack.Screen name="OneOnOneChat" component={OneOnOneChatScreen} />
       <Stack.Screen name="Add">
-        {(props) => <FindScreen forAdd={true} {...props}/>}
+        {(props) => <FindScreen forAdd={true} {...props} />}
       </Stack.Screen>
     </Stack.Navigator>
   );

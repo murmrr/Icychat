@@ -8,20 +8,7 @@ const AuthNavigation = ({ setIsSignedIn }) => {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerStyle: {
-          backgroundColor: colors.LIGHT_PRIMARY,
-          height: 110,
-        },
-        headerTitleStyle: {
-          color: "#FFFFFF",
-          fontSize: 20,
-          fontFamily: "Poppins-Medium",
-        },
-        tabBarStyle: {
-          backgroundColor: colors.LIGHT_PRIMARY,
-          borderTopWidth: 0,
-        },
-        headerShadowVisible: false,
+        headerShown: false,
       }}
     >
       <Stack.Screen name="Sign Up">

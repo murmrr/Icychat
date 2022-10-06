@@ -19,10 +19,13 @@ import { POLLING_INTERVAL } from "../../data/constants";
 import { getBackendActor } from "../../lib/actor";
 import { useInterval } from "../../utility/utils";
 import { useIsFocused } from "@react-navigation/native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const OneOnOneChatScreen = ({ navigation, route }) => {
   const { id, principals } = route.params;
   const [data, setData] = useState(null);
+
+  const insets = useSafeAreaInsets();
 
   useInterval(async () => {
     const response = await (await getBackendActor()).getMyChat(id);
@@ -37,10 +40,11 @@ const OneOnOneChatScreen = ({ navigation, route }) => {
     navigation.setOptions({
       headerTitle: (props) => <CustomHeader principals={principals} />,
       headerLeft: (props) => <CustomBackButton navigation={navigation} />,
-      headerRight: (props) => <AddToChatButton id={id} navigation={navigation}/>,
+      headerRight: (props) => (
+        <AddToChatButton id={id} navigation={navigation} />
+      ),
       headerStyle: {
-        backgroundColor: colors.LIGHT_PRIMARY,
-        height: 110,
+        backgroundColor: colors.BLUE,
       },
     });
 
@@ -48,13 +52,13 @@ const OneOnOneChatScreen = ({ navigation, route }) => {
       tabBarStyle: {
         display: "none",
       },
-    })
+    });
 
     return () => {
       navigation.getParent().setOptions({
+        tabBarShowLabel: false,
         headerStyle: {
-          backgroundColor: colors.LIGHT_PRIMARY,
-          height: 110,
+          backgroundColor: colors.BLUE,
         },
         headerTitleStyle: {
           color: "#FFFFFF",
@@ -62,12 +66,23 @@ const OneOnOneChatScreen = ({ navigation, route }) => {
           fontFamily: "Poppins-Medium",
         },
         tabBarStyle: {
-          backgroundColor: colors.LIGHT_PRIMARY,
+          backgroundColor: colors.BLUE,
+          position: "absolute",
+          left: 24,
+          right: 24,
+          bottom: insets.bottom == 0 ? 24 : insets.bottom,
+          elevation: 0,
+          borderRadius: 35,
+          height: 60,
           borderTopWidth: 0,
+          shadowColor: "#000",
+          shadowOffset: { width: 0, height: 4 },
+          shadowOpacity: 0.25,
+          shadowRadius: 4,
         },
         headerShadowVisible: false,
-      })
-    }
+      });
+    };
   }, []);
 
   const renderItem = ({ item }) => <Message message={item} />;

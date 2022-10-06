@@ -5,12 +5,11 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import colors from "../../data/colors";
 
 const AddToChatButton = ({ id, navigation }) => {
-
   const onPress = () => {
     navigation.navigate("Add", {
       id: id,
-    })
-  }
+    });
+  };
 
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>

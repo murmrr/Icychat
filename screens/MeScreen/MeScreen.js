@@ -140,7 +140,7 @@ const styles = StyleSheet.create({
   button: {
     marginTop: 50,
     backgroundColor: colors.LIGHT_SECONDARY,
-    width: scale(200),
+    width: scale(304),
     height: scale(40),
     alignSelf: "center",
     borderRadius: 22,
@@ -150,7 +150,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   buttonText: {
-    color: colors.DARK_PRIMARY,
+    color: colors.WHITE,
     fontFamily: "Poppins-Medium",
     fontSize: 16,
   },

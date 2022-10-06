@@ -24,12 +24,11 @@ const FindScreen = ({ forAdd, navigation, route }) => {
         headerTitle: "Add",
         headerLeft: (props) => <CustomBackButton navigation={navigation} />,
         headerStyle: {
-          backgroundColor: colors.LIGHT_PRIMARY,
-          height: 110,
+          backgroundColor: colors.BLUE,
         },
       });
     }
-  }, [])
+  }, []);
 
   useInterval(async () => {
     const response = await (await getBackendActor()).getUsers(query);
@@ -43,7 +42,9 @@ const FindScreen = ({ forAdd, navigation, route }) => {
     }
   }, POLLING_INTERVAL);
 
-  const renderItem = ({ item }) => <FindBar id={forAdd ? id : null} principal={item} forAdd={forAdd}/>;
+  const renderItem = ({ item }) => (
+    <FindBar id={forAdd ? id : null} principal={item} forAdd={forAdd} />
+  );
 
   const keyExtractor = (item) => item;
 
