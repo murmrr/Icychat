@@ -113,8 +113,7 @@ service : {
   getMyProfile: () -> (Result_5) query;
   getProfile: (principal) -> (Result_4) query;
   getUsers: (text) -> (Result_3) query;
-  register: (ProfileUpdate) -> (Result_2);
-  registerHelper: (principal, ProfileUpdate) -> (Result_2);
+  register: (ProfileUpdate, text) -> (Result_2);
   sendMessage: (nat, MessageContent) -> (Result_1);
   updateProfile: (ProfileUpdate) -> (Result);
 }

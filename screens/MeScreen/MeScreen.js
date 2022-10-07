@@ -45,6 +45,7 @@ const MeScreen = ({ setIsSignedIn }) => {
           onPress: async () => {
             try {
               await AsyncStorage.removeItem("@identity");
+              await AsyncStorage.removeItem("@privateKey");
               setIsSignedIn(false);
             } catch (exception) {}
           },

@@ -19,6 +19,8 @@ import Toast from "react-native-root-toast";
 import * as Haptics from "expo-haptics";
 import WavyBackground from "react-native-wavy-background";
 import CustomActivityIndicator from "../../components/CustomActivityIndicator/CustomActivityIndicator";
+import OpenPGP from "react-native-fast-openpgp";
+import { PGP_OPTIONS } from "../../data/constants";
 
 const SignUpScreen = ({ setIsSignedIn }) => {
   const [username, setUsername] = useState("");
@@ -30,17 +32,23 @@ const SignUpScreen = ({ setIsSignedIn }) => {
     if (regUsername.test(username)) {
       setLoading(true);
       const identity = Ed25519KeyIdentity.generate();
-
       await AsyncStorage.setItem(
         "@identity",
         JSON.stringify(identity.toJSON())
       );
+
+      const keys = await OpenPGP.generate(PGP_OPTIONS);
+      const privateKey = keys["privateKey"];
+      await AsyncStorage.setItem(
+        "@privateKey", privateKey);
+      const publicKey = keys["publicKey"];
+      
       const profileUpdate = {
         username: username,
       };
       const response = await (
         await getBackendActor(identity)
-      ).register(profileUpdate);
+      ).register(profileUpdate, publicKey);
       setLoading(false);
       setIsSignedIn(true);
     } else {
