@@ -73,11 +73,13 @@ const Message = ({ message }) => {
 
 const styles = StyleSheet.create({
   root: (isMe) => ({
-    paddingLeft: isMe ? 0 : 20,
-    paddingRight: isMe ? 20 : 0,
+    paddingLeft: isMe ? 0 : 10,
+    paddingRight: isMe ? 10 : 0,
     paddingBottom: 10,
     paddingTop: 20,
     alignContent: "center",
+    marginLeft : isMe ? 20 : 10,
+    marginRight : isMe ? 10 : 20,
   }),
   avatarContainer: (isMe) => ({
     flexDirection: isMe ? "row-reverse" : "row",

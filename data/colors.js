@@ -32,4 +32,5 @@ export default {
   LIGHT_GRAY: "#343645",
   BLUE: "#4D5DFA",
   DARK_PURPLE: "#242042",
+  RED: "#rgb(238, 50, 50)"
 };

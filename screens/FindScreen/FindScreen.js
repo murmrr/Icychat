@@ -49,7 +49,7 @@ const FindScreen = ({ forAdd, navigation, route }) => {
   const keyExtractor = (item) => item;
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container(query == "")}>
       {allUsers ? (
         <FlatList
           ListHeaderComponent={
@@ -60,7 +60,7 @@ const FindScreen = ({ forAdd, navigation, route }) => {
               setSearchBarLoading={setSearchBarLoading}
             />
           }
-          data={allUsers}
+          data={query == "" ? [] : allUsers}
           renderItem={renderItem}
           keyExtractor={keyExtractor}
           ItemSeparatorComponent={ItemDivider}
@@ -75,10 +75,10 @@ const FindScreen = ({ forAdd, navigation, route }) => {
 };
 
 const styles = StyleSheet.create({
-  container: {
+  container: (isEmpty) => ({
     height: "100%",
     backgroundColor: colors.DARK_PRIMARY,
-  },
+  }),
   loadingContainer: {
     flex: 1,
     alignItems: "center",

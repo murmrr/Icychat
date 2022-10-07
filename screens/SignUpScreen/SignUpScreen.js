@@ -113,7 +113,7 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: scale(19),
-    marginBottom: scale(117),
+    marginBottom: scale(48),
     backgroundColor: colors.BLUE,
     width: scale(304),
     height: scale(40),

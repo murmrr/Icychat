@@ -83,8 +83,8 @@ const styles = StyleSheet.create({
   },
   container: (profile) => ({
     backgroundColor: colors.LIGHT_GRAY,
-    width: scale(320),
-    height: scale(352),
+    width: scale(310),
+    height: scale(332),
     borderRadius: 15,
     alignItems: "center",
     justifyContent: profile ? "" : "center",

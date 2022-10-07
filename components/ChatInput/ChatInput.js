@@ -10,6 +10,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import colors from "../../data/colors";
 import { getBackendActor } from "../../lib/actor";
 import { scale, verticalScale } from "../../utility/scalingUtils";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 const ChatInput = ({ id, setData }) => {
   const [message, setMessage] = useState("");
@@ -46,7 +47,7 @@ const ChatInput = ({ id, setData }) => {
         />
       </View>
       <TouchableOpacity onPress={sendMessage} style={styles.buttonContainer}>
-        {sending ? <ActivityIndicator /> : <></>}
+        {sending ? <ActivityIndicator /> : <Icon name="send" size={14} color={colors.WHITE} />}
       </TouchableOpacity>
     </View>
   );
@@ -55,15 +56,19 @@ const ChatInput = ({ id, setData }) => {
 const styles = StyleSheet.create({
   container: {
     bottom: 24,
-    marginHorizontal: 10,
+    marginHorizontal: 16,
     flexDirection: "row",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
   },
   inputContainer: {
     backgroundColor: "gray",
     flex: 1,
     borderRadius: 15,
     height: 52,
-    backgroundColor: colors.LIGHT_PRIMARY,
+    backgroundColor: colors.LIGHT_GRAY,
   },
   input: {
     color: colors.WHITE,
@@ -78,7 +83,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     width: 52,
     height: 52,
-    backgroundColor: colors.EXTRA_LIGHT_PRIMARY,
+    backgroundColor: colors.DARK_PURPLE,
     marginLeft: scale(9),
     alignItems: "center",
     justifyContent: "center",

@@ -13,10 +13,11 @@ import InputWrapper from "../../components/InputWrapper/InputWrapper";
 import colors from "../../data/colors";
 import { POLLING_INTERVAL } from "../../data/constants";
 import { getBackendActor } from "../../lib/actor";
-import { scale } from "../../utility/scalingUtils";
+import { scale, verticalScale } from "../../utility/scalingUtils";
 import { useInterval } from "../../utility/utils";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import CustomProfilePicture from "../../components/CustomProfilePicture/CustomProfilePicture";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 const MeScreen = ({ setIsSignedIn }) => {
   const [profile, setProfile] = useState(null);
@@ -33,7 +34,7 @@ const MeScreen = ({ setIsSignedIn }) => {
   const handleDelete = async () => {
     Alert.alert(
       "Delete Account",
-      "Are you sure you want to delete your account?",
+      "Are you sure you want to burn your account?",
       [
         {
           text: "No",
@@ -64,6 +65,7 @@ const MeScreen = ({ setIsSignedIn }) => {
           style={{ backgroundColor: colors.DARK_PRIMARY }}
           contentContainerStyle={styles.container}
         >
+          <View style={styles.profileContainer}>
           <View style={styles.avatarContainer}>
             <CustomProfilePicture
               principal={profile["userPrincipal"]}
@@ -86,8 +88,10 @@ const MeScreen = ({ setIsSignedIn }) => {
               />
             </InputWrapper>
           </View>
+          </View>
           <TouchableOpacity onPress={handleDelete} style={styles.button}>
-            <Text style={styles.buttonText}>Delete Account</Text>
+            <Text style={styles.buttonText}>Burn</Text>
+            <Icon name="fire" size={14} color={colors.WHITE} />
           </TouchableOpacity>
         </ScrollView>
       ) : (
@@ -107,10 +111,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     backgroundColor: colors.DARK_PRIMARY,
   },
+  profileContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+  },
   avatarContainer: {
     width: scale(121),
     aspectRatio: 1,
-    marginTop: 30,
   },
   avatar: {
     flex: 1,
@@ -138,9 +145,9 @@ const styles = StyleSheet.create({
     paddingRight: 12,
   },
   button: {
-    marginTop: 50,
-    backgroundColor: colors.LIGHT_SECONDARY,
-    width: scale(304),
+    marginTop: 70,
+    backgroundColor: colors.RED,
+    width: scale(152),
     height: scale(40),
     alignSelf: "center",
     borderRadius: 22,
@@ -153,6 +160,7 @@ const styles = StyleSheet.create({
     color: colors.WHITE,
     fontFamily: "Poppins-Medium",
     fontSize: 16,
+    marginRight: scale(10),
   },
   loadingContainer: {
     flex: 1,
