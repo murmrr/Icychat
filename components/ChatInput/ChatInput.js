@@ -1,16 +1,11 @@
 import React, { useRef, useState } from "react";
-import {
-  ActivityIndicator,
-  Button,
-  StyleSheet,
-  TextInput,
-  View,
-} from "react-native";
+import { Button, StyleSheet, TextInput, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import colors from "../../data/colors";
 import { getBackendActor } from "../../lib/actor";
 import { scale, verticalScale } from "../../utility/scalingUtils";
 import Icon from "react-native-vector-icons/FontAwesome";
+import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
 
 const ChatInput = ({ id, setData }) => {
   const [message, setMessage] = useState("");
@@ -47,7 +42,11 @@ const ChatInput = ({ id, setData }) => {
         />
       </View>
       <TouchableOpacity onPress={sendMessage} style={styles.buttonContainer}>
-        {sending ? <ActivityIndicator /> : <Icon name="send" size={14} color={colors.WHITE} />}
+        {sending ? (
+          <CustomActivityIndicator />
+        ) : (
+          <Icon name="send" size={14} color={colors.WHITE} />
+        )}
       </TouchableOpacity>
     </View>
   );

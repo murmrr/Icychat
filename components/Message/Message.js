@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { POLLING_INTERVAL } from "../../data/constants";
 import { getBackendActor } from "../../lib/actor";
 import { scale } from "../../utility/scalingUtils";
@@ -8,6 +8,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ed25519KeyIdentity } from "@dfinity/identity";
 import colors from "../../data/colors";
 import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
+import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
 
 const Message = ({ message }) => {
   const [profile, setProfile] = useState(null);
@@ -55,7 +56,7 @@ const Message = ({ message }) => {
               {isMe ? "Me" : profile["username"]}
             </Text>
           ) : (
-            <ActivityIndicator />
+            <CustomActivityIndicator />
           )}
           <Text style={styles.messageTime(isMe)}>
             {convertTime(message["time"])}
@@ -78,8 +79,8 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
     paddingTop: 20,
     alignContent: "center",
-    marginLeft : isMe ? 20 : 10,
-    marginRight : isMe ? 10 : 20,
+    marginLeft: isMe ? 20 : 10,
+    marginRight: isMe ? 10 : 20,
   }),
   avatarContainer: (isMe) => ({
     flexDirection: isMe ? "row-reverse" : "row",

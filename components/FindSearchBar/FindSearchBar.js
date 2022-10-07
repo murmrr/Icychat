@@ -23,6 +23,7 @@ const FindSearchBar = ({
       containerStyle={styles.containerStyle}
       inputContainerStyle={styles.inputContainerStyle}
       showLoading={searchBarLoading}
+      autoCapitalize="none"
     />
   );
 };

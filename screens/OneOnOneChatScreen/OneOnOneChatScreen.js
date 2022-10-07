@@ -1,6 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
 import {
-  ActivityIndicator,
   Button,
   FlatList,
   KeyboardAvoidingView,
@@ -20,6 +19,7 @@ import { getBackendActor } from "../../lib/actor";
 import { useInterval } from "../../utility/utils";
 import { useIsFocused } from "@react-navigation/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import CustomActivityIndicator from "../../components/CustomActivityIndicator/CustomActivityIndicator";
 
 const OneOnOneChatScreen = ({ navigation, route }) => {
   const { id, principals } = route.params;
@@ -111,7 +111,7 @@ const OneOnOneChatScreen = ({ navigation, route }) => {
     </View>
   ) : (
     <View style={styles.loadingContainer}>
-      <ActivityIndicator />
+      <CustomActivityIndicator />
     </View>
   );
 };

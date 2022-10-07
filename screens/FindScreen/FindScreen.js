@@ -1,6 +1,7 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import { ActivityIndicator, FlatList, StyleSheet, View } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 import AddToChatButton from "../../components/AddToChatButton/AddToChatButton";
+import CustomActivityIndicator from "../../components/CustomActivityIndicator/CustomActivityIndicator";
 import CustomBackButton from "../../components/CustomBackButton/CustomBackButton";
 import CustomHeader from "../../components/CustomHeader/CustomHeader";
 import FindBar from "../../components/FindBar/FindBar";
@@ -67,7 +68,7 @@ const FindScreen = ({ forAdd, navigation, route }) => {
         />
       ) : (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator />
+          <CustomActivityIndicator />
         </View>
       )}
     </View>

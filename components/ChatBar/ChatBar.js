@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { moderateScale, scale } from "../../utility/scalingUtils";
 import { convertTime, useInterval } from "../../utility/utils";
 import { POLLING_INTERVAL } from "../../data/constants";

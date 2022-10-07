@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { ActivityIndicator, FlatList, StyleSheet, View } from "react-native";
+import { FlatList, StyleSheet, View } from "react-native";
 import { POLLING_INTERVAL } from "../../data/constants";
 import { getBackendActor } from "../../lib/actor";
 import { useInterval } from "../../utility/utils";
 import ChatBar from "../ChatBar/ChatBar";
+import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
 import ItemDivider from "../ItemDivider/ItemDivider";
 
 const ChatBarList = () => {
@@ -38,7 +39,7 @@ const ChatBarList = () => {
         />
       ) : (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator />
+          <CustomActivityIndicator />
         </View>
       )}
     </View>

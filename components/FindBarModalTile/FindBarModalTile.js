@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import {
   Dimensions,
-  ActivityIndicator,
   Button,
   StyleSheet,
   Text,
@@ -14,6 +13,7 @@ import { scale, verticalScale } from "../../utility/scalingUtils";
 import { useInterval } from "../../utility/utils";
 import colors from "../../data/colors";
 import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
+import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
 
 const FindBarModalTile = ({ id, principal, forAdd, setModalVisible }) => {
   const [profile, setProfile] = useState(null);
@@ -58,16 +58,16 @@ const FindBarModalTile = ({ id, principal, forAdd, setModalVisible }) => {
             <Text style={styles.principal}>{principal.toText()}</Text>
             <TouchableOpacity onPress={createChat} style={styles.button}>
               {loading ? (
-                <ActivityIndicator />
+                <CustomActivityIndicator />
               ) : (
                 <Text style={styles.buttonText}>
-                  {forAdd ? "Add" : "Create Chat!"}
+                  {forAdd ? "Add" : "Create Chat"}
                 </Text>
               )}
             </TouchableOpacity>
           </View>
         ) : (
-          <ActivityIndicator />
+          <CustomActivityIndicator />
         )}
       </View>
     </TouchableOpacity>
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
   buttonText: {
     fontFamily: "Poppins-SemiBold",
     color: "#FFFFFF",
-    fontSize: scale(14),
+    fontSize: scale(16),
     textAlign: "center",
   },
 });

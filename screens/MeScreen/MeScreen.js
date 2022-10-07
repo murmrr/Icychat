@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import {
-  ActivityIndicator,
   Alert,
   KeyboardAvoidingView,
   StyleSheet,
@@ -18,6 +17,7 @@ import { useInterval } from "../../utility/utils";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import CustomProfilePicture from "../../components/CustomProfilePicture/CustomProfilePicture";
 import Icon from "react-native-vector-icons/FontAwesome";
+import CustomActivityIndicator from "../../components/CustomActivityIndicator/CustomActivityIndicator";
 
 const MeScreen = ({ setIsSignedIn }) => {
   const [profile, setProfile] = useState(null);
@@ -66,28 +66,28 @@ const MeScreen = ({ setIsSignedIn }) => {
           contentContainerStyle={styles.container}
         >
           <View style={styles.profileContainer}>
-          <View style={styles.avatarContainer}>
-            <CustomProfilePicture
-              principal={profile["userPrincipal"]}
-              style={styles.avatar}
-            />
-          </View>
-          <View style={styles.textContainer}>
-            <InputWrapper label="Principal">
-              <TextInput
-                value={profile["userPrincipal"].toText()}
-                editable={false}
-                style={styles.principalInput}
+            <View style={styles.avatarContainer}>
+              <CustomProfilePicture
+                principal={profile["userPrincipal"]}
+                style={styles.avatar}
               />
-            </InputWrapper>
-            <InputWrapper label="Username">
-              <TextInput
-                value={profile["username"]}
-                editable={false}
-                style={styles.usernameInput}
-              />
-            </InputWrapper>
-          </View>
+            </View>
+            <View style={styles.textContainer}>
+              <InputWrapper label="Principal">
+                <TextInput
+                  value={profile["userPrincipal"].toText()}
+                  editable={false}
+                  style={styles.principalInput}
+                />
+              </InputWrapper>
+              <InputWrapper label="Username">
+                <TextInput
+                  value={profile["username"]}
+                  editable={false}
+                  style={styles.usernameInput}
+                />
+              </InputWrapper>
+            </View>
           </View>
           <TouchableOpacity onPress={handleDelete} style={styles.button}>
             <Text style={styles.buttonText}>Burn</Text>
@@ -96,7 +96,7 @@ const MeScreen = ({ setIsSignedIn }) => {
         </ScrollView>
       ) : (
         <View style={styles.loadingContainer}>
-          <ActivityIndicator />
+          <CustomActivityIndicator />
         </View>
       )}
     </KeyboardAvoidingView>

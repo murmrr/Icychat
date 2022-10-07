@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ActivityIndicator, StyleSheet, Text } from "react-native";
+import { StyleSheet, Text } from "react-native";
 import colors from "../../data/colors";
 import ProfilePictureStack from "../ProfilePictureStack/ProfilePictureStack";
 

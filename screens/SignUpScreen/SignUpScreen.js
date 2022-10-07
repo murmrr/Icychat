@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import {
-  ActivityIndicator,
   Button,
+  Image,
   KeyboardAvoidingView,
   StyleSheet,
   Text,
@@ -17,6 +17,8 @@ import colors from "../../data/colors";
 import InputWrapper from "../../components/InputWrapper/InputWrapper";
 import Toast from "react-native-root-toast";
 import * as Haptics from "expo-haptics";
+import WavyBackground from "react-native-wavy-background";
+import CustomActivityIndicator from "../../components/CustomActivityIndicator/CustomActivityIndicator";
 
 const SignUpScreen = ({ setIsSignedIn }) => {
   const [username, setUsername] = useState("");
@@ -70,12 +72,24 @@ const SignUpScreen = ({ setIsSignedIn }) => {
         keyboardShouldPersistTaps="handled"
       >
         <View style={styles.container}>
+          <View style={styles.wavyContainer}>
+            <WavyBackground
+              height={verticalScale(150)}
+              width={scale(1100)}
+              amplitude={25}
+              frequency={2}
+              offset={150}
+              color={colors.BLUE}
+              top
+            />
+          </View>
           <InputWrapper label="Username">
             <TextInput
               placeholder="Pick a username"
               editable={!loading}
               onChangeText={setUsername}
               style={styles.usernameInput}
+              autoCapitalize="none"
             />
           </InputWrapper>
           <TouchableOpacity
@@ -84,7 +98,7 @@ const SignUpScreen = ({ setIsSignedIn }) => {
             style={styles.button}
           >
             {loading ? (
-              <ActivityIndicator />
+              <CustomActivityIndicator />
             ) : (
               <Text style={styles.buttonText}>Register</Text>
             )}
@@ -101,6 +115,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-end",
     backgroundColor: colors.DARK_PRIMARY,
+  },
+  wavyContainer: {
+    position: "absolute",
+    top: 0,
+    left: 0,
+    right: 0,
+    bottom: 0,
   },
   usernameInput: {
     height: "100%",

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { ActivityIndicator, Modal, StyleSheet, Text, View } from "react-native";
+import { Modal, StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { POLLING_INTERVAL } from "../../data/constants";
 import { getBackendActor } from "../../lib/actor";
@@ -9,6 +9,7 @@ import FindBarModalTile from "../FindBarModalTile/FindBarModalTile";
 import colors from "../../data/colors";
 import { BlurView } from "expo-blur";
 import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
+import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
 
 const FindBar = ({ id, principal, forAdd }) => {
   const [profile, setProfile] = useState(null);
@@ -45,7 +46,7 @@ const FindBar = ({ id, principal, forAdd }) => {
               {profile ? (
                 <Text style={styles.username}>{profile["username"]}</Text>
               ) : (
-                <ActivityIndicator />
+                <CustomActivityIndicator />
               )}
             </View>
             <Text style={styles.principal}>{principal.toText()}</Text>

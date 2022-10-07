@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { ActivityIndicator, Text } from "react-native";
+import { Text } from "react-native";
 import { POLLING_INTERVAL } from "../../data/constants";
 import { getBackendActor } from "../../lib/actor";
 import { useInterval } from "../../utility/utils";
+import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
 
 const ChatUsernamesSingle = ({ principal, style }) => {
   const [otherUserProfile, setOtherUserProfile] = useState(null);
@@ -19,7 +20,7 @@ const ChatUsernamesSingle = ({ principal, style }) => {
   return otherUserProfile ? (
     <Text style={style}>{otherUserProfile["username"]}</Text>
   ) : (
-    <ActivityIndicator />
+    <CustomActivityIndicator />
   );
 };
 
