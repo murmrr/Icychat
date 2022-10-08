@@ -6,16 +6,18 @@ import { getBackendActor } from "../../lib/actor";
 import { scale, verticalScale } from "../../utility/scalingUtils";
 import Icon from "react-native-vector-icons/FontAwesome";
 import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
+import OpenPGP from "react-native-fast-openpgp";
 
-const ChatInput = ({ id, setData }) => {
+const ChatInput = ({ id, chatKey, setData }) => {
   const [message, setMessage] = useState("");
   const [sending, setSending] = useState(false);
   const inputRef = useRef();
 
   const sendMessage = async () => {
     setSending(true);
+    const encryptedMessage = await OpenPGP.encryptSymmetric(message, chatKey);
     const messageContent = {
-      message: message,
+      message: encryptedMessage,
     };
     await (await getBackendActor()).sendMessage(id, messageContent);
     const response = await (await getBackendActor()).getMyChat(id);

@@ -4,10 +4,11 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/FontAwesome";
 import colors from "../../data/colors";
 
-const AddToChatButton = ({ id, navigation }) => {
+const AddToChatButton = ({ id, chatKey, navigation }) => {
   const onPress = () => {
     navigation.navigate("Add", {
       id: id,
+      chatKey: chatKey,
     });
   };
 

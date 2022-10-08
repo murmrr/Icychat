@@ -20,9 +20,10 @@ import { useInterval } from "../../utility/utils";
 import { useIsFocused } from "@react-navigation/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import CustomActivityIndicator from "../../components/CustomActivityIndicator/CustomActivityIndicator";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const OneOnOneChatScreen = ({ navigation, route }) => {
-  const { id, principals } = route.params;
+  const { id, chatKey, principals } = route.params;
   const [data, setData] = useState(null);
 
   const insets = useSafeAreaInsets();
@@ -41,7 +42,7 @@ const OneOnOneChatScreen = ({ navigation, route }) => {
       headerTitle: (props) => <CustomHeader principals={principals} />,
       headerLeft: (props) => <CustomBackButton navigation={navigation} />,
       headerRight: (props) => (
-        <AddToChatButton id={id} navigation={navigation} />
+        <AddToChatButton id={id} chatKey={chatKey} navigation={navigation} />
       ),
       headerStyle: {
         backgroundColor: colors.BLUE,
@@ -85,7 +86,7 @@ const OneOnOneChatScreen = ({ navigation, route }) => {
     };
   }, []);
 
-  const renderItem = ({ item }) => <Message message={item} />;
+  const renderItem = ({ item }) => <Message message={item} chatKey={chatKey} />;
 
   const keyExtractor = (item) => item["id"];
 
@@ -106,7 +107,7 @@ const OneOnOneChatScreen = ({ navigation, route }) => {
           keyExtractor={keyExtractor}
           style={styles.messagesContainer}
         />
-        <ChatInput id={id} setData={setData} />
+        <ChatInput id={id} chatKey={chatKey} setData={setData} />
       </KeyboardAvoidingView>
     </View>
   ) : (

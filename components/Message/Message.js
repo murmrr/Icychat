@@ -9,10 +9,20 @@ import { Ed25519KeyIdentity } from "@dfinity/identity";
 import colors from "../../data/colors";
 import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
 import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
+import OpenPGP from "react-native-fast-openpgp";
 
-const Message = ({ message }) => {
+const Message = ({ message, chatKey }) => {
   const [profile, setProfile] = useState(null);
   const [isMe, setIsMe] = useState(false);
+  const [decryptedMessage, setDecryptedMessage] = useState("");
+
+  useEffect(async () => {
+    const decryptedMessage = await OpenPGP.decryptSymmetric(
+      message["content"]["message"],
+      chatKey
+    );
+    setDecryptedMessage(decryptedMessage);
+  }, []);
 
   useEffect(async () => {
     try {
@@ -64,9 +74,13 @@ const Message = ({ message }) => {
         </View>
       </View>
       <View style={styles.messageContainer(isMe)}>
-        <Text style={styles.message(isMe)}>
-          {message["content"]["message"]}
-        </Text>
+        {decryptedMessage ? (
+          <Text style={styles.message(isMe)}>{decryptedMessage}</Text>
+        ) : (
+          <View style={styles.messageLoadingContainer}>
+            <CustomActivityIndicator />
+          </View>
+        )}
       </View>
     </View>
   );
@@ -120,6 +134,7 @@ const styles = StyleSheet.create({
     marginLeft: isMe ? 0 : 52,
     paddingRight: isMe ? 8 : 0,
   }),
+  messageLoadingContainer: { justifyContent: "flex-end", flexDirection: "row" },
   message: (isMe) => ({
     color: colors.WHITE,
     fontSize: 15,

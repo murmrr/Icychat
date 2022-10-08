@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { moderateScale, scale } from "../../utility/scalingUtils";
 import { convertTime, useInterval } from "../../utility/utils";
@@ -10,18 +10,44 @@ import colors from "../../data/colors";
 import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
 import ProfilePictureStack from "../ProfilePictureStack/ProfilePictureStack";
 import ChatUsernames from "../ChatUsernames/ChatUsernames";
+import OpenPGP from "react-native-fast-openpgp";
+import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const ChatBar = ({ chatHeader }) => {
+  const [decryptedMessage, setDecryptedMessage] = useState(null);
+
   const navigation = useNavigation();
+
+  useEffect(async () => {
+    const myChatKey = chatHeader["key"];
+    const privateKey = await AsyncStorage.getItem("@privateKey");
+    const chatKey = await OpenPGP.decrypt(myChatKey, privateKey, "");
+
+    if (chatHeader["lastMessage"].length > 0) {
+      const decryptedMessage = await OpenPGP.decryptSymmetric(
+        chatHeader["lastMessage"][0]["content"]["message"],
+        chatKey
+      );
+      setDecryptedMessage(decryptedMessage);
+    } else {
+      setDecryptedMessage(" ");
+    }
+  }, [chatHeader]);
 
   return (
     <TouchableOpacity
-      onPress={() =>
+      onPress={async () => {
+        const myChatKey = chatHeader["key"];
+        const privateKey = await AsyncStorage.getItem("@privateKey");
+        const chatKey = await OpenPGP.decrypt(myChatKey, privateKey, "");
+
         navigation.navigate("OneOnOneChat", {
           id: chatHeader["id"],
+          chatKey: chatKey,
           principals: chatHeader["otherUsers"],
-        })
-      }
+        });
+      }}
     >
       <View style={styles.container}>
         <View style={styles.avatarContainer}>
@@ -37,12 +63,14 @@ const ChatBar = ({ chatHeader }) => {
               style={styles.username}
             />
           </View>
-          {chatHeader["lastMessage"].length > 0 ? (
+          {decryptedMessage ? (
             <Text style={styles.lastMessage} numberOfLines={2}>
-              {chatHeader["lastMessage"][0]["content"]["message"]}
+              {chatHeader["lastMessage"].length > 0 ? decryptedMessage : ""}
             </Text>
           ) : (
-            <></>
+            <View style={styles.lastMessageLoadingContainer}>
+              <CustomActivityIndicator />
+            </View>
           )}
         </View>
         <View style={styles.timeContainer}>
@@ -93,6 +121,10 @@ const styles = StyleSheet.create({
     fontFamily: "Poppins-Regular",
     height: moderateScale(42),
     width: moderateScale(170),
+  },
+  lastMessageLoadingContainer: {
+    flexDirection: "row",
+    justifyContent: "flex-start",
   },
   timeContainer: {
     width: moderateScale(60),

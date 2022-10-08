@@ -14,6 +14,7 @@ import { useInterval } from "../../utility/utils";
 
 const FindScreen = ({ forAdd, navigation, route }) => {
   const id = forAdd ? route.params.id : null;
+  const chatKey = forAdd ? route.params.chatKey : null;
 
   const [allUsers, setAllUsers] = useState(null);
   const [query, setQuery] = useState("");
@@ -44,7 +45,12 @@ const FindScreen = ({ forAdd, navigation, route }) => {
   }, POLLING_INTERVAL);
 
   const renderItem = ({ item }) => (
-    <FindBar id={forAdd ? id : undefined} principal={item} forAdd={forAdd} />
+    <FindBar
+      id={forAdd ? id : undefined}
+      chatKey={forAdd ? chatKey : undefined}
+      principal={item}
+      forAdd={forAdd}
+    />
   );
 
   const keyExtractor = (item) => item;

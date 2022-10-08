@@ -2,7 +2,6 @@ type UpdateProfileError = variant {ProfileNotFound;};
 type Time = int;
 type SharedChat = 
  record {
-   key: text;
    messages: vec Message;
    otherUsers: vec principal;
  };
@@ -13,18 +12,18 @@ type SendMessageError =
  };
 type Result_9 = 
  variant {
-   err: GetMyChatError;
-   ok: SharedChat;
+   err: CreateChatError;
+   ok;
  };
 type Result_8 = 
  variant {
-   err: GetMyChatHeadersError;
-   ok: vec ChatHeader;
+   err: GetMyChatError;
+   ok: SharedChat;
  };
 type Result_7 = 
  variant {
-   err: GetMyChatKeyError;
-   ok: text;
+   err: GetMyChatHeadersError;
+   ok: vec ChatHeader;
  };
 type Result_6 = 
  variant {
@@ -51,14 +50,9 @@ type Result_2 =
    err: RegisterError;
    ok;
  };
-type Result_11 = 
- variant {
-   err: AddToChatError;
-   ok;
- };
 type Result_10 = 
  variant {
-   err: CreateChatError;
+   err: AddToChatError;
    ok;
  };
 type Result_1 = 
@@ -94,11 +88,6 @@ type GetUsersError = variant {UserNotFound;};
 type GetPublicKeyError = variant {UserNotFound;};
 type GetProfileError = variant {UserNotFound;};
 type GetMyProfileError = variant {UserNotFound;};
-type GetMyChatKeyError = 
- variant {
-   IdNotFound;
-   UserNotFound;
- };
 type GetMyChatHeadersError = variant {UserNotFound;};
 type GetMyChatError = 
  variant {
@@ -113,6 +102,7 @@ type CreateChatError =
 type ChatHeader = 
  record {
    id: nat;
+   key: text;
    lastMessage: opt Message;
    otherUsers: vec principal;
  };
@@ -123,11 +113,10 @@ type AddToChatError =
    UserNotFound;
  };
 service : {
-  addToChat: (nat, principal, text) -> (Result_11);
-  createChat: (principal, text, text) -> (Result_10);
-  getMyChat: (nat) -> (Result_9) query;
-  getMyChatHeaders: () -> (Result_8) query;
-  getMyChatKey: (nat) -> (Result_7) query;
+  addToChat: (nat, principal, text) -> (Result_10);
+  createChat: (principal, text, text) -> (Result_9);
+  getMyChat: (nat) -> (Result_8) query;
+  getMyChatHeaders: () -> (Result_7) query;
   getMyProfile: () -> (Result_6) query;
   getProfile: (principal) -> (Result_5) query;
   getPublicKey: (principal) -> (Result_4) query;

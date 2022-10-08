@@ -11,7 +11,7 @@ import { BlurView } from "expo-blur";
 import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
 import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
 
-const FindBar = ({ id, principal, forAdd }) => {
+const FindBar = ({ id, chatKey, principal, forAdd }) => {
   const [profile, setProfile] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
 
@@ -30,6 +30,7 @@ const FindBar = ({ id, principal, forAdd }) => {
         <BlurView intensity={5} tint="dark" style={styles.modalTileContainer}>
           <FindBarModalTile
             id={id}
+            chatKey={chatKey}
             principal={principal}
             forAdd={forAdd}
             setModalVisible={setModalVisible}

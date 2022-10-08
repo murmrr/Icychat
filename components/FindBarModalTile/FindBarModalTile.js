@@ -17,7 +17,13 @@ import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIn
 import OpenPGP from "react-native-fast-openpgp";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const FindBarModalTile = ({ id, principal, forAdd, setModalVisible }) => {
+const FindBarModalTile = ({
+  id,
+  chatKey,
+  principal,
+  forAdd,
+  setModalVisible,
+}) => {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -38,12 +44,6 @@ const FindBarModalTile = ({ id, principal, forAdd, setModalVisible }) => {
       await (await getBackendActor()).getPublicKey(principal)
     )["ok"];
     if (forAdd) {
-      const myChatKey = (await (await getBackendActor()).getMyChatKey(id))[
-        "ok"
-      ];
-
-      const chatKey = await OpenPGP.decrypt(myChatKey, privateKey, "");
-
       const otherUserChatKey = await OpenPGP.encrypt(
         chatKey,
         otherUserPublicKey

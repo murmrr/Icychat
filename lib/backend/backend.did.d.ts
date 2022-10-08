@@ -7,6 +7,7 @@ export type AddToChatError =
   | { UserNotFound: null };
 export interface ChatHeader {
   id: bigint;
+  key: string;
   lastMessage: [] | [Message];
   otherUsers: Array<Principal>;
 }
@@ -15,7 +16,6 @@ export type CreateChatError =
   | { UserNotFound: null };
 export type GetMyChatError = { IdNotFound: null } | { UserNotFound: null };
 export type GetMyChatHeadersError = { UserNotFound: null };
-export type GetMyChatKeyError = { IdNotFound: null } | { UserNotFound: null };
 export type GetMyProfileError = { UserNotFound: null };
 export type GetProfileError = { UserNotFound: null };
 export type GetPublicKeyError = { UserNotFound: null };
@@ -41,32 +41,29 @@ export type RegisterError =
   | { AlreadyRegistered: null };
 export type Result = { ok: Profile } | { err: UpdateProfileError };
 export type Result_1 = { ok: SharedChat } | { err: SendMessageError };
-export type Result_10 = { ok: null } | { err: CreateChatError };
-export type Result_11 = { ok: null } | { err: AddToChatError };
+export type Result_10 = { ok: null } | { err: AddToChatError };
 export type Result_2 = { ok: null } | { err: RegisterError };
 export type Result_3 = { ok: Array<Principal> } | { err: GetUsersError };
 export type Result_4 = { ok: string } | { err: GetPublicKeyError };
 export type Result_5 = { ok: Profile } | { err: GetProfileError };
 export type Result_6 = { ok: Profile } | { err: GetMyProfileError };
-export type Result_7 = { ok: string } | { err: GetMyChatKeyError };
-export type Result_8 =
+export type Result_7 =
   | { ok: Array<ChatHeader> }
   | { err: GetMyChatHeadersError };
-export type Result_9 = { ok: SharedChat } | { err: GetMyChatError };
+export type Result_8 = { ok: SharedChat } | { err: GetMyChatError };
+export type Result_9 = { ok: null } | { err: CreateChatError };
 export type SendMessageError = { IdNotFound: null } | { UserNotFound: null };
 export interface SharedChat {
-  key: string;
   messages: Array<Message>;
   otherUsers: Array<Principal>;
 }
 export type Time = bigint;
 export type UpdateProfileError = { ProfileNotFound: null };
 export interface _SERVICE {
-  addToChat: ActorMethod<[bigint, Principal, string], Result_11>;
-  createChat: ActorMethod<[Principal, string, string], Result_10>;
-  getMyChat: ActorMethod<[bigint], Result_9>;
-  getMyChatHeaders: ActorMethod<[], Result_8>;
-  getMyChatKey: ActorMethod<[bigint], Result_7>;
+  addToChat: ActorMethod<[bigint, Principal, string], Result_10>;
+  createChat: ActorMethod<[Principal, string, string], Result_9>;
+  getMyChat: ActorMethod<[bigint], Result_8>;
+  getMyChatHeaders: ActorMethod<[], Result_7>;
   getMyProfile: ActorMethod<[], Result_6>;
   getProfile: ActorMethod<[Principal], Result_5>;
   getPublicKey: ActorMethod<[Principal], Result_4>;
