@@ -44,7 +44,7 @@ const FindScreen = ({ forAdd, navigation, route }) => {
   }, POLLING_INTERVAL);
 
   const renderItem = ({ item }) => (
-    <FindBar id={forAdd ? id : null} principal={item} forAdd={forAdd} />
+    <FindBar id={forAdd ? id : undefined} principal={item} forAdd={forAdd} />
   );
 
   const keyExtractor = (item) => item;

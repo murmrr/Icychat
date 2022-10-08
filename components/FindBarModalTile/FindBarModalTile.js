@@ -7,13 +7,15 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { POLLING_INTERVAL } from "../../data/constants";
+import { PGP_OPTIONS, POLLING_INTERVAL } from "../../data/constants";
 import { getBackendActor } from "../../lib/actor";
 import { scale, verticalScale } from "../../utility/scalingUtils";
 import { useInterval } from "../../utility/utils";
 import colors from "../../data/colors";
 import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
 import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
+import OpenPGP from "react-native-fast-openpgp";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const FindBarModalTile = ({ id, principal, forAdd, setModalVisible }) => {
   const [profile, setProfile] = useState(null);
@@ -30,10 +32,41 @@ const FindBarModalTile = ({ id, principal, forAdd, setModalVisible }) => {
 
   const createChat = async () => {
     setLoading(true);
+
+    const privateKey = await AsyncStorage.getItem("@privateKey");
+    const otherUserPublicKey = (
+      await (await getBackendActor()).getPublicKey(principal)
+    )["ok"];
     if (forAdd) {
-      const response = await (await getBackendActor()).addToChat(id, principal);
+      const myChatKey = (await (await getBackendActor()).getMyChatKey(id))[
+        "ok"
+      ];
+
+      const chatKey = await OpenPGP.decrypt(myChatKey, privateKey, "");
+
+      const otherUserChatKey = await OpenPGP.encrypt(
+        chatKey,
+        otherUserPublicKey
+      );
+
+      const response = await (
+        await getBackendActor()
+      ).addToChat(id, principal, otherUserChatKey);
     } else {
-      const response = await (await getBackendActor()).createChat(principal);
+      const chatKey = (await OpenPGP.generate(PGP_OPTIONS))["privateKey"];
+
+      const myChatKey = await OpenPGP.encrypt(
+        chatKey,
+        await OpenPGP.convertPrivateKeyToPublicKey(privateKey)
+      );
+      const otherUserChatKey = await OpenPGP.encrypt(
+        chatKey,
+        otherUserPublicKey
+      );
+
+      const response = await (
+        await getBackendActor()
+      ).createChat(principal, myChatKey, otherUserChatKey);
     }
     setLoading(false);
     setModalVisible(false);

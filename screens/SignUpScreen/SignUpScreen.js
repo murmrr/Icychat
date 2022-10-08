@@ -39,10 +39,9 @@ const SignUpScreen = ({ setIsSignedIn }) => {
 
       const keys = await OpenPGP.generate(PGP_OPTIONS);
       const privateKey = keys["privateKey"];
-      await AsyncStorage.setItem(
-        "@privateKey", privateKey);
+      await AsyncStorage.setItem("@privateKey", privateKey);
       const publicKey = keys["publicKey"];
-      
+
       const profileUpdate = {
         username: username,
       };
