@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { moderateScale, scale } from "../../utility/scalingUtils";
-import { convertTime, useInterval } from "../../utility/utils";
+import { convertTime, decryptAsymmetric, decryptSymmetric, useInterval } from "../../utility/utils";
 import { POLLING_INTERVAL } from "../../data/constants";
 import { getBackendActor } from "../../lib/actor";
 import { useNavigation } from "@react-navigation/native";
@@ -22,10 +22,10 @@ const ChatBar = ({ chatHeader }) => {
   useEffect(async () => {
     const myChatKey = chatHeader["key"];
     const privateKey = await AsyncStorage.getItem("@privateKey");
-    const chatKey = await OpenPGP.decrypt(myChatKey, privateKey, "");
+    const chatKey = await decryptAsymmetric(myChatKey, privateKey);
 
     if (chatHeader["lastMessage"].length > 0) {
-      const decryptedMessage = await OpenPGP.decryptSymmetric(
+      const decryptedMessage = await decryptSymmetric(
         chatHeader["lastMessage"][0]["content"]["message"],
         chatKey
       );
@@ -40,7 +40,7 @@ const ChatBar = ({ chatHeader }) => {
       onPress={async () => {
         const myChatKey = chatHeader["key"];
         const privateKey = await AsyncStorage.getItem("@privateKey");
-        const chatKey = await OpenPGP.decrypt(myChatKey, privateKey, "");
+        const chatKey = await decryptAsymmetric(myChatKey, privateKey);
 
         navigation.navigate("OneOnOneChat", {
           id: chatHeader["id"],

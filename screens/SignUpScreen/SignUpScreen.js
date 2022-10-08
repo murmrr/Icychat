@@ -20,7 +20,7 @@ import * as Haptics from "expo-haptics";
 import WavyBackground from "react-native-wavy-background";
 import CustomActivityIndicator from "../../components/CustomActivityIndicator/CustomActivityIndicator";
 import OpenPGP from "react-native-fast-openpgp";
-import { PGP_OPTIONS } from "../../data/constants";
+import { generateAsymmetricKeys } from "../../utility/utils";
 
 const SignUpScreen = ({ setIsSignedIn }) => {
   const [username, setUsername] = useState("");
@@ -37,7 +37,7 @@ const SignUpScreen = ({ setIsSignedIn }) => {
         JSON.stringify(identity.toJSON())
       );
 
-      const keys = await OpenPGP.generate(PGP_OPTIONS);
+      const keys = await generateAsymmetricKeys();
       const privateKey = keys["privateKey"];
       await AsyncStorage.setItem("@privateKey", privateKey);
       const publicKey = keys["publicKey"];

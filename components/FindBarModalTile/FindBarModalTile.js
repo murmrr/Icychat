@@ -10,7 +10,7 @@ import {
 import { PGP_OPTIONS, POLLING_INTERVAL } from "../../data/constants";
 import { getBackendActor } from "../../lib/actor";
 import { scale, verticalScale } from "../../utility/scalingUtils";
-import { useInterval } from "../../utility/utils";
+import { encryptAsymmetric, generateSymmetricKey, getMyPublicKey, useInterval } from "../../utility/utils";
 import colors from "../../data/colors";
 import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
 import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
@@ -39,30 +39,21 @@ const FindBarModalTile = ({
   const createChat = async () => {
     setLoading(true);
 
-    const privateKey = await AsyncStorage.getItem("@privateKey");
     const otherUserPublicKey = (
       await (await getBackendActor()).getPublicKey(principal)
     )["ok"];
     if (forAdd) {
-      const otherUserChatKey = await OpenPGP.encrypt(
-        chatKey,
-        otherUserPublicKey
-      );
+      const otherUserChatKey = await encryptAsymmetric(chatKey, otherUserPublicKey);
 
       const response = await (
         await getBackendActor()
       ).addToChat(id, principal, otherUserChatKey);
     } else {
-      const chatKey = (await OpenPGP.generate(PGP_OPTIONS))["privateKey"];
+      const chatKey = await generateSymmetricKey();
 
-      const myChatKey = await OpenPGP.encrypt(
-        chatKey,
-        await OpenPGP.convertPrivateKeyToPublicKey(privateKey)
-      );
-      const otherUserChatKey = await OpenPGP.encrypt(
-        chatKey,
-        otherUserPublicKey
-      );
+      const myChatKey = await encryptAsymmetric(chatKey, await getMyPublicKey());
+
+      const otherUserChatKey = await encryptAsymmetric(chatKey, otherUserPublicKey);
 
       const response = await (
         await getBackendActor()

@@ -7,6 +7,7 @@ import { scale, verticalScale } from "../../utility/scalingUtils";
 import Icon from "react-native-vector-icons/FontAwesome";
 import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
 import OpenPGP from "react-native-fast-openpgp";
+import { encryptSymmetric } from "../../utility/utils";
 
 const ChatInput = ({ id, chatKey, setData }) => {
   const [message, setMessage] = useState("");
@@ -15,7 +16,7 @@ const ChatInput = ({ id, chatKey, setData }) => {
 
   const sendMessage = async () => {
     setSending(true);
-    const encryptedMessage = await OpenPGP.encryptSymmetric(message, chatKey);
+    const encryptedMessage = await encryptSymmetric(message, chatKey);
     const messageContent = {
       message: encryptedMessage,
     };

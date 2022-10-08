@@ -3,7 +3,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { POLLING_INTERVAL } from "../../data/constants";
 import { getBackendActor } from "../../lib/actor";
 import { scale } from "../../utility/scalingUtils";
-import { convertTime, useInterval } from "../../utility/utils";
+import { convertTime, decryptSymmetric, useInterval } from "../../utility/utils";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ed25519KeyIdentity } from "@dfinity/identity";
 import colors from "../../data/colors";
@@ -33,7 +33,7 @@ const Message = ({ message, chatKey }) => {
   }, []);
 
   useEffect(async () => {
-    const decryptedMessage = await OpenPGP.decryptSymmetric(
+    const decryptedMessage = await decryptSymmetric(
       message["content"]["message"],
       chatKey
     );
