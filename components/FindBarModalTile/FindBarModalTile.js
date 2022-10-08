@@ -10,12 +10,18 @@ import {
 import { PGP_OPTIONS, POLLING_INTERVAL } from "../../data/constants";
 import { getBackendActor } from "../../lib/actor";
 import { scale, verticalScale } from "../../utility/scalingUtils";
-import { encryptAsymmetric, generateSymmetricKey, getMyPublicKey, useInterval } from "../../utility/utils";
+import {
+  encryptAsymmetric,
+  generateSymmetricKey,
+  getMyPublicKey,
+  useInterval,
+} from "../../utility/utils";
 import colors from "../../data/colors";
 import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
 import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
 import OpenPGP from "react-native-fast-openpgp";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { addToCache, getFromCache, PROFILE_CACHE } from "../../utility/caches";
 
 const FindBarModalTile = ({
   id,
@@ -28,11 +34,13 @@ const FindBarModalTile = ({
   const [loading, setLoading] = useState(false);
 
   useInterval(async () => {
-    const response = await (await getBackendActor()).getProfile(principal);
-    if (response["ok"]) {
+    let temp = await getFromCache(PROFILE_CACHE, principal);
+    if (temp) {
+      setProfile(temp);
+    } else {
+      const response = await (await getBackendActor()).getProfile(principal);
       setProfile(response["ok"]);
-    } else if (response["#err"]) {
-      setProfile(null);
+      await addToCache(PROFILE_CACHE, principal, response["ok"]);
     }
   }, POLLING_INTERVAL);
 
@@ -43,7 +51,10 @@ const FindBarModalTile = ({
       await (await getBackendActor()).getPublicKey(principal)
     )["ok"];
     if (forAdd) {
-      const otherUserChatKey = await encryptAsymmetric(chatKey, otherUserPublicKey);
+      const otherUserChatKey = await encryptAsymmetric(
+        chatKey,
+        otherUserPublicKey
+      );
 
       const response = await (
         await getBackendActor()
@@ -51,9 +62,15 @@ const FindBarModalTile = ({
     } else {
       const chatKey = await generateSymmetricKey();
 
-      const myChatKey = await encryptAsymmetric(chatKey, await getMyPublicKey());
+      const myChatKey = await encryptAsymmetric(
+        chatKey,
+        await getMyPublicKey()
+      );
 
-      const otherUserChatKey = await encryptAsymmetric(chatKey, otherUserPublicKey);
+      const otherUserChatKey = await encryptAsymmetric(
+        chatKey,
+        otherUserPublicKey
+      );
 
       const response = await (
         await getBackendActor()

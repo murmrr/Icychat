@@ -3,13 +3,18 @@ import { StyleSheet, Text, View } from "react-native";
 import { POLLING_INTERVAL } from "../../data/constants";
 import { getBackendActor } from "../../lib/actor";
 import { scale } from "../../utility/scalingUtils";
-import { convertTime, decryptSymmetric, useInterval } from "../../utility/utils";
+import {
+  convertTime,
+  decryptSymmetric,
+  useInterval,
+} from "../../utility/utils";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ed25519KeyIdentity } from "@dfinity/identity";
 import colors from "../../data/colors";
 import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
 import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
 import OpenPGP from "react-native-fast-openpgp";
+import { addToCache, getFromCache, PROFILE_CACHE } from "../../utility/caches";
 
 const Message = ({ message, chatKey }) => {
   const [profile, setProfile] = useState(null);
@@ -41,13 +46,15 @@ const Message = ({ message, chatKey }) => {
   }, []);
 
   useInterval(async () => {
-    const response = await (
-      await getBackendActor()
-    ).getProfile(message["sender"]);
-    if (response["ok"]) {
+    let temp = await getFromCache(PROFILE_CACHE, message["sender"]);
+    if (temp) {
+      setProfile(temp);
+    } else {
+      const response = await (
+        await getBackendActor()
+      ).getProfile(message["sender"]);
       setProfile(response["ok"]);
-    } else if (response["#err"]) {
-      setProfile(null);
+      await addToCache(PROFILE_CACHE, message["sender"], response["ok"]);
     }
   }, POLLING_INTERVAL);
 

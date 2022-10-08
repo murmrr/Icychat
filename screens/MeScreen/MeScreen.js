@@ -24,11 +24,7 @@ const MeScreen = ({ setIsSignedIn }) => {
 
   useInterval(async () => {
     const response = await (await getBackendActor()).getMyProfile();
-    if (response["ok"]) {
-      setProfile(response["ok"]);
-    } else if (response["#err"]) {
-      setProfile(null);
-    }
+    setProfile(response["ok"]);
   }, POLLING_INTERVAL);
 
   const handleDelete = async () => {

@@ -22,11 +22,7 @@ const ChatInput = ({ id, chatKey, setData }) => {
     };
     await (await getBackendActor()).sendMessage(id, messageContent);
     const response = await (await getBackendActor()).getMyChat(id);
-    if (response["ok"]) {
-      setData(response["ok"]);
-    } else if (response["#err"]) {
-      setData(null);
-    }
+    setData(response["ok"]);
     setSending(false);
     inputRef.current.clear();
   };

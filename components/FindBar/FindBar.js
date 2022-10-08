@@ -10,17 +10,20 @@ import colors from "../../data/colors";
 import { BlurView } from "expo-blur";
 import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
 import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
+import { addToCache, getFromCache, PROFILE_CACHE } from "../../utility/caches";
 
 const FindBar = ({ id, chatKey, principal, forAdd }) => {
   const [profile, setProfile] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
 
   useInterval(async () => {
-    const response = await (await getBackendActor()).getProfile(principal);
-    if (response["ok"]) {
+    let temp = await getFromCache(PROFILE_CACHE, principal);
+    if (temp) {
+      setProfile(temp);
+    } else {
+      const response = await (await getBackendActor()).getProfile(principal);
       setProfile(response["ok"]);
-    } else if (response["#err"]) {
-      setProfile(null);
+      await addToCache(PROFILE_CACHE, principal, response["ok"]);
     }
   }, POLLING_INTERVAL);
 

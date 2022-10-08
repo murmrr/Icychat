@@ -12,11 +12,7 @@ const ChatBarList = () => {
 
   useInterval(async () => {
     const response = await (await getBackendActor()).getMyChatHeaders();
-    if (response["ok"]) {
-      setData(response["ok"]);
-    } else if (response["#err"]) {
-      setData(null);
-    }
+    setData(response["ok"]);
   }, POLLING_INTERVAL);
 
   const renderItem = ({ item }) => <ChatBar chatHeader={item} />;

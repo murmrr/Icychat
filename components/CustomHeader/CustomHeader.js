@@ -7,10 +7,10 @@ import Icon from "react-native-vector-icons/FontAwesome";
 const CustomHeader = ({ principals }) => {
   return (
     <View style={styles.container}>
-      <Icon name="lock" size={25} color={colors.WHITE} style={styles.icon}/>
-    <ProfilePictureStack principals={principals} style={styles.avatar} />
-  </View>
-  )
+      <Icon name="lock" size={25} color={colors.WHITE} style={styles.icon} />
+      <ProfilePictureStack principals={principals} style={styles.avatar} />
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({

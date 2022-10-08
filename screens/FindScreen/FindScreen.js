@@ -34,13 +34,9 @@ const FindScreen = ({ forAdd, navigation, route }) => {
 
   useInterval(async () => {
     const response = await (await getBackendActor()).getUsers(query);
-    if (response["ok"]) {
-      setAllUsers(response["ok"]);
-      if (searchBarLoading) {
-        setSearchBarLoading(false);
-      }
-    } else if (response["#err"]) {
-      setAllUsers(null);
+    setAllUsers(response["ok"]);
+    if (searchBarLoading) {
+      setSearchBarLoading(false);
     }
   }, POLLING_INTERVAL);
 

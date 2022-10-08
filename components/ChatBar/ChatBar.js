@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { moderateScale, scale } from "../../utility/scalingUtils";
-import { convertTime, decryptAsymmetric, decryptSymmetric, useInterval } from "../../utility/utils";
+import {
+  convertTime,
+  decryptAsymmetric,
+  decryptSymmetric,
+  useInterval,
+} from "../../utility/utils";
 import { POLLING_INTERVAL } from "../../data/constants";
 import { getBackendActor } from "../../lib/actor";
 import { useNavigation } from "@react-navigation/native";
