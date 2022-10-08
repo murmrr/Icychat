@@ -47,6 +47,7 @@
     "expo-web-browser": "~10.1.0",
     "javascript-time-ago": "^2.3.10",
     "jsbi": "^4.1.0",
+    "lz-string": "^1.4.4",
     "moment": "^2.29.4",
     "react": "17.0.1",
     "react-dom": "17.0.1",

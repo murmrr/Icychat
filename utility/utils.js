@@ -4,6 +4,7 @@ import { NativeModules, Platform } from 'react-native'
 import Aes from 'react-native-aes-crypto'
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import OpenPGP from "react-native-fast-openpgp";
+var lz = require('lz-string');
 
 export const useInterval = (callback, delay) => {
   const savedCallback = useRef();
@@ -35,7 +36,7 @@ export const convertTime = (bigTime) => {
 export const generateAsymmetricKeys = async () => {
   return await OpenPGP.generate({
     keyOptions: {
-      rsaBits: 4096,
+      rsaBits: 6144,
     },
   });
 }
@@ -56,14 +57,13 @@ export const decryptAsymmetric = async (input, key) => {
 export const generateSymmetricKey = async () => {
   const t = new Date();
 
-  return await Aes.pbkdf2("", t.toISOString(), 5000, 256);
+  return await Aes.pbkdf2("", t.toISOString(), 1024, 256);
 }
 
 export const encryptSymmetric = async (input, key) => {
-  const iv = await Aes.randomKey(16);
+  const iv = await Aes.randomKey(256);
   
   const cipherText = await Aes.encrypt(input, key, iv, "aes-256-cbc");
-
   const output = {
     iv: iv,
     cipherText: cipherText

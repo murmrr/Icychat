@@ -22,7 +22,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import CustomActivityIndicator from "../../components/CustomActivityIndicator/CustomActivityIndicator";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const OneOnOneChatScreen = ({ navigation, route }) => {
+const ConversationScreen = ({ navigation, route }) => {
   const { id, chatKey, principals } = route.params;
   const [data, setData] = useState(null);
 
@@ -136,4 +136,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default OneOnOneChatScreen;
+export default ConversationScreen;

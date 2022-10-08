@@ -3,7 +3,7 @@ import { useLayoutEffect } from "react";
 import colors from "../../data/colors";
 import ChatsScreen from "../../screens/ChatsScreen/ChatsScreen";
 import FindScreen from "../../screens/FindScreen/FindScreen";
-import OneOnOneChatScreen from "../../screens/OneOnOneChatScreen/OneOnOneChatScreen";
+import OneOnOneChatScreen from "../../screens/ConversationScreen/ConversationScreen";
 
 const Stack = createStackNavigator();
 
