@@ -17,14 +17,6 @@ const Message = ({ message, chatKey }) => {
   const [decryptedMessage, setDecryptedMessage] = useState("");
 
   useEffect(async () => {
-    const decryptedMessage = await OpenPGP.decryptSymmetric(
-      message["content"]["message"],
-      chatKey
-    );
-    setDecryptedMessage(decryptedMessage);
-  }, []);
-
-  useEffect(async () => {
     try {
       let value = await AsyncStorage.getItem("@identity");
       if (value != null) {
@@ -38,6 +30,14 @@ const Message = ({ message, chatKey }) => {
         }
       }
     } catch (error) {}
+  }, []);
+
+  useEffect(async () => {
+    const decryptedMessage = await OpenPGP.decryptSymmetric(
+      message["content"]["message"],
+      chatKey
+    );
+    setDecryptedMessage(decryptedMessage);
   }, []);
 
   useInterval(async () => {

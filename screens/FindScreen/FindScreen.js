@@ -67,7 +67,7 @@ const FindScreen = ({ forAdd, navigation, route }) => {
               setSearchBarLoading={setSearchBarLoading}
             />
           }
-          data={query == "" ? [] : allUsers}
+          data={allUsers}
           renderItem={renderItem}
           keyExtractor={keyExtractor}
           ItemSeparatorComponent={ItemDivider}
