@@ -30,4 +30,4 @@ export const addToCache = async (cacheType, key, value) => {
 export const clearAllCaches = async () => {
   await PROFILE_CACHE.clearAll();
   await MESSAGE_CACHE.clearAll();
-}
+};

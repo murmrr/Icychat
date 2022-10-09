@@ -31,16 +31,23 @@ const ChatBar = ({ chatHeader }) => {
     const chatKey = await decryptAsymmetric(myChatKey, privateKey);
 
     if (chatHeader["lastMessage"].length > 0) {
-      let temp = await getFromCache(MESSAGE_CACHE, chatHeader["lastMessage"][0]["content"]["message"]);
+      let temp = await getFromCache(
+        MESSAGE_CACHE,
+        chatHeader["lastMessage"][0]["content"]["message"]
+      );
       if (temp) {
-        setDecryptedMessage(temp)
+        setDecryptedMessage(temp);
       } else {
         const decryptedMessage = await decryptSymmetric(
           chatHeader["lastMessage"][0]["content"]["message"],
           chatKey
         );
         setDecryptedMessage(decryptedMessage);
-        await addToCache(MESSAGE_CACHE, chatHeader["lastMessage"][0]["content"]["message"], decryptedMessage)
+        await addToCache(
+          MESSAGE_CACHE,
+          chatHeader["lastMessage"][0]["content"]["message"],
+          decryptedMessage
+        );
       }
     } else {
       setDecryptedMessage(" ");

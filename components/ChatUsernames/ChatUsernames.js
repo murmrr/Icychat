@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Text } from "react-native";
 import { POLLING_INTERVAL } from "../../data/constants";
 import { getBackendActor } from "../../lib/actor";
@@ -21,7 +21,41 @@ const ChatUsernamesSingle = ({ principal, style }) => {
   }, POLLING_INTERVAL);
 
   return otherUserProfile ? (
-    <Text style={style}>{otherUserProfile["username"]}</Text>
+    <Text numberOfLines={1} style={style}>
+      {otherUserProfile["username"]}
+    </Text>
+  ) : (
+    <CustomActivityIndicator />
+  );
+};
+
+const ChatUsernamesMultiple = ({ principals, style }) => {
+  const [otherUserProfiles, setOtherUserProfiles] = useState(new Map());
+
+  useInterval(async () => {
+    principals.forEach(async (principal) => {
+      let temp = await getFromCache(PROFILE_CACHE, principal);
+      if (temp) {
+        setOtherUserProfiles(otherUserProfiles.set(principal.toText(), temp));
+      } else {
+        const response = await (await getBackendActor()).getProfile(principal);
+        setOtherUserProfiles(
+          otherUserProfiles.set(principal.toText(), response["ok"])
+        );
+        await addToCache(PROFILE_CACHE, principal, response["ok"]);
+      }
+    });
+  }, POLLING_INTERVAL);
+
+  return otherUserProfiles.size == principals.length ? (
+    <Text numberOfLines={1} style={style}>
+      {[...otherUserProfiles.values()].map((profile, index) => {
+        return (
+          profile["username"] +
+          (index == otherUserProfiles.size - 1 ? "" : ", ")
+        );
+      })}
+    </Text>
   ) : (
     <CustomActivityIndicator />
   );
@@ -31,7 +65,7 @@ const ChatUsernames = ({ principals, style }) => {
   return principals.length == 1 ? (
     <ChatUsernamesSingle principal={principals[0]} style={style} />
   ) : (
-    <Text style={style}>{principals.length} People</Text>
+    <ChatUsernamesMultiple principals={principals} style={style} />
   );
 };
 
