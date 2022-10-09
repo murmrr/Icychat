@@ -18,6 +18,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import CustomProfilePicture from "../../components/CustomProfilePicture/CustomProfilePicture";
 import Icon from "react-native-vector-icons/FontAwesome";
 import CustomActivityIndicator from "../../components/CustomActivityIndicator/CustomActivityIndicator";
+import { clearAllCaches } from "../../utility/caches";
 
 const MeScreen = ({ setIsSignedIn }) => {
   const [profile, setProfile] = useState(null);
@@ -40,6 +41,7 @@ const MeScreen = ({ setIsSignedIn }) => {
           text: "Yes",
           onPress: async () => {
             try {
+              await clearAllCaches();
               await AsyncStorage.removeItem("@identity");
               await AsyncStorage.removeItem("@privateKey");
               setIsSignedIn(false);

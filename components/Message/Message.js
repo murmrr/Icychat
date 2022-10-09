@@ -14,7 +14,7 @@ import colors from "../../data/colors";
 import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
 import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
 import OpenPGP from "react-native-fast-openpgp";
-import { addToCache, getFromCache, PROFILE_CACHE } from "../../utility/caches";
+import { addToCache, getFromCache, MESSAGE_CACHE, PROFILE_CACHE } from "../../utility/caches";
 
 const Message = ({ message, chatKey }) => {
   const [profile, setProfile] = useState(null);
@@ -30,6 +30,7 @@ const Message = ({ message, chatKey }) => {
         ).getPrincipal();
         if (principal.toString() === message["sender"].toString()) {
           setIsMe(true);
+          setProfile(true)
         } else {
           setIsMe(false);
         }
@@ -38,11 +39,17 @@ const Message = ({ message, chatKey }) => {
   }, []);
 
   useEffect(async () => {
-    const decryptedMessage = await decryptSymmetric(
-      message["content"]["message"],
-      chatKey
-    );
-    setDecryptedMessage(decryptedMessage);
+    let temp = await getFromCache(MESSAGE_CACHE, message["content"]["message"]);
+    if (temp) {
+      setDecryptedMessage(temp);
+    } else {
+      const decryptedMessage = await decryptSymmetric(
+        message["content"]["message"],
+        chatKey
+      );
+      setDecryptedMessage(decryptedMessage);
+      await addToCache(MESSAGE_CACHE, message["content"]["message"], decryptedMessage);
+    }
   }, []);
 
   useInterval(async () => {

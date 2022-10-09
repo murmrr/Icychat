@@ -18,6 +18,7 @@ import ChatUsernames from "../ChatUsernames/ChatUsernames";
 import OpenPGP from "react-native-fast-openpgp";
 import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { addToCache, getFromCache, MESSAGE_CACHE } from "../../utility/caches";
 
 const ChatBar = ({ chatHeader }) => {
   const [decryptedMessage, setDecryptedMessage] = useState(null);
@@ -30,11 +31,17 @@ const ChatBar = ({ chatHeader }) => {
     const chatKey = await decryptAsymmetric(myChatKey, privateKey);
 
     if (chatHeader["lastMessage"].length > 0) {
-      const decryptedMessage = await decryptSymmetric(
-        chatHeader["lastMessage"][0]["content"]["message"],
-        chatKey
-      );
-      setDecryptedMessage(decryptedMessage);
+      let temp = await getFromCache(MESSAGE_CACHE, chatHeader["lastMessage"][0]["content"]["message"]);
+      if (temp) {
+        setDecryptedMessage(temp)
+      } else {
+        const decryptedMessage = await decryptSymmetric(
+          chatHeader["lastMessage"][0]["content"]["message"],
+          chatKey
+        );
+        setDecryptedMessage(decryptedMessage);
+        await addToCache(MESSAGE_CACHE, chatHeader["lastMessage"][0]["content"]["message"], decryptedMessage)
+      }
     } else {
       setDecryptedMessage(" ");
     }
