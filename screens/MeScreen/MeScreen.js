@@ -45,14 +45,16 @@ const MeScreen = ({ setIsSignedIn }) => {
         if (newUsername != profile["username"]) {
           setEditingLoading(true);
           const profileUpdate = {
-            username: newUsername
-          }
-          const response = (await getBackendActor()).updateProfile(profileUpdate);
+            username: newUsername,
+          };
+          const response = (await getBackendActor()).updateProfile(
+            profileUpdate
+          );
 
           const newProfile = profile;
           newProfile["username"] = newUsername;
           setProfile(newProfile);
-          await new Promise(r => setTimeout(r, 1.5 * POLLING_INTERVAL));
+          await new Promise((r) => setTimeout(r, 1.5 * POLLING_INTERVAL));
           Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
           setEditingLoading(false);
         }
@@ -73,8 +75,8 @@ const MeScreen = ({ setIsSignedIn }) => {
         }, 100);
       }
     }
-    setEditing(!editing)
-  }
+    setEditing(!editing);
+  };
 
   const handleDelete = async () => {
     Alert.alert(
@@ -120,15 +122,20 @@ const MeScreen = ({ setIsSignedIn }) => {
             style={styles.usernameInput(editing)}
             editable={editing && !editingLoading}
             autoCapitalize="none"
-          >
-          </TextInput>
+          ></TextInput>
           <Text style={styles.principalInput}>
             {profile["userPrincipal"].toText()}
           </Text>
         </View>
         {
           <TouchableOpacity onPress={handleEdit} style={styles.editButton}>
-            {editingLoading ? <CustomActivityIndicator /> : <Text style={styles.editButtonText}>{editing ? "Done" : "Edit Profile"}</Text>}
+            {editingLoading ? (
+              <CustomActivityIndicator />
+            ) : (
+              <Text style={styles.editButtonText}>
+                {editing ? "Done" : "Edit Profile"}
+              </Text>
+            )}
           </TouchableOpacity>
         }
       </View>
@@ -178,7 +185,7 @@ const styles = StyleSheet.create({
     borderColor: editable ? colors.GRAY : colors.DARK_GRAY,
     borderRadius: 15,
     width: scale(225),
-    alignSelf: "center"
+    alignSelf: "center",
   }),
   principalInput: {
     textAlign: "center",

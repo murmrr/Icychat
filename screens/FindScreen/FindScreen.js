@@ -1,5 +1,5 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { FlatList, Modal, StyleSheet, Text, View } from "react-native";
 import AddToChatButton from "../../components/AddToChatButton/AddToChatButton";
 import CustomActivityIndicator from "../../components/CustomActivityIndicator/CustomActivityIndicator";
 import CustomBackButton from "../../components/CustomBackButton/CustomBackButton";
@@ -11,6 +11,11 @@ import colors from "../../data/colors";
 import { POLLING_INTERVAL } from "../../data/constants";
 import { getBackendActor } from "../../lib/actor";
 import { useInterval } from "../../utility/utils";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import Icon from "react-native-vector-icons/FontAwesome";
+import { BlurView } from "expo-blur";
+import QRCodeModalTile from "../../components/QRCodeModalTile/QRCodeModalTile";
+
 
 const FindScreen = ({ forAdd, navigation, route }) => {
   const id = forAdd ? route.params.id : null;
@@ -19,12 +24,43 @@ const FindScreen = ({ forAdd, navigation, route }) => {
   const [allUsers, setAllUsers] = useState(null);
   const [query, setQuery] = useState("");
   const [searchBarLoading, setSearchBarLoading] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   useLayoutEffect(() => {
     if (forAdd) {
       navigation.setOptions({
         headerTitle: "Add",
         headerLeft: (props) => <CustomBackButton navigation={navigation} />,
+        headerStyle: {
+          backgroundColor: colors.BLUE,
+        },
+      });
+    } else {
+      navigation.setOptions({
+        headerLeft: (props) => (
+          <TouchableOpacity
+            onPress={() => setModalVisible(true)}
+            style={{
+              paddingLeft: 20,
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <Icon name="camera" size={20} color={colors.WHITE} />
+          </TouchableOpacity>
+        ),
+        headerRight: (props) => (
+          <TouchableOpacity
+            onPress={() => setModalVisible(true)}
+            style={{
+              paddingRight: 20,
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <Icon name="qrcode" size={25} color={colors.WHITE} />
+          </TouchableOpacity>
+        ),
         headerStyle: {
           backgroundColor: colors.BLUE,
         },
@@ -52,32 +88,45 @@ const FindScreen = ({ forAdd, navigation, route }) => {
   const keyExtractor = (item) => item;
 
   return (
-    <View style={styles.container(query == "")}>
-      {allUsers ? (
-        <FlatList
-          ListHeaderComponent={
-            <FindSearchBar
-              query={query}
-              setQuery={setQuery}
-              searchBarLoading={searchBarLoading}
-              setSearchBarLoading={setSearchBarLoading}
-            />
-          }
-          data={allUsers}
-          renderItem={renderItem}
-          keyExtractor={keyExtractor}
-          ItemSeparatorComponent={ItemDivider}
-        />
-      ) : (
-        <View style={styles.loadingContainer}>
-          <CustomActivityIndicator />
-        </View>
-      )}
-    </View>
+    <>
+      <Modal animationType="fade" transparent={true} visible={modalVisible}>
+        <BlurView intensity={5} tint="dark" style={styles.modalTileContainer}>
+          <QRCodeModalTile setModalVisible={setModalVisible} />
+        </BlurView>
+      </Modal>
+      <View style={styles.container(query == "")}>
+        {allUsers ? (
+          <FlatList
+            ListHeaderComponent={
+              <FindSearchBar
+                query={query}
+                setQuery={setQuery}
+                searchBarLoading={searchBarLoading}
+                setSearchBarLoading={setSearchBarLoading}
+              />
+            }
+            data={allUsers}
+            renderItem={renderItem}
+            keyExtractor={keyExtractor}
+            ItemSeparatorComponent={ItemDivider}
+          />
+        ) : (
+          <View style={styles.loadingContainer}>
+            <CustomActivityIndicator />
+          </View>
+        )}
+      </View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
+  modalTileContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
   container: (isEmpty) => ({
     height: "100%",
     backgroundColor: colors.DARK_PRIMARY,
