@@ -22,6 +22,7 @@ import { clearAllCaches } from "../../utility/caches";
 
 const MeScreen = ({ setIsSignedIn }) => {
   const [profile, setProfile] = useState(null);
+  const [editing, setEditing] = useState(false);
 
   useInterval(async () => {
     const response = await (await getBackendActor()).getMyProfile();
@@ -52,53 +53,41 @@ const MeScreen = ({ setIsSignedIn }) => {
     );
   };
 
-  return (
-    <KeyboardAvoidingView
-      style={{ flex: 1, flexDirection: "column", justifyContent: "center" }}
-      behavior="padding"
-      enabled
-      keyboardVerticalOffset={100}
+  return profile ? (
+    <ScrollView
+      style={{ backgroundColor: colors.DARK_PRIMARY }}
+      contentContainerStyle={styles.container}
     >
-      {profile ? (
-        <ScrollView
-          style={{ backgroundColor: colors.DARK_PRIMARY }}
-          contentContainerStyle={styles.container}
-        >
-          <View style={styles.profileContainer}>
-            <View style={styles.avatarContainer}>
-              <CustomProfilePicture
-                principal={profile["userPrincipal"]}
-                style={styles.avatar}
-              />
-            </View>
-            <View style={styles.textContainer}>
-              <InputWrapper label="Principal">
-                <TextInput
-                  value={profile["userPrincipal"].toText()}
-                  editable={false}
-                  style={styles.principalInput}
-                />
-              </InputWrapper>
-              <InputWrapper label="Username">
-                <TextInput
-                  value={profile["username"]}
-                  editable={false}
-                  style={styles.usernameInput}
-                />
-              </InputWrapper>
-            </View>
-          </View>
-          <TouchableOpacity onPress={handleDelete} style={styles.button}>
-            <Text style={styles.buttonText}>Burn</Text>
-            <Icon name="fire" size={14} color={colors.WHITE} />
-          </TouchableOpacity>
-        </ScrollView>
-      ) : (
-        <View style={styles.loadingContainer}>
-          <CustomActivityIndicator />
+      <View style={styles.profileContainer}>
+        <View style={styles.avatarContainer}>
+          <CustomProfilePicture
+            principal={profile["userPrincipal"]}
+            style={styles.avatar}
+          />
         </View>
-      )}
-    </KeyboardAvoidingView>
+        <View style={styles.textContainer}>
+          <Text style={styles.usernameInput}>{profile["username"]}</Text>
+          <Text style={styles.principalInput}>
+            {profile["userPrincipal"].toText()}
+          </Text>
+        </View>
+        {
+          /*
+          <TouchableOpacity onPress={() => {setEditing(!editing)}} style={styles.editButton}>
+            <Text style={styles.editButtonText}>{editing ? "Done" : "Edit Profile"}</Text>
+          </TouchableOpacity>
+          */
+        }
+      </View>
+      <TouchableOpacity onPress={handleDelete} style={styles.button}>
+        <Text style={styles.buttonText}>Burn</Text>
+        <Icon name="fire" size={14} color={colors.WHITE} />
+      </TouchableOpacity>
+    </ScrollView>
+  ) : (
+    <View style={styles.loadingContainer}>
+      <CustomActivityIndicator />
+    </View>
   );
 };
 
@@ -107,10 +96,11 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     alignItems: "center",
-    justifyContent: "center",
+    justifyContent: "space-between",
     backgroundColor: colors.DARK_PRIMARY,
   },
   profileContainer: {
+    marginTop: verticalScale(100),
     alignItems: "center",
     justifyContent: "center",
   },
@@ -125,26 +115,36 @@ const styles = StyleSheet.create({
   textContainer: {
     alignSelf: "center",
   },
-  principalInput: {
-    height: "100%",
-    width: "90%",
-    color: colors.WHITE,
-    fontSize: 6.5,
-    fontFamily: "Poppins-Regular",
-    paddingLeft: 31,
-    paddingRight: 12,
-  },
   usernameInput: {
-    height: "100%",
-    width: "90%",
+    textAlign: "center",
     color: colors.WHITE,
-    fontSize: 18,
+    fontSize: 24,
+    fontFamily: "Poppins-SemiBold",
+    marginTop: verticalScale(6),
+  },
+  principalInput: {
+    textAlign: "center",
+    color: colors.GRAY,
+    fontSize: 9,
     fontFamily: "Poppins-Regular",
-    paddingLeft: 31,
-    paddingRight: 12,
+    marginTop: verticalScale(6),
+  },
+  editButton: {
+    marginTop: verticalScale(25),
+    backgroundColor: colors.DARK_PURPLE,
+    width: scale(135),
+    height: scale(38),
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 15,
+  },
+  editButtonText: {
+    color: colors.WHITE,
+    fontFamily: "Poppins-Medium",
+    fontSize: scale(13),
   },
   button: {
-    marginTop: 70,
+    marginBottom: verticalScale(150),
     backgroundColor: colors.RED,
     width: scale(152),
     height: scale(40),

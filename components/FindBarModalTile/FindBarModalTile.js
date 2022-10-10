@@ -91,11 +91,11 @@ const FindBarModalTile = ({
       <View style={styles.container(profile)}>
         {profile ? (
           <View style={styles.profileContainer}>
-            <Text style={styles.username}>{profile["username"]}</Text>
             <CustomProfilePicture
               principal={profile["userPrincipal"]}
               style={styles.avatar}
             />
+            <Text style={styles.username}>{profile["username"]}</Text>
             <Text style={styles.principal}>{principal.toText()}</Text>
             <TouchableOpacity onPress={createChat} style={styles.button}>
               {loading ? (
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
   container: (profile) => ({
     backgroundColor: colors.LIGHT_GRAY,
     width: scale(310),
-    height: scale(332),
+    height: scale(300),
     borderRadius: 15,
     alignItems: "center",
     justifyContent: profile ? "" : "center",
@@ -133,30 +133,30 @@ const styles = StyleSheet.create({
   profileContainer: {
     alignItems: "center",
   },
-  username: {
-    fontFamily: "Poppins-SemiBold",
-    color: "#FFFFFF",
-    fontSize: scale(16),
-    marginTop: verticalScale(41),
-  },
   avatar: {
-    height: scale(80),
+    height: scale(90),
     aspectRatio: 1,
     borderRadius: scale(80),
-    marginTop: verticalScale(8),
+    marginTop: verticalScale(15),
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.25,
     shadowRadius: 4,
   },
+  username: {
+    fontFamily: "Poppins-SemiBold",
+    color: colors.WHITE,
+    fontSize: scale(19),
+    marginTop: verticalScale(25),
+  },
   principal: {
     fontFamily: "Poppins-Regular",
-    color: "#FFFFFF",
+    color: colors.GRAY,
     fontSize: scale(8),
-    marginTop: verticalScale(30),
+    marginTop: verticalScale(9),
   },
   button: {
-    marginTop: verticalScale(40),
+    marginTop: verticalScale(30),
     width: scale(280),
     height: scale(50),
     backgroundColor: colors.LIGHT_SECONDARY,
