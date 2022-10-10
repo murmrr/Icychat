@@ -26,8 +26,10 @@ const ChatInput = ({ id, chatKey, data, setData, setPause }) => {
     };
     await (await getBackendActor()).sendMessage(id, messageContent);
 
-    const myPrincipal = Ed25519KeyIdentity.fromParsedJson(JSON.parse(await AsyncStorage.getItem("@identity"))).getPrincipal();
-    const messageId = BigInt(Math.floor(Math.random() * (2 ** 64)));
+    const myPrincipal = Ed25519KeyIdentity.fromParsedJson(
+      JSON.parse(await AsyncStorage.getItem("@identity"))
+    ).getPrincipal();
+    const messageId = BigInt(Math.floor(Math.random() * 2 ** 64));
     const time = BigInt(Date.now()) * 1000000n;
     const tempMessage = {
       content: {
@@ -36,10 +38,10 @@ const ChatInput = ({ id, chatKey, data, setData, setPause }) => {
       id: messageId,
       sender: myPrincipal,
       time: time,
-    }
+    };
     const tempData = data;
     tempData["messages"].push(tempMessage);
-    setData({...data, "messages": tempData["messages"]})
+    setData({ ...data, messages: tempData["messages"] });
 
     setSending(false);
     inputRef.current.clear();

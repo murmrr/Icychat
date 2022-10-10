@@ -109,7 +109,13 @@ const ConversationScreen = ({ navigation, route }) => {
           keyExtractor={keyExtractor}
           style={styles.messagesContainer}
         />
-        <ChatInput id={id} chatKey={chatKey} data={data} setData={setData} setPause={setPause} />
+        <ChatInput
+          id={id}
+          chatKey={chatKey}
+          data={data}
+          setData={setData}
+          setPause={setPause}
+        />
       </KeyboardAvoidingView>
     </View>
   ) : (
