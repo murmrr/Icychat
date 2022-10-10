@@ -25,12 +25,18 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const ConversationScreen = ({ navigation, route }) => {
   const { id, chatKey, principals } = route.params;
   const [data, setData] = useState(null);
+  const [pause, setPause] = useState(false);
 
   const insets = useSafeAreaInsets();
 
   useInterval(async () => {
-    const response = await (await getBackendActor()).getMyChat(id);
-    setData(response["ok"]);
+    if (pause) {
+      await new Promise((r) => setTimeout(r, 1.5 * POLLING_INTERVAL));
+      setPause(false);
+    } else {
+      const response = await (await getBackendActor()).getMyChat(id);
+      setData(response["ok"]);
+    }
   }, POLLING_INTERVAL);
 
   useLayoutEffect(() => {
@@ -103,7 +109,7 @@ const ConversationScreen = ({ navigation, route }) => {
           keyExtractor={keyExtractor}
           style={styles.messagesContainer}
         />
-        <ChatInput id={id} chatKey={chatKey} setData={setData} />
+        <ChatInput id={id} chatKey={chatKey} data={data} setData={setData} setPause={setPause} />
       </KeyboardAvoidingView>
     </View>
   ) : (

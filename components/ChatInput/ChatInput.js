@@ -8,21 +8,39 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
 import OpenPGP from "react-native-fast-openpgp";
 import { encryptSymmetric } from "../../utility/utils";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Ed25519KeyIdentity } from "@dfinity/identity";
 
-const ChatInput = ({ id, chatKey, setData }) => {
+const ChatInput = ({ id, chatKey, data, setData, setPause }) => {
   const [message, setMessage] = useState("");
   const [sending, setSending] = useState(false);
   const inputRef = useRef();
 
   const sendMessage = async () => {
     setSending(true);
+    setPause(true);
+
     const encryptedMessage = await encryptSymmetric(message, chatKey);
     const messageContent = {
       message: encryptedMessage,
     };
     await (await getBackendActor()).sendMessage(id, messageContent);
-    const response = await (await getBackendActor()).getMyChat(id);
-    setData(response["ok"]);
+
+    const myPrincipal = Ed25519KeyIdentity.fromParsedJson(JSON.parse(await AsyncStorage.getItem("@identity"))).getPrincipal();
+    const messageId = BigInt(Math.floor(Math.random() * (2 ** 64)));
+    const time = BigInt(Date.now()) * 1000000n;
+    const tempMessage = {
+      content: {
+        message: encryptedMessage,
+      },
+      id: messageId,
+      sender: myPrincipal,
+      time: time,
+    }
+    const tempData = data;
+    tempData["messages"].push(tempMessage);
+    setData({...data, "messages": tempData["messages"]})
+
     setSending(false);
     inputRef.current.clear();
   };
