@@ -43,7 +43,8 @@ const FindScreen = ({ forAdd, navigation, route }) => {
           <TouchableOpacity
             onPress={() => setQrScannerModalVisible(true)}
             style={{
-              paddingLeft: 20,
+              paddingHorizontal: 20,
+              padding: 10,
               flexDirection: "row",
               alignItems: "center",
             }}
@@ -55,7 +56,8 @@ const FindScreen = ({ forAdd, navigation, route }) => {
           <TouchableOpacity
             onPress={() => setQrModalVisible(true)}
             style={{
-              paddingRight: 20,
+              paddingHorizontal: 20,
+              padding: 10,
               flexDirection: "row",
               alignItems: "center",
             }}

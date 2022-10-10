@@ -20,7 +20,8 @@ const CustomBackButton = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingLeft: 20,
+    paddingHorizontal: 20,
+    padding: 10,
     flexDirection: "row",
     alignItems: "center",
   },
