@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   container: {
-    backgroundColor: colors.LIGHT_GRAY,
+    backgroundColor: colors.BLUE,
     width: scale(300),
     height: scale(300),
     borderRadius: 15,

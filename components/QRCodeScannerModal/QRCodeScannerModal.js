@@ -52,7 +52,7 @@ const QRScannerModal = ({ setModalVisible }) => {
             otherUserPrincipal ? undefined : handleBarCodeScanned
           }
         />
-        <Text style={styles.text}>Scanning ...</Text>
+        <Text style={styles.text}>Scan Code</Text>
         <CustomActivityIndicator />
       </View>
     </TouchableOpacity>
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   container: {
-    backgroundColor: colors.LIGHT_GRAY,
+    backgroundColor: colors.BLUE,
     width: scale(200),
     height: scale(100),
     borderRadius: 15,

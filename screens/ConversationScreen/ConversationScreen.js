@@ -29,14 +29,40 @@ const ConversationScreen = ({ navigation, route }) => {
 
   const insets = useSafeAreaInsets();
 
-  useInterval(async () => {
-    if (pause) {
-      await new Promise((r) => setTimeout(r, 1.5 * POLLING_INTERVAL));
-      setPause(false);
-    } else {
-      const response = await (await getBackendActor()).getMyChat(id);
-      setData(response["ok"]);
+  const containsPaused = (tempData, tempPaused) => {
+    for (var i = 0; i < tempData.length; ++i) {
+      if (
+        tempData[i]["content"]["message"] == tempPaused["content"]["message"]
+      ) {
+        return true;
+      }
     }
+    return false;
+  };
+
+  const containsAllPaused = (tempData) => {
+    for (var i = 0; i < pause.length; ++i) {
+      if (!containsPaused(tempData, pause[i])) {
+        return false;
+      }
+    }
+    return true;
+  };
+
+  useInterval(async () => {
+    const tempData = (await (await getBackendActor()).getMyChat(id))["ok"];
+    if (pause) {
+      if (containsAllPaused(tempData["messages"])) {
+        setData(tempData);
+        setPause(null);
+      } else {
+        pause.forEach((temp) => {
+          tempData["messages"].push(temp);
+        });
+        setData(tempData);
+      }
+    }
+    setData(tempData);
   }, POLLING_INTERVAL);
 
   useLayoutEffect(() => {
@@ -114,6 +140,7 @@ const ConversationScreen = ({ navigation, route }) => {
           chatKey={chatKey}
           data={data}
           setData={setData}
+          pause={pause}
           setPause={setPause}
         />
       </KeyboardAvoidingView>

@@ -11,14 +11,13 @@ import { encryptSymmetric } from "../../utility/utils";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ed25519KeyIdentity } from "@dfinity/identity";
 
-const ChatInput = ({ id, chatKey, data, setData, setPause }) => {
+const ChatInput = ({ id, chatKey, data, setData, pause, setPause }) => {
   const [message, setMessage] = useState("");
   const [sending, setSending] = useState(false);
   const inputRef = useRef();
 
   const sendMessage = async () => {
     setSending(true);
-    setPause(true);
 
     const encryptedMessage = await encryptSymmetric(message, chatKey);
     const messageContent = {
@@ -42,6 +41,11 @@ const ChatInput = ({ id, chatKey, data, setData, setPause }) => {
     const tempData = data;
     tempData["messages"].push(tempMessage);
     setData({ ...data, messages: tempData["messages"] });
+    if (pause) {
+      setPause((pause) => [...pause, tempMessage]);
+    } else {
+      setPause([tempMessage]);
+    }
 
     setSending(false);
     inputRef.current.clear();
