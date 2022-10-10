@@ -1,32 +1,15 @@
 import React, { useEffect, useState } from "react";
-import {
-  Dimensions,
-  Button,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import { PGP_OPTIONS, POLLING_INTERVAL } from "../../data/constants";
-import { getBackendActor } from "../../lib/actor";
-import { scale, verticalScale } from "../../utility/scalingUtils";
-import {
-  encryptAsymmetric,
-  generateSymmetricKey,
-  getMyPublicKey,
-  useInterval,
-} from "../../utility/utils";
+import { StyleSheet, TouchableOpacity, View, Image } from "react-native";
+import { scale } from "../../utility/scalingUtils";
 import colors from "../../data/colors";
-import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
 import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
-import OpenPGP from "react-native-fast-openpgp";
-import { addToCache, getFromCache, PROFILE_CACHE } from "../../utility/caches";
-//import QRCode from "react-native-qrcode-svg";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ed25519KeyIdentity } from "@dfinity/identity";
+import RNQRGenerator from "rn-qr-generator";
+import { Principal } from "@dfinity/principal";
 
 const QRCodeModalTile = ({ setModalVisible }) => {
-  const [myIdentity, setMyIdentity] = useState(null);
+  const [uri, setUri] = useState(null);
 
   useEffect(async () => {
     try {
@@ -36,7 +19,16 @@ const QRCodeModalTile = ({ setModalVisible }) => {
           .getPrincipal()
           .toText();
 
-        setMyIdentity(identity);
+        const encrypted = Ed25519KeyIdentity.fromParsedJson(JSON.parse(value))
+          .getPrincipal()
+          .toText();
+
+        const { uri, width, height, base64 } = await RNQRGenerator.generate({
+          value: identity,
+          height: 280,
+          width: 280,
+        });
+        setUri(uri);
       }
     } catch (error) {}
   }, []);
@@ -48,10 +40,13 @@ const QRCodeModalTile = ({ setModalVisible }) => {
       }}
       style={styles.touchableView}
     >
-      <View style={styles.container(myIdentity)}>
-        {myIdentity ? (
-          <View style={styles.myIdentity}>
-            {/*<QRCode value={myIdentity} size={scale(250)} />*/}
+      <View style={styles.container}>
+        {uri ? (
+          <View style={styles.qrContainer}>
+            <Image
+              source={{ uri: uri }}
+              style={{ width: scale(280), height: scale(280) }}
+            />
           </View>
         ) : (
           <CustomActivityIndicator />
@@ -68,15 +63,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  container: (profile) => ({
+  container: {
     backgroundColor: colors.LIGHT_GRAY,
     width: scale(300),
     height: scale(300),
     borderRadius: 15,
     alignItems: "center",
     justifyContent: "center",
-  }),
-  myIdentity: {
+  },
+  qrContainer: {
     alignItems: "center",
     justifyContent: "center",
   },

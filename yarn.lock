@@ -8347,6 +8347,11 @@ rn-placeholder@^3.0.3:
   resolved "https://registry.yarnpkg.com/rn-placeholder/-/rn-placeholder-3.0.3.tgz#98f635b263ee003af2a984eed32d86ade308df35"
   integrity sha512-EmVeLT8zDcTPilQZ2OHO/IiYUy2gApKGgbshDZBX0C4qxsn0cFATwgwOwyz8O7Vwg1Hul97Ci95hu7d6Js6XMQ==
 
+rn-qr-generator@^1.2.1:
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/rn-qr-generator/-/rn-qr-generator-1.2.1.tgz#9456a61050e1a6aea8c9dc6f0d6e7ea9b356e7ea"
+  integrity sha512-eCL5NLnZknEwucgG4IwOU2gg5g+/yeTTSuQoKQd9rwtVMPmpPN8NohVFnEAPNykVSIiPYIdy5z33Jghvdq8NNg==
+
 rsvp@^4.8.4:
   version "4.8.5"
   resolved "https://registry.yarnpkg.com/rsvp/-/rsvp-4.8.5.tgz#c8f155311d167f68f21e168df71ec5b083113734"

@@ -15,7 +15,8 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { BlurView } from "expo-blur";
 import QRCodeModalTile from "../../components/QRCodeModalTile/QRCodeModalTile";
-
+import { BarCodeScanner } from "expo-barcode-scanner";
+import QRScannerModal from "../../components/QRCodeScannerModal/QRCodeScannerModal";
 
 const FindScreen = ({ forAdd, navigation, route }) => {
   const id = forAdd ? route.params.id : null;
@@ -24,7 +25,8 @@ const FindScreen = ({ forAdd, navigation, route }) => {
   const [allUsers, setAllUsers] = useState(null);
   const [query, setQuery] = useState("");
   const [searchBarLoading, setSearchBarLoading] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
+  const [qrModalVisible, setQrModalVisible] = useState(false);
+  const [qrScannerModalVisible, setQrScannerModalVisible] = useState(false);
 
   useLayoutEffect(() => {
     if (forAdd) {
@@ -39,7 +41,7 @@ const FindScreen = ({ forAdd, navigation, route }) => {
       navigation.setOptions({
         headerLeft: (props) => (
           <TouchableOpacity
-            onPress={() => setModalVisible(true)}
+            onPress={() => setQrScannerModalVisible(true)}
             style={{
               paddingLeft: 20,
               flexDirection: "row",
@@ -51,7 +53,7 @@ const FindScreen = ({ forAdd, navigation, route }) => {
         ),
         headerRight: (props) => (
           <TouchableOpacity
-            onPress={() => setModalVisible(true)}
+            onPress={() => setQrModalVisible(true)}
             style={{
               paddingRight: 20,
               flexDirection: "row",
@@ -89,9 +91,18 @@ const FindScreen = ({ forAdd, navigation, route }) => {
 
   return (
     <>
-      <Modal animationType="fade" transparent={true} visible={modalVisible}>
+      <Modal animationType="fade" transparent={true} visible={qrModalVisible}>
         <BlurView intensity={5} tint="dark" style={styles.modalTileContainer}>
-          <QRCodeModalTile setModalVisible={setModalVisible} />
+          <QRCodeModalTile setModalVisible={setQrModalVisible} />
+        </BlurView>
+      </Modal>
+      <Modal
+        animationType="fade"
+        transparent={true}
+        visible={qrScannerModalVisible}
+      >
+        <BlurView intensity={5} tint="dark" style={styles.modalTileContainer}>
+          <QRScannerModal setModalVisible={setQrScannerModalVisible} />
         </BlurView>
       </Modal>
       <View style={styles.container(query == "")}>
