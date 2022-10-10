@@ -29,7 +29,7 @@ const FindBar = ({ id, chatKey, principal, forAdd }) => {
 
   return (
     <>
-      <Modal animationType="fade" transparent={true} visible={modalVisible}>
+      <Modal animationType="slide" transparent={true} visible={modalVisible}>
         <BlurView intensity={5} tint="dark" style={styles.modalTileContainer}>
           <FindBarModalTile
             id={id}

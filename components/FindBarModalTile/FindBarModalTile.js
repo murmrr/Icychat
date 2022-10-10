@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
   container: (profile) => ({
     backgroundColor: colors.LIGHT_GRAY,
     width: scale(310),
-    height: scale(300),
+    height: scale(280),
     borderRadius: 15,
     alignItems: "center",
     justifyContent: profile ? "" : "center",
@@ -137,7 +137,7 @@ const styles = StyleSheet.create({
     height: scale(90),
     aspectRatio: 1,
     borderRadius: scale(80),
-    marginTop: verticalScale(15),
+    marginTop: verticalScale(10),
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.25,

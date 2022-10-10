@@ -91,13 +91,13 @@ const FindScreen = ({ forAdd, navigation, route }) => {
 
   return (
     <>
-      <Modal animationType="fade" transparent={true} visible={qrModalVisible}>
+      <Modal animationType="slide" transparent={true} visible={qrModalVisible}>
         <BlurView intensity={5} tint="dark" style={styles.modalTileContainer}>
           <QRCodeModalTile setModalVisible={setQrModalVisible} />
         </BlurView>
       </Modal>
       <Modal
-        animationType="fade"
+        animationType="slide"
         transparent={true}
         visible={qrScannerModalVisible}
       >

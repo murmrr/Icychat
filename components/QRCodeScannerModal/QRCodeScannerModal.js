@@ -25,10 +25,12 @@ const QRScannerModal = ({ setModalVisible }) => {
   }, []);
 
   const handleBarCodeScanned = ({ type, data }) => {
-    try {
-      let otherUserPrincipal = Principal.fromText(data);
-      setOtherUserPrincipal(otherUserPrincipal);
-    } catch (error) {}
+    if ((type = BarCodeScanner.Constants.BarCodeType.qr)) {
+      try {
+        let otherUserPrincipal = Principal.fromText(data);
+        setOtherUserPrincipal(otherUserPrincipal);
+      } catch (error) {}
+    }
   };
 
   return otherUserPrincipal ? (
@@ -45,6 +47,7 @@ const QRScannerModal = ({ setModalVisible }) => {
     >
       <View style={styles.container}>
         <BarCodeScanner
+          barCodeTypes={[BarCodeScanner.Constants.BarCodeType.qr]}
           onBarCodeScanned={
             otherUserPrincipal ? undefined : handleBarCodeScanned
           }
@@ -65,8 +68,8 @@ const styles = StyleSheet.create({
   },
   container: {
     backgroundColor: colors.LIGHT_GRAY,
-    width: scale(300),
-    height: scale(300),
+    width: scale(200),
+    height: scale(100),
     borderRadius: 15,
     alignItems: "center",
     justifyContent: "center",
