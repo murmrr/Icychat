@@ -18,68 +18,21 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import CustomProfilePicture from "../../components/CustomProfilePicture/CustomProfilePicture";
 import Icon from "react-native-vector-icons/FontAwesome";
 import CustomActivityIndicator from "../../components/CustomActivityIndicator/CustomActivityIndicator";
-import { clearAllCaches } from "../../utility/caches";
+import { addToCache, clearAllCaches, getFromCache, PROFILE_CACHE } from "../../utility/caches";
 import Toast from "react-native-root-toast";
 import * as Haptics from "expo-haptics";
 import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
+import { Ed25519KeyIdentity, Ed25519PublicKey } from "@dfinity/identity";
 
 const MeScreen = ({ setIsSignedIn }) => {
   const [profile, setProfile] = useState(null);
-  const [editing, setEditing] = useState(false);
-  const [editingLoading, setEditingLoading] = useState(false);
-  const [newUsername, setNewUsername] = useState(null);
 
   const context = useContext(MainContext);
 
-  const regUsername = /^(?=.{1,16}$)[^ ]+$/;
-
   useInterval(async () => {
-    if (!editing) {
-      const response = await makeBackendActor(context).getMyProfile();
-      setProfile(response["ok"]);
-    }
+    const response = await makeBackendActor(context).getMyProfile();
+    setProfile(response["ok"]);
   }, POLLING_INTERVAL);
-
-  const handleEdit = async () => {
-    if (!editing) {
-      setNewUsername(profile["username"]);
-    } else {
-      if (regUsername.test(newUsername)) {
-        if (newUsername != profile["username"]) {
-          setEditingLoading(true);
-          const profileUpdate = {
-            username: newUsername,
-          };
-          const response = await makeBackendActor(context).updateProfile(
-            profileUpdate
-          );
-
-          const newProfile = profile;
-          newProfile["username"] = newUsername;
-          setProfile(newProfile);
-          await new Promise((r) => setTimeout(r, 1.5 * POLLING_INTERVAL));
-          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-          setEditingLoading(false);
-        }
-      } else {
-        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
-        const timeToNotify = setTimeout(() => {
-          Toast.show("Invalid Username", {
-            position: verticalScale(125),
-            shadow: true,
-            animation: true,
-            hideOnPress: true,
-            backgroundColor: colors.DARK_PRIMARY,
-            textColor: colors.WHITE,
-            opacity: 1,
-            duration: 250,
-          });
-          clearTimeout(timeToNotify);
-        }, 100);
-      }
-    }
-    setEditing(!editing);
-  };
 
   const handleDelete = async () => {
     Alert.alert(
@@ -118,29 +71,11 @@ const MeScreen = ({ setIsSignedIn }) => {
           />
         </View>
         <View style={styles.textContainer}>
-          <TextInput
-            numberOfLines={1}
-            value={editing ? newUsername : profile["username"]}
-            onChangeText={(text) => setNewUsername(text)}
-            style={styles.usernameInput(editing)}
-            editable={editing && !editingLoading}
-            autoCapitalize="none"
-          ></TextInput>
-          <Text style={styles.principalInput}>
+          <Text style={styles.username}>{profile["username"]}</Text>
+          <Text style={styles.principal}>
             {profile["userPrincipal"].toText()}
           </Text>
         </View>
-        {/*
-          <TouchableOpacity onPress={handleEdit} style={styles.editButton}>
-            {editingLoading ? (
-              <CustomActivityIndicator />
-            ) : (
-              <Text style={styles.editButtonText}>
-                {editing ? "Done" : "Edit Profile"}
-              </Text>
-            )}
-          </TouchableOpacity>
-            */}
       </View>
       <TouchableOpacity onPress={handleDelete} style={styles.button}>
         <Text style={styles.buttonText}>Burn</Text>
@@ -178,19 +113,17 @@ const styles = StyleSheet.create({
   textContainer: {
     alignSelf: "center",
   },
-  usernameInput: (editable) => ({
+  username: {
     textAlign: "center",
     color: colors.WHITE,
     fontSize: 24,
     fontFamily: "Poppins-SemiBold",
     marginTop: verticalScale(6),
-    borderWidth: 2,
-    borderColor: editable ? colors.GRAY : colors.DARK_GRAY,
     borderRadius: 15,
     width: scale(225),
     alignSelf: "center",
-  }),
-  principalInput: {
+  },
+  principal: {
     textAlign: "center",
     color: colors.GRAY,
     fontSize: 9,

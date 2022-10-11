@@ -30,20 +30,23 @@ const Message = ({ message, chatKey }) => {
   const context = useContext(MainContext);
 
   useEffect(async () => {
-    try {
-      let value = await AsyncStorage.getItem("@identity");
-      if (value != null) {
-        let principal = Ed25519KeyIdentity.fromParsedJson(
-          JSON.parse(value)
-        ).getPrincipal();
-        if (principal.toString() === message["sender"].toString()) {
-          setIsMe(true);
-          setProfile(true);
-        } else {
-          setIsMe(false);
-        }
+    let principal = Ed25519KeyIdentity.fromJSON(JSON.stringify(context)).getPrincipal();
+    if (principal.toString() === message["sender"].toString()) {
+      setIsMe(true);
+      setProfile(true);
+    } else {
+      setIsMe(false);
+      let temp = await getFromCache(PROFILE_CACHE, message["sender"]);
+      if (temp) {
+        setProfile(temp);
+      } else {
+        const response = await makeBackendActor(context).getProfile(
+          message["sender"]
+        );
+        setProfile(response["ok"]);
+        await addToCache(PROFILE_CACHE, message["sender"], response["ok"]);
       }
-    } catch (error) {}
+    }
   }, []);
 
   useEffect(async () => {
@@ -63,19 +66,6 @@ const Message = ({ message, chatKey }) => {
       );
     }
   }, []);
-
-  useInterval(async () => {
-    let temp = await getFromCache(PROFILE_CACHE, message["sender"]);
-    if (temp) {
-      setProfile(temp);
-    } else {
-      const response = await makeBackendActor(context).getProfile(
-        message["sender"]
-      );
-      setProfile(response["ok"]);
-      await addToCache(PROFILE_CACHE, message["sender"], response["ok"]);
-    }
-  }, POLLING_INTERVAL);
 
   return (
     <View style={styles.root(isMe)}>

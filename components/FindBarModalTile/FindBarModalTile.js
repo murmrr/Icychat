@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Dimensions,
   Button,
@@ -36,7 +36,7 @@ const FindBarModalTile = ({
 
   const context = useContext(MainContext);
 
-  useInterval(async () => {
+  useEffect(async () => {
     let temp = await getFromCache(PROFILE_CACHE, principal);
     if (temp) {
       setProfile(temp);
@@ -45,7 +45,7 @@ const FindBarModalTile = ({
       setProfile(response["ok"]);
       await addToCache(PROFILE_CACHE, principal, response["ok"]);
     }
-  }, POLLING_INTERVAL);
+  }, []);
 
   const createChat = async () => {
     setLoading(true);
@@ -59,7 +59,7 @@ const FindBarModalTile = ({
         otherUserPublicKey
       );
 
-      const response = await getBackendActor(context).addToChat(
+      const response = await makeBackendActor(context).addToChat(
         id,
         principal,
         otherUserChatKey

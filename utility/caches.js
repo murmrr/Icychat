@@ -5,7 +5,7 @@ export const PROFILE_CACHE = new Cache({
   namespace: "profileCache",
   policy: {
     maxEntries: 50000,
-    stdTTL: 60,
+    stdTTL: 0,
   },
   backend: AsyncStorage,
 });

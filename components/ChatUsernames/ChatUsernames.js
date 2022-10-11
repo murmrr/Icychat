@@ -12,7 +12,7 @@ const ChatUsernamesSingle = ({ principal, style }) => {
 
   const context = useContext(MainContext);
 
-  useInterval(async () => {
+  useEffect(async () => {
     let temp = await getFromCache(PROFILE_CACHE, principal);
     if (temp) {
       setOtherUserProfile(temp);
@@ -21,7 +21,7 @@ const ChatUsernamesSingle = ({ principal, style }) => {
       setOtherUserProfile(response["ok"]);
       await addToCache(PROFILE_CACHE, principal, response["ok"]);
     }
-  }, POLLING_INTERVAL);
+  }, []);
 
   return otherUserProfile ? (
     <Text numberOfLines={1} style={style}>
@@ -34,6 +34,8 @@ const ChatUsernamesSingle = ({ principal, style }) => {
 
 const ChatUsernamesMultiple = ({ principals, style }) => {
   const [otherUserProfiles, setOtherUserProfiles] = useState(new Map());
+
+  const context = useContext(MainContext);
 
   useInterval(async () => {
     principals.forEach(async (principal) => {

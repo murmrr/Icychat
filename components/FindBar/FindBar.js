@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Modal, StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { POLLING_INTERVAL } from "../../data/constants";
@@ -19,7 +19,7 @@ const FindBar = ({ id, chatKey, principal, forAdd }) => {
 
   const context = useContext(MainContext);
 
-  useInterval(async () => {
+  useEffect(async () => {
     let temp = await getFromCache(PROFILE_CACHE, principal);
     if (temp) {
       setProfile(temp);
@@ -28,7 +28,7 @@ const FindBar = ({ id, chatKey, principal, forAdd }) => {
       setProfile(response["ok"]);
       await addToCache(PROFILE_CACHE, principal, response["ok"]);
     }
-  }, POLLING_INTERVAL);
+  }, []);
 
   return (
     <>

@@ -21,36 +21,24 @@ const QRCodeModalTile = ({ setModalVisible }) => {
   const context = useContext(MainContext);
 
   useEffect(async () => {
-    let temp = await getFromCache(PROFILE_CACHE, "@myProfile");
-    if (temp) {
-      setProfile(temp);
-    } else {
-      const response = await makeBackendActor(context).getMyProfile();
-      setProfile(response["ok"]);
-      await addToCache(PROFILE_CACHE, "@myProfile", response["ok"]);
-    }
+    const response = await makeBackendActor(context).getMyProfile();
+    setProfile(response["ok"]);
   }, []);
 
   useEffect(async () => {
-    try {
-      let value = await AsyncStorage.getItem("@identity");
-      if (value != null) {
-        let identity = Ed25519KeyIdentity.fromParsedJson(JSON.parse(value))
-          .getPrincipal()
-          .toText();
+    let value = await AsyncStorage.getItem("@identity");
+    if (value != null) {
+      let identity = Ed25519KeyIdentity.fromParsedJson(JSON.parse(value))
+        .getPrincipal()
+        .toText();
 
-        const encrypted = Ed25519KeyIdentity.fromParsedJson(JSON.parse(value))
-          .getPrincipal()
-          .toText();
-
-        const { uri, width, height, base64 } = await RNQRGenerator.generate({
-          value: identity,
-          height: 280,
-          width: 280,
-        });
-        setUri(uri);
-      }
-    } catch (error) {}
+      const { uri, width, height, base64 } = await RNQRGenerator.generate({
+        value: identity,
+        height: 280,
+        width: 280,
+      });
+      setUri(uri);
+    }
   }, []);
 
   return (
