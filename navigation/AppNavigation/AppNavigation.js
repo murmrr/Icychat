@@ -14,7 +14,7 @@ const AppNavigation = () => {
     try {
       let value = await AsyncStorage.getItem("@identity");
       if (value != null) {
-        setIsSignedIn(true);
+        //setIsSignedIn(true);
       }
     } catch (error) {}
   }, []);
