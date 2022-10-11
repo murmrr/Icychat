@@ -51,7 +51,7 @@ const FindBarModalTile = ({
     setLoading(true);
 
     const otherUserPublicKey = (
-      await (await getBackendActor()).getPublicKey(principal)
+      await makeBackendActor(context).getPublicKey(principal)
     )["ok"];
     if (forAdd) {
       const otherUserChatKey = await encryptAsymmetric(
