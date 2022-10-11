@@ -16,7 +16,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import { BlurView } from "expo-blur";
 import QRCodeModalTile from "../../components/QRCodeModalTile/QRCodeModalTile";
 import { BarCodeScanner } from "expo-barcode-scanner";
-import QRScannerModal from "../../components/QRCodeScannerModal/QRCodeScannerModal";
+import QRScannerModalTile from "../../components/QRCodeScannerModalTile/QRCodeScannerModalTile";
 
 const FindScreen = ({ forAdd, navigation, route }) => {
   const id = forAdd ? route.params.id : null;
@@ -33,6 +33,19 @@ const FindScreen = ({ forAdd, navigation, route }) => {
       navigation.setOptions({
         headerTitle: "Add",
         headerLeft: (props) => <CustomBackButton navigation={navigation} />,
+        headerRight: (props) => (
+          <TouchableOpacity
+            onPress={() => setQrScannerModalVisible(true)}
+            style={{
+              paddingHorizontal: 20,
+              padding: 10,
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            <Icon name="camera" size={20} color={colors.WHITE} />
+          </TouchableOpacity>
+        ),
         headerStyle: {
           backgroundColor: colors.BLUE,
         },
@@ -81,12 +94,7 @@ const FindScreen = ({ forAdd, navigation, route }) => {
   }, POLLING_INTERVAL);
 
   const renderItem = ({ item }) => (
-    <FindBar
-      id={forAdd ? id : undefined}
-      chatKey={forAdd ? chatKey : undefined}
-      principal={item}
-      forAdd={forAdd}
-    />
+    <FindBar id={id} chatKey={chatKey} principal={item} forAdd={forAdd} />
   );
 
   const keyExtractor = (item) => item;
@@ -100,12 +108,15 @@ const FindScreen = ({ forAdd, navigation, route }) => {
       </Modal>
       <Modal
         animationType="slide"
-        transparent={true}
         visible={qrScannerModalVisible}
+        transparent={true}
       >
-        <BlurView intensity={5} tint="dark" style={styles.modalTileContainer}>
-          <QRScannerModal setModalVisible={setQrScannerModalVisible} />
-        </BlurView>
+        <QRScannerModalTile
+          id={id}
+          chatKey={chatKey}
+          forAdd={forAdd}
+          setModalVisible={setQrScannerModalVisible}
+        />
       </Modal>
       <View style={styles.container(query == "")}>
         {allUsers ? (
@@ -138,7 +149,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22,
   },
   container: (isEmpty) => ({
     height: "100%",

@@ -38,9 +38,6 @@ const ChatInput = ({ id, chatKey, data, setData, pause, setPause }) => {
       sender: myPrincipal,
       time: time,
     };
-    const tempData = data;
-    tempData["messages"].push(tempMessage);
-    setData({ ...data, messages: tempData["messages"] });
     if (pause) {
       setPause((pause) => [...pause, tempMessage]);
     } else {

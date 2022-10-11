@@ -49,12 +49,22 @@ const ConversationScreen = ({ navigation, route }) => {
     return true;
   };
 
+  useEffect(() => {
+    if (pause) {
+      const tempData = data;
+      pause.forEach((temp) => {
+        tempData["messages"].push(temp);
+      });
+      setData(tempData);
+    }
+  }, [pause]);
+
   useInterval(async () => {
     const tempData = (await (await getBackendActor()).getMyChat(id))["ok"];
     if (pause) {
       if (containsAllPaused(tempData["messages"])) {
         setData(tempData);
-        setPause(null);
+        setPause(false);
       } else {
         pause.forEach((temp) => {
           tempData["messages"].push(temp);
