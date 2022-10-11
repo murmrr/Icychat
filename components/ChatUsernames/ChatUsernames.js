@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Text } from "react-native";
 import { POLLING_INTERVAL } from "../../data/constants";
-import { getBackendActor } from "../../lib/actor";
+import { getBackendActor, makeBackendActor } from "../../lib/actor";
+import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
 import { addToCache, getFromCache, PROFILE_CACHE } from "../../utility/caches";
 import { useInterval } from "../../utility/utils";
 import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
@@ -9,12 +10,14 @@ import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIn
 const ChatUsernamesSingle = ({ principal, style }) => {
   const [otherUserProfile, setOtherUserProfile] = useState(null);
 
+  const context = useContext(MainContext);
+
   useInterval(async () => {
     let temp = await getFromCache(PROFILE_CACHE, principal);
     if (temp) {
       setOtherUserProfile(temp);
     } else {
-      const response = await (await getBackendActor()).getProfile(principal);
+      const response = await makeBackendActor(context).getProfile(principal);
       setOtherUserProfile(response["ok"]);
       await addToCache(PROFILE_CACHE, principal, response["ok"]);
     }
@@ -38,7 +41,7 @@ const ChatUsernamesMultiple = ({ principals, style }) => {
       if (temp) {
         setOtherUserProfiles(otherUserProfiles.set(principal.toText(), temp));
       } else {
-        const response = await (await getBackendActor()).getProfile(principal);
+        const response = await makeBackendActor(context).getProfile(principal);
         setOtherUserProfiles(
           otherUserProfiles.set(principal.toText(), response["ok"])
         );

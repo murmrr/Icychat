@@ -33,3 +33,15 @@ export const getBackendActor = async (identity?: Identity) => {
     return createBackendActor();
   }
 };
+
+export const makeBackendActor = (identity: Identity) => {
+  const agent = new HttpAgent({
+    identity,
+    host: IC_HOST,
+  });
+
+  return Actor.createActor<_SERVICE>(idlFactory, {
+    agent,
+    canisterId: BACKEND_CANISTER_ID!,
+  });
+};

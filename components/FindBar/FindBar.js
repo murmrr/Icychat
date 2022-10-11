@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Modal, StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { POLLING_INTERVAL } from "../../data/constants";
-import { getBackendActor } from "../../lib/actor";
+import { getBackendActor, makeBackendActor } from "../../lib/actor";
 import { moderateScale, scale } from "../../utility/scalingUtils";
 import { useInterval } from "../../utility/utils";
 import FindBarModalTile from "../FindBarModalTile/FindBarModalTile";
@@ -11,17 +11,20 @@ import { BlurView } from "expo-blur";
 import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
 import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
 import { addToCache, getFromCache, PROFILE_CACHE } from "../../utility/caches";
+import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
 
 const FindBar = ({ id, chatKey, principal, forAdd }) => {
   const [profile, setProfile] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
+
+  const context = useContext(MainContext);
 
   useInterval(async () => {
     let temp = await getFromCache(PROFILE_CACHE, principal);
     if (temp) {
       setProfile(temp);
     } else {
-      const response = await (await getBackendActor()).getProfile(principal);
+      const response = await makeBackendActor(context).getProfile(principal);
       setProfile(response["ok"]);
       await addToCache(PROFILE_CACHE, principal, response["ok"]);
     }

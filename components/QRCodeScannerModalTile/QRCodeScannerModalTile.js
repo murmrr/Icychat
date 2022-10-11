@@ -47,10 +47,50 @@ const QRCodeScannerModalTile = ({ id, chatKey, forAdd, setModalVisible }) => {
     </BlurView>
   ) : (
     <View style={styles.container}>
-      <View style={{backgroundColor: "rgba(255, 255, 255, .5)", position: "absolute", zIndex: 1, top: 0, left: 0, right: 0, bottom: verticalScale(555)}}/>
-      <View style={{backgroundColor: "rgba(255, 255, 255, .5)", position: "absolute", zIndex: 1, top: verticalScale(368), left: 0, right: 0, bottom: 0}}/>
-      <View style={{backgroundColor: "rgba(255, 255, 255, .5)", position: "absolute", zIndex: 1, top: verticalScale(125), left: 0, right: scale(310), bottom: verticalScale(312)}}/>
-      <View style={{backgroundColor: "rgba(255, 255, 255, .5)", position: "absolute", zIndex: 1, top: verticalScale(125), left: scale(310), right: 0, bottom: verticalScale(312)}}/>
+      <View
+        style={{
+          backgroundColor: "rgba(255, 255, 255, .5)",
+          position: "absolute",
+          zIndex: 1,
+          top: 0,
+          left: 0,
+          right: 0,
+          bottom: verticalScale(555),
+        }}
+      />
+      <View
+        style={{
+          backgroundColor: "rgba(255, 255, 255, .5)",
+          position: "absolute",
+          zIndex: 1,
+          top: verticalScale(368),
+          left: 0,
+          right: 0,
+          bottom: 0,
+        }}
+      />
+      <View
+        style={{
+          backgroundColor: "rgba(255, 255, 255, .5)",
+          position: "absolute",
+          zIndex: 1,
+          top: verticalScale(125),
+          left: 0,
+          right: scale(310),
+          bottom: verticalScale(312),
+        }}
+      />
+      <View
+        style={{
+          backgroundColor: "rgba(255, 255, 255, .5)",
+          position: "absolute",
+          zIndex: 1,
+          top: verticalScale(125),
+          left: scale(310),
+          right: 0,
+          bottom: verticalScale(312),
+        }}
+      />
       <TouchableOpacity
         onPress={() => {
           setModalVisible(false);

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import {
   Alert,
   KeyboardAvoidingView,
@@ -11,7 +11,7 @@ import { ScrollView, TextInput } from "react-native-gesture-handler";
 import InputWrapper from "../../components/InputWrapper/InputWrapper";
 import colors from "../../data/colors";
 import { POLLING_INTERVAL } from "../../data/constants";
-import { getBackendActor } from "../../lib/actor";
+import { getBackendActor, makeBackendActor } from "../../lib/actor";
 import { scale, verticalScale } from "../../utility/scalingUtils";
 import { useInterval } from "../../utility/utils";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -21,6 +21,7 @@ import CustomActivityIndicator from "../../components/CustomActivityIndicator/Cu
 import { clearAllCaches } from "../../utility/caches";
 import Toast from "react-native-root-toast";
 import * as Haptics from "expo-haptics";
+import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
 
 const MeScreen = ({ setIsSignedIn }) => {
   const [profile, setProfile] = useState(null);
@@ -28,11 +29,13 @@ const MeScreen = ({ setIsSignedIn }) => {
   const [editingLoading, setEditingLoading] = useState(false);
   const [newUsername, setNewUsername] = useState(null);
 
+  const context = useContext(MainContext);
+
   const regUsername = /^(?=.{1,16}$)[^ ]+$/;
 
   useInterval(async () => {
     if (!editing) {
-      const response = await (await getBackendActor()).getMyProfile();
+      const response = await makeBackendActor(context).getMyProfile();
       setProfile(response["ok"]);
     }
   }, POLLING_INTERVAL);
@@ -47,7 +50,7 @@ const MeScreen = ({ setIsSignedIn }) => {
           const profileUpdate = {
             username: newUsername,
           };
-          const response = (await getBackendActor()).updateProfile(
+          const response = await makeBackendActor(context).updateProfile(
             profileUpdate
           );
 

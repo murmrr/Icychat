@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import {
   Button,
   FlatList,
@@ -15,21 +15,24 @@ import CustomHeader from "../../components/CustomHeader/CustomHeader";
 import Message from "../../components/Message/Message";
 import colors from "../../data/colors";
 import { POLLING_INTERVAL } from "../../data/constants";
-import { getBackendActor } from "../../lib/actor";
+import { getBackendActor, makeBackendActor } from "../../lib/actor";
 import { useInterval } from "../../utility/utils";
 import { useIsFocused } from "@react-navigation/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import CustomActivityIndicator from "../../components/CustomActivityIndicator/CustomActivityIndicator";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
 
 const ConversationScreen = ({ navigation, route }) => {
   const { id, chatKey, principals } = route.params;
   const [data, setData] = useState(null);
 
+  const context = useContext(MainContext);
+
   const insets = useSafeAreaInsets();
 
   useInterval(async () => {
-    const response = await (await getBackendActor()).getMyChat(id);
+    const response = await makeBackendActor(context).getMyChat(id);
     setData(response["ok"]);
   }, POLLING_INTERVAL);
 
@@ -103,10 +106,7 @@ const ConversationScreen = ({ navigation, route }) => {
           keyExtractor={keyExtractor}
           style={styles.messagesContainer}
         />
-        <ChatInput
-          id={id}
-          chatKey={chatKey}
-        />
+        <ChatInput id={id} chatKey={chatKey} />
       </KeyboardAvoidingView>
     </View>
   ) : (

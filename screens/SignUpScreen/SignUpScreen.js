@@ -12,7 +12,7 @@ import { ScrollView, TextInput } from "react-native-gesture-handler";
 import { scale, verticalScale } from "../../utility/scalingUtils";
 import { Ed25519KeyIdentity } from "@dfinity/identity";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { getBackendActor } from "../../lib/actor";
+import { getBackendActor, makeBackendActor } from "../../lib/actor";
 import colors from "../../data/colors";
 import InputWrapper from "../../components/InputWrapper/InputWrapper";
 import Toast from "react-native-root-toast";
@@ -45,9 +45,10 @@ const SignUpScreen = ({ setIsSignedIn }) => {
       const profileUpdate = {
         username: username,
       };
-      const response = await (
-        await getBackendActor(identity)
-      ).register(profileUpdate, publicKey);
+      const response = await makeBackendActor(identity).register(
+        profileUpdate,
+        publicKey
+      );
       setLoading(false);
       setIsSignedIn(true);
     } else {

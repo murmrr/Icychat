@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { StyleSheet, TouchableOpacity, View, Image, Text } from "react-native";
 import { scale, verticalScale } from "../../utility/scalingUtils";
 import colors from "../../data/colors";
@@ -9,20 +9,23 @@ import RNQRGenerator from "rn-qr-generator";
 import { Principal } from "@dfinity/principal";
 import { useInterval } from "../../utility/utils";
 import { POLLING_INTERVAL } from "../../data/constants";
-import { getBackendActor } from "../../lib/actor";
+import { getBackendActor, makeBackendActor } from "../../lib/actor";
 import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
 import { addToCache, getFromCache, PROFILE_CACHE } from "../../utility/caches";
+import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
 
 const QRCodeModalTile = ({ setModalVisible }) => {
   const [uri, setUri] = useState(null);
   const [profile, setProfile] = useState(null);
+
+  const context = useContext(MainContext);
 
   useEffect(async () => {
     let temp = await getFromCache(PROFILE_CACHE, "@myProfile");
     if (temp) {
       setProfile(temp);
     } else {
-      const response = await (await getBackendActor()).getMyProfile();
+      const response = await makeBackendActor(context).getMyProfile();
       setProfile(response["ok"]);
       await addToCache(PROFILE_CACHE, "@myProfile", response["ok"]);
     }

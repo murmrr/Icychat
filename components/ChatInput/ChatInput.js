@@ -1,8 +1,8 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import { Button, StyleSheet, TextInput, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import colors from "../../data/colors";
-import { getBackendActor } from "../../lib/actor";
+import { getBackendActor, makeBackendActor } from "../../lib/actor";
 import { scale, verticalScale } from "../../utility/scalingUtils";
 import Icon from "react-native-vector-icons/FontAwesome";
 import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
@@ -10,11 +10,14 @@ import OpenPGP from "react-native-fast-openpgp";
 import { encryptSymmetric } from "../../utility/utils";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ed25519KeyIdentity } from "@dfinity/identity";
+import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
 
 const ChatInput = ({ id, chatKey }) => {
   const [message, setMessage] = useState("");
   const [sending, setSending] = useState(false);
   const inputRef = useRef();
+
+  const context = useContext(MainContext);
 
   const sendMessage = async () => {
     if (message != "") {
@@ -24,10 +27,10 @@ const ChatInput = ({ id, chatKey }) => {
       const messageContent = {
         message: encryptedMessage,
       };
-      await (await getBackendActor()).sendMessage(id, messageContent);
+      await makeBackendActor(context).sendMessage(id, messageContent);
       inputRef.current.clear();
       setMessage("");
-      
+
       setSending(false);
     }
   };
@@ -45,7 +48,11 @@ const ChatInput = ({ id, chatKey }) => {
           style={styles.input}
         />
       </View>
-      <TouchableOpacity disabled={message == ""} onPress={sendMessage} style={styles.buttonContainer}>
+      <TouchableOpacity
+        disabled={message == ""}
+        onPress={sendMessage}
+        style={styles.buttonContainer}
+      >
         {sending ? (
           <CustomActivityIndicator />
         ) : (

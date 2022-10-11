@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useState } from "react";
+import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { FlatList, Modal, StyleSheet, Text, View } from "react-native";
 import AddToChatButton from "../../components/AddToChatButton/AddToChatButton";
 import CustomActivityIndicator from "../../components/CustomActivityIndicator/CustomActivityIndicator";
@@ -9,7 +9,7 @@ import FindSearchBar from "../../components/FindSearchBar/FindSearchBar";
 import ItemDivider from "../../components/ItemDivider/ItemDivider";
 import colors from "../../data/colors";
 import { POLLING_INTERVAL } from "../../data/constants";
-import { getBackendActor } from "../../lib/actor";
+import { getBackendActor, makeBackendActor } from "../../lib/actor";
 import { useInterval } from "../../utility/utils";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -17,6 +17,7 @@ import { BlurView } from "expo-blur";
 import QRCodeModalTile from "../../components/QRCodeModalTile/QRCodeModalTile";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import QRScannerModalTile from "../../components/QRCodeScannerModalTile/QRCodeScannerModalTile";
+import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
 
 const FindScreen = ({ forAdd, navigation, route }) => {
   const id = forAdd ? route.params.id : null;
@@ -27,6 +28,8 @@ const FindScreen = ({ forAdd, navigation, route }) => {
   const [searchBarLoading, setSearchBarLoading] = useState(false);
   const [qrModalVisible, setQrModalVisible] = useState(false);
   const [qrScannerModalVisible, setQrScannerModalVisible] = useState(false);
+
+  const context = useContext(MainContext);
 
   useLayoutEffect(() => {
     if (forAdd) {
@@ -86,7 +89,7 @@ const FindScreen = ({ forAdd, navigation, route }) => {
   }, []);
 
   useInterval(async () => {
-    const response = await (await getBackendActor()).getUsers(query);
+    const response = await makeBackendActor(context).getUsers(query);
     setAllUsers(response["ok"]);
     if (searchBarLoading) {
       setSearchBarLoading(false);

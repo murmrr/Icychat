@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Dimensions,
   Button,
@@ -8,7 +8,7 @@ import {
   View,
 } from "react-native";
 import { PGP_OPTIONS, POLLING_INTERVAL } from "../../data/constants";
-import { getBackendActor } from "../../lib/actor";
+import { getBackendActor, makeBackendActor } from "../../lib/actor";
 import { scale, verticalScale } from "../../utility/scalingUtils";
 import {
   encryptAsymmetric,
@@ -22,6 +22,7 @@ import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIn
 import OpenPGP from "react-native-fast-openpgp";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { addToCache, getFromCache, PROFILE_CACHE } from "../../utility/caches";
+import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
 
 const FindBarModalTile = ({
   id,
@@ -33,12 +34,14 @@ const FindBarModalTile = ({
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(false);
 
+  const context = useContext(MainContext);
+
   useInterval(async () => {
     let temp = await getFromCache(PROFILE_CACHE, principal);
     if (temp) {
       setProfile(temp);
     } else {
-      const response = await (await getBackendActor()).getProfile(principal);
+      const response = await makeBackendActor(context).getProfile(principal);
       setProfile(response["ok"]);
       await addToCache(PROFILE_CACHE, principal, response["ok"]);
     }
@@ -56,9 +59,11 @@ const FindBarModalTile = ({
         otherUserPublicKey
       );
 
-      const response = await (
-        await getBackendActor()
-      ).addToChat(id, principal, otherUserChatKey);
+      const response = await getBackendActor(context).addToChat(
+        id,
+        principal,
+        otherUserChatKey
+      );
     } else {
       const chatKey = await generateSymmetricKey();
 
@@ -72,9 +77,11 @@ const FindBarModalTile = ({
         otherUserPublicKey
       );
 
-      const response = await (
-        await getBackendActor()
-      ).createChat(principal, myChatKey, otherUserChatKey);
+      const response = await makeBackendActor(context).createChat(
+        principal,
+        myChatKey,
+        otherUserChatKey
+      );
     }
     setLoading(false);
     setModalVisible(false);

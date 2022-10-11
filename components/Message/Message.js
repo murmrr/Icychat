@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { POLLING_INTERVAL } from "../../data/constants";
-import { getBackendActor } from "../../lib/actor";
+import { getBackendActor, makeBackendActor } from "../../lib/actor";
 import { scale } from "../../utility/scalingUtils";
 import {
   convertTime,
@@ -20,11 +20,14 @@ import {
   MESSAGE_CACHE,
   PROFILE_CACHE,
 } from "../../utility/caches";
+import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
 
 const Message = ({ message, chatKey }) => {
   const [profile, setProfile] = useState(null);
   const [isMe, setIsMe] = useState(false);
   const [decryptedMessage, setDecryptedMessage] = useState("");
+
+  const context = useContext(MainContext);
 
   useEffect(async () => {
     try {
@@ -66,9 +69,9 @@ const Message = ({ message, chatKey }) => {
     if (temp) {
       setProfile(temp);
     } else {
-      const response = await (
-        await getBackendActor()
-      ).getProfile(message["sender"]);
+      const response = await makeBackendActor(context).getProfile(
+        message["sender"]
+      );
       setProfile(response["ok"]);
       await addToCache(PROFILE_CACHE, message["sender"], response["ok"]);
     }

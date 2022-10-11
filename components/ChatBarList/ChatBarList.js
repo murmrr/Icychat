@@ -1,7 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { FlatList, StyleSheet, View } from "react-native";
 import { POLLING_INTERVAL } from "../../data/constants";
-import { getBackendActor } from "../../lib/actor";
+import {
+  createBackendActor,
+  getBackendActor,
+  makeBackendActor,
+} from "../../lib/actor";
+import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
 import { useInterval } from "../../utility/utils";
 import ChatBar from "../ChatBar/ChatBar";
 import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
@@ -10,8 +15,10 @@ import ItemDivider from "../ItemDivider/ItemDivider";
 const ChatBarList = () => {
   const [data, setData] = useState(null);
 
+  const context = useContext(MainContext);
+
   useInterval(async () => {
-    const response = await (await getBackendActor()).getMyChatHeaders();
+    const response = await makeBackendActor(context).getMyChatHeaders();
     setData(response["ok"]);
   }, POLLING_INTERVAL);
 
