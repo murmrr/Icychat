@@ -18,7 +18,12 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import CustomProfilePicture from "../../components/CustomProfilePicture/CustomProfilePicture";
 import Icon from "react-native-vector-icons/FontAwesome";
 import CustomActivityIndicator from "../../components/CustomActivityIndicator/CustomActivityIndicator";
-import { addToCache, clearAllCaches, getFromCache, PROFILE_CACHE } from "../../utility/caches";
+import {
+  addToCache,
+  clearAllCaches,
+  getFromCache,
+  PROFILE_CACHE,
+} from "../../utility/caches";
 import Toast from "react-native-root-toast";
 import * as Haptics from "expo-haptics";
 import { MainContext } from "../../navigation/MainNavigation/MainNavigation";

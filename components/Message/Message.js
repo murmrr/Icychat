@@ -30,7 +30,9 @@ const Message = ({ message, chatKey }) => {
   const context = useContext(MainContext);
 
   useEffect(async () => {
-    let principal = Ed25519KeyIdentity.fromJSON(JSON.stringify(context)).getPrincipal();
+    let principal = Ed25519KeyIdentity.fromJSON(
+      JSON.stringify(context)
+    ).getPrincipal();
     if (principal.toString() === message["sender"].toString()) {
       setIsMe(true);
       setProfile(true);
