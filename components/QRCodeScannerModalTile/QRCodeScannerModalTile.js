@@ -95,7 +95,7 @@ const styles = StyleSheet.create({
     top: verticalScale(125),
     borderWidth: 3,
     borderColor: colors.WHITE,
-    //borderRadius: 20,
+    //tborderRadius: 20,
     borderStyle: "dashed",
     zIndex: 1,
   },
