@@ -127,7 +127,7 @@ const MeScreen = ({ setIsSignedIn }) => {
             {profile["userPrincipal"].toText()}
           </Text>
         </View>
-        {
+        {/*
           <TouchableOpacity onPress={handleEdit} style={styles.editButton}>
             {editingLoading ? (
               <CustomActivityIndicator />
@@ -137,7 +137,7 @@ const MeScreen = ({ setIsSignedIn }) => {
               </Text>
             )}
           </TouchableOpacity>
-        }
+            */}
       </View>
       <TouchableOpacity onPress={handleDelete} style={styles.button}>
         <Text style={styles.buttonText}>Burn</Text>

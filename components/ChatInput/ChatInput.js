@@ -11,41 +11,25 @@ import { encryptSymmetric } from "../../utility/utils";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ed25519KeyIdentity } from "@dfinity/identity";
 
-const ChatInput = ({ id, chatKey, data, setData, pause, setPause }) => {
+const ChatInput = ({ id, chatKey }) => {
   const [message, setMessage] = useState("");
   const [sending, setSending] = useState(false);
   const inputRef = useRef();
 
   const sendMessage = async () => {
-    setSending(true);
+    if (message != "") {
+      setSending(true);
 
-    const encryptedMessage = await encryptSymmetric(message, chatKey);
-    const messageContent = {
-      message: encryptedMessage,
-    };
-    await (await getBackendActor()).sendMessage(id, messageContent);
-
-    const myPrincipal = Ed25519KeyIdentity.fromParsedJson(
-      JSON.parse(await AsyncStorage.getItem("@identity"))
-    ).getPrincipal();
-    const messageId = BigInt(Math.floor(Math.random() * 2 ** 64));
-    const time = BigInt(Date.now()) * 1000000n;
-    const tempMessage = {
-      content: {
+      const encryptedMessage = await encryptSymmetric(message, chatKey);
+      const messageContent = {
         message: encryptedMessage,
-      },
-      id: messageId,
-      sender: myPrincipal,
-      time: time,
-    };
-    if (pause) {
-      setPause((pause) => [...pause, tempMessage]);
-    } else {
-      setPause([tempMessage]);
+      };
+      await (await getBackendActor()).sendMessage(id, messageContent);
+      inputRef.current.clear();
+      setMessage("");
+      
+      setSending(false);
     }
-
-    setSending(false);
-    inputRef.current.clear();
   };
 
   return (
@@ -61,7 +45,7 @@ const ChatInput = ({ id, chatKey, data, setData, pause, setPause }) => {
           style={styles.input}
         />
       </View>
-      <TouchableOpacity onPress={sendMessage} style={styles.buttonContainer}>
+      <TouchableOpacity disabled={message == ""} onPress={sendMessage} style={styles.buttonContainer}>
         {sending ? (
           <CustomActivityIndicator />
         ) : (
@@ -91,7 +75,7 @@ const styles = StyleSheet.create({
   },
   input: {
     color: colors.WHITE,
-    fontSize: 13,
+    fontSize: 14,
     fontFamily: "Poppins-Regular",
     width: "100%",
     paddingLeft: 10,
@@ -99,7 +83,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
   },
   buttonContainer: {
-    borderRadius: 15,
+    borderRadius: 20,
     width: 52,
     height: 52,
     backgroundColor: colors.DARK_PURPLE,

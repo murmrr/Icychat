@@ -25,54 +25,12 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 const ConversationScreen = ({ navigation, route }) => {
   const { id, chatKey, principals } = route.params;
   const [data, setData] = useState(null);
-  const [pause, setPause] = useState(false);
 
   const insets = useSafeAreaInsets();
 
-  const containsPaused = (tempData, tempPaused) => {
-    for (var i = 0; i < tempData.length; ++i) {
-      if (
-        tempData[i]["content"]["message"] == tempPaused["content"]["message"]
-      ) {
-        return true;
-      }
-    }
-    return false;
-  };
-
-  const containsAllPaused = (tempData) => {
-    for (var i = 0; i < pause.length; ++i) {
-      if (!containsPaused(tempData, pause[i])) {
-        return false;
-      }
-    }
-    return true;
-  };
-
-  useEffect(() => {
-    if (pause) {
-      const tempData = data;
-      pause.forEach((temp) => {
-        tempData["messages"].push(temp);
-      });
-      setData(tempData);
-    }
-  }, [pause]);
-
   useInterval(async () => {
-    const tempData = (await (await getBackendActor()).getMyChat(id))["ok"];
-    if (pause) {
-      if (containsAllPaused(tempData["messages"])) {
-        setData(tempData);
-        setPause(false);
-      } else {
-        pause.forEach((temp) => {
-          tempData["messages"].push(temp);
-        });
-        setData(tempData);
-      }
-    }
-    setData(tempData);
+    const response = await (await getBackendActor()).getMyChat(id);
+    setData(response["ok"]);
   }, POLLING_INTERVAL);
 
   useLayoutEffect(() => {
@@ -148,10 +106,6 @@ const ConversationScreen = ({ navigation, route }) => {
         <ChatInput
           id={id}
           chatKey={chatKey}
-          data={data}
-          setData={setData}
-          pause={pause}
-          setPause={setPause}
         />
       </KeyboardAvoidingView>
     </View>

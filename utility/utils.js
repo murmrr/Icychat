@@ -36,7 +36,7 @@ export const convertTime = (bigTime) => {
 export const generateAsymmetricKeys = async () => {
   return await OpenPGP.generate({
     keyOptions: {
-      rsaBits: 6144,
+      rsaBits: 4096,
     },
   });
 };
