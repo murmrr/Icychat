@@ -15,7 +15,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.murmrr.CrypchatApp"
@@ -31,8 +33,17 @@
     },
     "extra": {
       "eas": {
-        "projectId": "d234e3ae-357f-44e6-bb85-493c8144b858"
+        "projectId": "d234e3ae-357f-44e6-bb85-493c8144b858",
+        "oneSignalAppId": "7be29e7e-2eaa-4528-b074-6861af02d5ee"
       }
-    }
+    },
+    "plugins": [
+      [
+        "onesignal-expo-plugin",
+        {
+          "mode": "development"
+        }
+      ]
+    ]
   }
 }
