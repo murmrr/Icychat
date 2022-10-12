@@ -99,7 +99,7 @@ const FindBarModalTile = ({
         {profile ? (
           <View style={styles.profileContainer}>
             <CustomProfilePicture
-              principal={profile["userPrincipal"]}
+              principal={principal}
               style={styles.avatar}
             />
             <Text style={styles.username}>{profile["username"]}</Text>
@@ -166,7 +166,7 @@ const styles = StyleSheet.create({
     marginTop: verticalScale(30),
     width: scale(280),
     height: scale(50),
-    backgroundColor: colors.LIGHT_SECONDARY,
+    backgroundColor: colors.BLUE,
     borderRadius: 15,
     justifyContent: "center",
   },
