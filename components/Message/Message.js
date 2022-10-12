@@ -142,7 +142,7 @@ const styles = StyleSheet.create({
     marginTop: -5,
   }),
   avatarTitle: (isMe) => ({
-    color: isMe ? colors.EXTRA_LIGHT_PRIMARY : colors.DARK_SECONDARY,
+    color: isMe ? colors.HOT_PINK : colors.ORANGE,
     fontSize: 15,
   }),
   messageTime: (isMe) => ({

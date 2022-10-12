@@ -19,7 +19,9 @@ export default {
   LIGHT_SECONDARY: "#FFC23C",
   DARK_SECONDARY: "#FFB209",
   */
+  ORANGE: "#db8d3a",
   DARK_PRIMARY: "#181A20",
+  HOT_PINK: "#FA2FB5",
   GRAY: "#9D9AAC",
   WHITE: "#fff",
   BLACK: "#000",
