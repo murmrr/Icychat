@@ -1,6 +1,15 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Cache } from "react-native-cache";
 
+export const PROFILE_PICTURE_CACHE = new Cache({
+  namespace: "profileCache",
+  policy: {
+    maxEntries: 50000,
+    stdTTL: 0,
+  },
+  backend: AsyncStorage,
+});
+
 export const PROFILE_CACHE = new Cache({
   namespace: "profileCache",
   policy: {
