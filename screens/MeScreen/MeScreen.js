@@ -13,7 +13,11 @@ import colors from "../../data/colors";
 import { POLLING_INTERVAL } from "../../data/constants";
 import { getBackendActor, makeBackendActor } from "../../lib/actor";
 import { scale, verticalScale } from "../../utility/scalingUtils";
-import { useInterval } from "../../utility/utils";
+import {
+  parseProfile,
+  stringifyProfile,
+  useInterval,
+} from "../../utility/utils";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import CustomProfilePicture from "../../components/CustomProfilePicture/CustomProfilePicture";
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -28,6 +32,7 @@ import Toast from "react-native-root-toast";
 import * as Haptics from "expo-haptics";
 import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
 import { Ed25519KeyIdentity, Ed25519PublicKey } from "@dfinity/identity";
+import { Principal } from "@dfinity/principal";
 
 const MeScreen = ({ setIsSignedIn }) => {
   const [profile, setProfile] = useState(null);
@@ -35,8 +40,18 @@ const MeScreen = ({ setIsSignedIn }) => {
   const context = useContext(MainContext);
 
   useInterval(async () => {
-    const response = await makeBackendActor(context).getMyProfile();
-    setProfile(response["ok"]);
+    let temp = await getFromCache(PROFILE_CACHE, context);
+    if (temp) {
+      setProfile(parseProfile(temp));
+    } else {
+      const response = await makeBackendActor(context).getMyProfile();
+      setProfile(response["ok"]);
+      await addToCache(
+        PROFILE_CACHE,
+        context,
+        stringifyProfile(response["ok"])
+      );
+    }
   }, POLLING_INTERVAL);
 
   const handleDelete = async () => {

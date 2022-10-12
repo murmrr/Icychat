@@ -4,7 +4,11 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { POLLING_INTERVAL } from "../../data/constants";
 import { getBackendActor, makeBackendActor } from "../../lib/actor";
 import { moderateScale, scale } from "../../utility/scalingUtils";
-import { useInterval } from "../../utility/utils";
+import {
+  parseProfile,
+  stringifyProfile,
+  useInterval,
+} from "../../utility/utils";
 import FindBarModalTile from "../FindBarModalTile/FindBarModalTile";
 import colors from "../../data/colors";
 import { BlurView } from "expo-blur";
@@ -22,11 +26,15 @@ const FindBar = ({ id, chatKey, principal, forAdd }) => {
   useEffect(async () => {
     let temp = await getFromCache(PROFILE_CACHE, principal);
     if (temp) {
-      setProfile(temp);
+      setProfile(parseProfile(temp));
     } else {
       const response = await makeBackendActor(context).getProfile(principal);
       setProfile(response["ok"]);
-      await addToCache(PROFILE_CACHE, principal, response["ok"]);
+      await addToCache(
+        PROFILE_CACHE,
+        principal,
+        stringifyProfile(response["ok"])
+      );
     }
   }, []);
 

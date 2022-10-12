@@ -4,6 +4,7 @@ import { NativeModules, Platform } from "react-native";
 import Aes from "react-native-aes-crypto";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import OpenPGP from "react-native-fast-openpgp";
+import { Principal } from "@dfinity/principal";
 var lz = require("lz-string");
 
 export const useInterval = (callback, delay) => {
@@ -82,6 +83,20 @@ export const decryptSymmetric = async (input, key) => {
   );
 
   return decrypted;
+};
+
+export const stringifyProfile = (input) => {
+  const stringified = JSON.stringify(input, (key, value) => {
+    return key == "userPrincipal" ? value.toText() : value;
+  });
+  return stringified;
+};
+
+export const parseProfile = (input) => {
+  const parsed = JSON.parse(input, (key, value) => {
+    return key == "userPrincipal" ? Principal.fromText(value) : value;
+  });
+  return parsed;
 };
 
 cyrb128 = (str) => {

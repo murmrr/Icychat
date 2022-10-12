@@ -23,7 +23,7 @@ const FindScreen = ({ forAdd, navigation, route }) => {
   const id = forAdd ? route.params.id : null;
   const chatKey = forAdd ? route.params.chatKey : null;
 
-  const [allUsers, setAllUsers] = useState(null);
+  const [allUsers, setAllUsers] = useState([]);
   const [query, setQuery] = useState("");
   const [searchBarLoading, setSearchBarLoading] = useState(false);
   const [qrModalVisible, setQrModalVisible] = useState(false);

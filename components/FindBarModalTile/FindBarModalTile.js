@@ -14,6 +14,8 @@ import {
   encryptAsymmetric,
   generateSymmetricKey,
   getMyPublicKey,
+  parseProfile,
+  stringifyProfile,
   useInterval,
 } from "../../utility/utils";
 import colors from "../../data/colors";
@@ -39,11 +41,15 @@ const FindBarModalTile = ({
   useEffect(async () => {
     let temp = await getFromCache(PROFILE_CACHE, principal);
     if (temp) {
-      setProfile(temp);
+      setProfile(parseProfile(temp));
     } else {
       const response = await makeBackendActor(context).getProfile(principal);
       setProfile(response["ok"]);
-      await addToCache(PROFILE_CACHE, principal, response["ok"]);
+      await addToCache(
+        PROFILE_CACHE,
+        principal,
+        stringifyProfile(response["ok"])
+      );
     }
   }, []);
 
@@ -98,10 +104,7 @@ const FindBarModalTile = ({
       <View style={styles.container(profile)}>
         {profile ? (
           <View style={styles.profileContainer}>
-            <CustomProfilePicture
-              principal={principal}
-              style={styles.avatar}
-            />
+            <CustomProfilePicture principal={principal} style={styles.avatar} />
             <Text style={styles.username}>{profile["username"]}</Text>
             <Text style={styles.principal}>{principal.toText()}</Text>
             <TouchableOpacity onPress={createChat} style={styles.button}>

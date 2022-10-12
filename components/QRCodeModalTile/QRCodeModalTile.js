@@ -7,7 +7,11 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ed25519KeyIdentity } from "@dfinity/identity";
 import RNQRGenerator from "rn-qr-generator";
 import { Principal } from "@dfinity/principal";
-import { useInterval } from "../../utility/utils";
+import {
+  parseProfile,
+  stringifyProfile,
+  useInterval,
+} from "../../utility/utils";
 import { POLLING_INTERVAL } from "../../data/constants";
 import { getBackendActor, makeBackendActor } from "../../lib/actor";
 import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
@@ -21,8 +25,18 @@ const QRCodeModalTile = ({ setModalVisible }) => {
   const context = useContext(MainContext);
 
   useEffect(async () => {
-    const response = await makeBackendActor(context).getMyProfile();
-    setProfile(response["ok"]);
+    let temp = await getFromCache(PROFILE_CACHE, context);
+    if (temp) {
+      setProfile(parseProfile(temp));
+    } else {
+      const response = await makeBackendActor(context).getMyProfile();
+      setProfile(response["ok"]);
+      await addToCache(
+        PROFILE_CACHE,
+        context,
+        stringifyProfile(response["ok"])
+      );
+    }
   }, []);
 
   useEffect(async () => {

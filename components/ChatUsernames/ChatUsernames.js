@@ -4,7 +4,11 @@ import { POLLING_INTERVAL } from "../../data/constants";
 import { getBackendActor, makeBackendActor } from "../../lib/actor";
 import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
 import { addToCache, getFromCache, PROFILE_CACHE } from "../../utility/caches";
-import { useInterval } from "../../utility/utils";
+import {
+  parseProfile,
+  stringifyProfile,
+  useInterval,
+} from "../../utility/utils";
 import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
 
 const ChatUsernamesSingle = ({ principal, style }) => {
@@ -15,11 +19,15 @@ const ChatUsernamesSingle = ({ principal, style }) => {
   useEffect(async () => {
     let temp = await getFromCache(PROFILE_CACHE, principal);
     if (temp) {
-      setOtherUserProfile(temp);
+      setOtherUserProfile(parseProfile(temp));
     } else {
       const response = await makeBackendActor(context).getProfile(principal);
       setOtherUserProfile(response["ok"]);
-      await addToCache(PROFILE_CACHE, principal, response["ok"]);
+      await addToCache(
+        PROFILE_CACHE,
+        principal,
+        stringifyProfile(response["ok"])
+      );
     }
   }, []);
 
@@ -41,13 +49,19 @@ const ChatUsernamesMultiple = ({ principals, style }) => {
     principals.forEach(async (principal) => {
       let temp = await getFromCache(PROFILE_CACHE, principal);
       if (temp) {
-        setOtherUserProfiles(otherUserProfiles.set(principal.toText(), temp));
+        setOtherUserProfiles(
+          otherUserProfiles.set(principal.toText(), parseProfile(temp))
+        );
       } else {
         const response = await makeBackendActor(context).getProfile(principal);
         setOtherUserProfiles(
           otherUserProfiles.set(principal.toText(), response["ok"])
         );
-        await addToCache(PROFILE_CACHE, principal, response["ok"]);
+        await addToCache(
+          PROFILE_CACHE,
+          principal,
+          stringifyProfile(response["ok"])
+        );
       }
     });
   }, POLLING_INTERVAL);

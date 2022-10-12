@@ -6,6 +6,7 @@ import { scale } from "../../utility/scalingUtils";
 import {
   convertTime,
   decryptSymmetric,
+  parseProfile,
   useInterval,
 } from "../../utility/utils";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -40,13 +41,17 @@ const Message = ({ message, chatKey }) => {
       setIsMe(false);
       let temp = await getFromCache(PROFILE_CACHE, message["sender"]);
       if (temp) {
-        setProfile(temp);
+        setProfile(parseProfile(temp));
       } else {
         const response = await makeBackendActor(context).getProfile(
           message["sender"]
         );
         setProfile(response["ok"]);
-        await addToCache(PROFILE_CACHE, message["sender"], response["ok"]);
+        await addToCache(
+          PROFILE_CACHE,
+          message["sender"],
+          stringify(response["ok"])
+        );
       }
     }
   }, []);
