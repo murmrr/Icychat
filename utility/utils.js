@@ -7,7 +7,7 @@ import OpenPGP from "react-native-fast-openpgp";
 import { Principal } from "@dfinity/principal";
 import { GENERAL_CACHE, getFromCache, storage } from "./caches";
 import CryptoJS from 'crypto-js';
-var lz = require("lz-string");
+import crc32 from 'buffer-crc32';
 
 export const useInterval = (callback, delay) => {
   const savedCallback = useRef();
@@ -254,6 +254,16 @@ const wordArrayToByteArray = (wordArray, length) => {
   return [].concat.apply([], result);
 };
 
+const intToHex = (val) => {
+  return val < 0 ? (Number(val) >>> 0).toString(16) : Number(val).toString(16);
+}
+
+const generateChecksum = (hash) => {
+  const crc = crc32.unsigned(Buffer.from(hash));
+  const hex = intToHex(crc);
+  return hex.padStart(8, '0');
+};
+
 export const computeAccountId = (principal, subaccount, cryptoAdapter = CryptoJS) => {
   const sha = cryptoAdapter.algo.SHA224.create();
   sha.update("\x0Aaccount-id"); // Internally parsed with UTF-8, like go does
@@ -271,7 +281,7 @@ export const computeAccountId = (principal, subaccount, cryptoAdapter = CryptoJS
   /// characters are valid in the input string and can even be mixed.
   /// [ic/rs/rosetta-api/ledger_canister/src/account_identifier.rs]
   const byteArray = wordArrayToByteArray(hash, 28);
-  const checksum = "asd"//generateChecksum(byteArray);
+  const checksum = generateChecksum(byteArray);
   const val = checksum + hash.toString();
 
   return val;

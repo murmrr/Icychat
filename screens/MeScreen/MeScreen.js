@@ -38,6 +38,7 @@ import { Principal } from "@dfinity/principal";
 
 const MeScreen = ({ navigation, setIsSignedIn }) => {
   const [profile, setProfile] = useState(null);
+  const [showPrincipal, setShowPrincipal] = useState(true);
 
   const context = useContext(MainContext);
 
@@ -110,9 +111,14 @@ const MeScreen = ({ navigation, setIsSignedIn }) => {
         </View>
         <View style={styles.textContainer}>
           <Text style={styles.username}>{profile["username"]}</Text>
+          <View style={styles.principalContainer}>
           <Text style={styles.principal}>
-            {profile["userPrincipal"].toText()}
+            {showPrincipal ? profile["userPrincipal"].toText() : computeAccountId(profile["userPrincipal"])}
           </Text>
+          <TouchableOpacity onPress={() => setShowPrincipal(!showPrincipal)}>
+          <Icon name={showPrincipal ? "send" : "bank"} size={18} color={colors.WHITE} style={{padding: 10}}/>
+          </TouchableOpacity>
+          </View>
         </View>
       </View>
       <TouchableOpacity onPress={handleDelete} style={styles.button}>
@@ -161,12 +167,19 @@ const styles = StyleSheet.create({
     width: scale(225),
     alignSelf: "center",
   },
+  principalContainer: {
+    flexDirection: "row",
+    //borderWidth: 1,
+    justifyContent: "space-between",
+    width: scale(300),
+    alignItems: "center",
+    //marginTop: verticalScale(6),
+  },
   principal: {
     textAlign: "center",
     color: colors.GRAY,
-    fontSize: 9,
+    fontSize: 8,
     fontFamily: "Poppins-Regular",
-    marginTop: verticalScale(6),
   },
   editButton: {
     marginTop: verticalScale(25),

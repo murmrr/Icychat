@@ -30,6 +30,8 @@
     "big-integer": "^1.6.51",
     "bls-patch": "./bls-patch",
     "buffer": "^6.0.3",
+    "buffer-crc32": "^0.2.13",
+    "crc-32": "^1.2.2",
     "crypto-js": "3.3.0",
     "expo": "~44.0.0",
     "expo-asset": "~8.4.6",
