@@ -1,13 +1,14 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import { useLayoutEffect } from "react";
 import colors from "../../data/colors";
-import ChatsScreen from "../../screens/ChatsScreen/ChatsScreen";
-import FindScreen from "../../screens/FindScreen/FindScreen";
-import OneOnOneChatScreen from "../../screens/ConversationScreen/ConversationScreen";
+import AboutScreen from "../../screens/AboutScreen/AboutScreen";
+import InfoScreen from "../../screens/InfoScreen/InfoScreen";
+import MeScreen from "../../screens/MeScreen/MeScreen";
+import SettingsScreen from "../../screens/SettingsScreen/SettingsScreen";
 
 const Stack = createStackNavigator();
 
-const ChatsNavigation = ({ navigation }) => {
+const InfoNavigation = ({ navigation, setIsSignedIn }) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: false,
@@ -17,7 +18,6 @@ const ChatsNavigation = ({ navigation }) => {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerTitle: "Chats",
         headerStyle: {
           backgroundColor: colors.BLUE,
         },
@@ -32,13 +32,11 @@ const ChatsNavigation = ({ navigation }) => {
         headerShadowVisible: false,
       }}
     >
-      <Stack.Screen name="ChatsScreen" component={ChatsScreen} />
-      <Stack.Screen name="OneOnOneChat" component={OneOnOneChatScreen} />
-      <Stack.Screen name="Add">
-        {(props) => <FindScreen forAdd={true} {...props} />}
-      </Stack.Screen>
+      <Stack.Screen name="Info" component={InfoScreen} />
+      <Stack.Screen name="Settings" component={SettingsScreen} />
+      <Stack.Screen name="About" component={AboutScreen} />
     </Stack.Navigator>
   );
 };
 
-export default ChatsNavigation;
+export default InfoNavigation;

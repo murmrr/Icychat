@@ -1,13 +1,13 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import { useLayoutEffect } from "react";
 import colors from "../../data/colors";
-import ChatsScreen from "../../screens/ChatsScreen/ChatsScreen";
-import FindScreen from "../../screens/FindScreen/FindScreen";
-import OneOnOneChatScreen from "../../screens/ConversationScreen/ConversationScreen";
+import InfoScreen from "../../screens/InfoScreen/InfoScreen";
+import MeScreen from "../../screens/MeScreen/MeScreen";
+import InfoNavigation from "../InfoNavigation/InfoNavigation";
 
 const Stack = createStackNavigator();
 
-const ChatsNavigation = ({ navigation }) => {
+const MeNavigation = ({ navigation, setIsSignedIn }) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: false,
@@ -17,7 +17,7 @@ const ChatsNavigation = ({ navigation }) => {
   return (
     <Stack.Navigator
       screenOptions={{
-        headerTitle: "Chats",
+        headerTitle: "Me",
         headerStyle: {
           backgroundColor: colors.BLUE,
         },
@@ -32,13 +32,12 @@ const ChatsNavigation = ({ navigation }) => {
         headerShadowVisible: false,
       }}
     >
-      <Stack.Screen name="ChatsScreen" component={ChatsScreen} />
-      <Stack.Screen name="OneOnOneChat" component={OneOnOneChatScreen} />
-      <Stack.Screen name="Add">
-        {(props) => <FindScreen forAdd={true} {...props} />}
+      <Stack.Screen name="Me">
+        {(props) => <MeScreen setIsSignedIn={setIsSignedIn} {...props} />}
       </Stack.Screen>
+      <Stack.Screen name="InfoNavigation" component={InfoNavigation} />
     </Stack.Navigator>
   );
 };
 
-export default ChatsNavigation;
+export default MeNavigation;

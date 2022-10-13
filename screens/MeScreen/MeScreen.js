@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import {
   Alert,
   KeyboardAvoidingView,
@@ -35,10 +35,28 @@ import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
 import { Ed25519KeyIdentity, Ed25519PublicKey } from "@dfinity/identity";
 import { Principal } from "@dfinity/principal";
 
-const MeScreen = ({ setIsSignedIn }) => {
+const MeScreen = ({ navigation, setIsSignedIn }) => {
   const [profile, setProfile] = useState(null);
 
   const context = useContext(MainContext);
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: (props) => (
+        <TouchableOpacity
+          onPress={() => navigation.navigate("InfoNavigation")}
+          style={{
+            paddingHorizontal: 20,
+            padding: 10,
+            flexDirection: "row",
+            alignItems: "center",
+          }}
+        >
+          <Icon name="info-circle" size={20} color={colors.WHITE} />
+        </TouchableOpacity>
+      ),
+    });
+  }, []);
 
   useInterval(async () => {
     let temp = getFromCache(PROFILE_CACHE, context);

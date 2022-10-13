@@ -6,6 +6,8 @@ import ChatsNavigation from "../ChatsNavigation/ChatsNavigation";
 import colors from "../../data/colors";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import TabBarIcon from "../../components/TabBarIcon/TabBarIcon";
+import InfoNavigation from "../MeNavigation/MeNavigation";
+import MeNavigation from "../MeNavigation/MeNavigation";
 
 export const MainContext = createContext("");
 
@@ -46,7 +48,7 @@ const MainNavigation = ({ identity, setIsSignedIn }) => {
         }}
       >
         <Tab.Screen
-          name="Chats"
+          name="ChatsNavigation"
           component={ChatsNavigation}
           options={{
             tabBarIcon: ({ focused }) => (
@@ -70,7 +72,7 @@ const MainNavigation = ({ identity, setIsSignedIn }) => {
           }}
         />
         <Tab.Screen
-          name="Me"
+          name="MeNavigation"
           options={{
             tabBarIcon: ({ focused }) => (
               <TabBarIcon
@@ -80,7 +82,7 @@ const MainNavigation = ({ identity, setIsSignedIn }) => {
             ),
           }}
         >
-          {(props) => <MeScreen setIsSignedIn={setIsSignedIn} />}
+          {(props) => <MeNavigation setIsSignedIn={setIsSignedIn} {...props} />}
         </Tab.Screen>
       </Tab.Navigator>
     </MainContext.Provider>
