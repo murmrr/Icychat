@@ -18,7 +18,13 @@ import ChatUsernames from "../ChatUsernames/ChatUsernames";
 import OpenPGP from "react-native-fast-openpgp";
 import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { addToCache, getFromCache, MESSAGE_CACHE } from "../../utility/caches";
+import {
+  addToCache,
+  GENERAL_CACHE,
+  getFromCache,
+  MESSAGE_CACHE,
+  storage,
+} from "../../utility/caches";
 
 const ChatBar = ({ chatHeader }) => {
   const [decryptedMessage, setDecryptedMessage] = useState(null);
@@ -27,11 +33,11 @@ const ChatBar = ({ chatHeader }) => {
 
   useEffect(async () => {
     const myChatKey = chatHeader["key"];
-    const privateKey = await AsyncStorage.getItem("@privateKey");
+    const privateKey = getFromCache(GENERAL_CACHE, "@privateKey");
     const chatKey = await decryptAsymmetric(myChatKey, privateKey);
 
     if (chatHeader["lastMessage"].length > 0) {
-      let temp = await getFromCache(
+      let temp = getFromCache(
         MESSAGE_CACHE,
         chatHeader["lastMessage"][0]["content"]["message"]
       );
@@ -43,7 +49,7 @@ const ChatBar = ({ chatHeader }) => {
           chatKey
         );
         setDecryptedMessage(decryptedMessage);
-        await addToCache(
+        addToCache(
           MESSAGE_CACHE,
           chatHeader["lastMessage"][0]["content"]["message"],
           decryptedMessage
@@ -58,7 +64,7 @@ const ChatBar = ({ chatHeader }) => {
     <TouchableOpacity
       onPress={async () => {
         const myChatKey = chatHeader["key"];
-        const privateKey = await AsyncStorage.getItem("@privateKey");
+        const privateKey = getFromCache(GENERAL_CACHE, "@privateKey");
         const chatKey = await decryptAsymmetric(myChatKey, privateKey);
 
         navigation.navigate("OneOnOneChat", {

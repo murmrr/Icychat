@@ -15,8 +15,15 @@ import {
 import { POLLING_INTERVAL } from "../../data/constants";
 import { getBackendActor, makeBackendActor } from "../../lib/actor";
 import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
-import { addToCache, getFromCache, PROFILE_CACHE } from "../../utility/caches";
+import {
+  addToCache,
+  GENERAL_CACHE,
+  getFromCache,
+  PROFILE_CACHE,
+  storage,
+} from "../../utility/caches";
 import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 const QRCodeModalTile = ({ setModalVisible }) => {
   const [uri, setUri] = useState(null);
@@ -25,28 +32,24 @@ const QRCodeModalTile = ({ setModalVisible }) => {
   const context = useContext(MainContext);
 
   useEffect(async () => {
-    let temp = await getFromCache(PROFILE_CACHE, context);
+    let temp = getFromCache(PROFILE_CACHE, context);
     if (temp) {
       setProfile(parseProfile(temp));
     } else {
       const response = await makeBackendActor(context).getMyProfile();
       setProfile(response["ok"]);
-      await addToCache(
-        PROFILE_CACHE,
-        context,
-        stringifyProfile(response["ok"])
-      );
+      addToCache(PROFILE_CACHE, context, stringifyProfile(response["ok"]));
     }
   }, []);
 
   useEffect(async () => {
-    let value = await AsyncStorage.getItem("@identity");
+    let value = getFromCache(GENERAL_CACHE, "@identity");
     if (value != null) {
       let identity = Ed25519KeyIdentity.fromParsedJson(JSON.parse(value))
         .getPrincipal()
         .toText();
 
-      const { uri, width, height, base64 } = await RNQRGenerator.generate({
+      const { uri } = await RNQRGenerator.generate({
         value: identity,
         height: 280,
         width: 280,
@@ -56,7 +59,7 @@ const QRCodeModalTile = ({ setModalVisible }) => {
   }, []);
 
   return (
-    <TouchableOpacity
+    <TouchableWithoutFeedback
       onPress={() => {
         setModalVisible(false);
       }}
@@ -79,7 +82,7 @@ const QRCodeModalTile = ({ setModalVisible }) => {
           <CustomActivityIndicator />
         )}
       </View>
-    </TouchableOpacity>
+    </TouchableWithoutFeedback>
   );
 };
 

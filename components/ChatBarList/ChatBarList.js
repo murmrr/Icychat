@@ -7,11 +7,21 @@ import {
   makeBackendActor,
 } from "../../lib/actor";
 import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
-import { parseChatHeaders, stringifyChatHeaders, useInterval } from "../../utility/utils";
+import {
+  parseChatHeaders,
+  stringifyChatHeaders,
+  useInterval,
+} from "../../utility/utils";
 import ChatBar from "../ChatBar/ChatBar";
 import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
 import ItemDivider from "../ItemDivider/ItemDivider";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import {
+  addToCache,
+  GENERAL_CACHE,
+  getFromCache,
+  storage,
+} from "../../utility/caches";
 
 const ChatBarList = () => {
   const [data, setData] = useState(null);
@@ -19,17 +29,21 @@ const ChatBarList = () => {
   const context = useContext(MainContext);
 
   useEffect(async () => {
-    let value = await AsyncStorage.getItem("@myChatHeaders");
+    let value = getFromCache(GENERAL_CACHE, "@myChatHeaders");
     if (value) {
       setData(parseChatHeaders(value));
     }
-  }, [])
+  }, []);
 
   useInterval(async () => {
     const response = await makeBackendActor(context).getMyChatHeaders();
     if (response["ok"]) {
       setData(response["ok"]);
-      await AsyncStorage.setItem("@myChatHeaders", stringifyChatHeaders(response["ok"]));
+      addToCache(
+        GENERAL_CACHE,
+        "@myChatHeaders",
+        stringifyChatHeaders(response["ok"])
+      );
     }
   }, POLLING_INTERVAL);
 

@@ -7,6 +7,7 @@ import {
   useSafeAreaInsets,
 } from "react-native-safe-area-context";
 import { Ed25519KeyIdentity } from "@dfinity/identity";
+import { GENERAL_CACHE, getFromCache, storage } from "../../utility/caches";
 
 const AppNavigation = () => {
   const [isSignedIn, setIsSignedIn] = useState(false);
@@ -14,7 +15,7 @@ const AppNavigation = () => {
 
   useEffect(async () => {
     try {
-      let value = await AsyncStorage.getItem("@identity");
+      let value = getFromCache(GENERAL_CACHE, "@identity");
       if (value != null) {
         setIsSignedIn(true);
       }
@@ -23,7 +24,7 @@ const AppNavigation = () => {
 
   useEffect(async () => {
     if (isSignedIn) {
-      let value = await AsyncStorage.getItem("@identity");
+      let value = getFromCache(GENERAL_CACHE, "@identity");
       setIdentity(Ed25519KeyIdentity.fromParsedJson(JSON.parse(value)));
     }
   }, [isSignedIn]);

@@ -17,17 +17,13 @@ const ChatUsernamesSingle = ({ principal, style }) => {
   const context = useContext(MainContext);
 
   useEffect(async () => {
-    let temp = await getFromCache(PROFILE_CACHE, principal);
+    let temp = getFromCache(PROFILE_CACHE, principal);
     if (temp) {
       setOtherUserProfile(parseProfile(temp));
     } else {
       const response = await makeBackendActor(context).getProfile(principal);
       setOtherUserProfile(response["ok"]);
-      await addToCache(
-        PROFILE_CACHE,
-        principal,
-        stringifyProfile(response["ok"])
-      );
+      addToCache(PROFILE_CACHE, principal, stringifyProfile(response["ok"]));
     }
   }, []);
 
@@ -47,7 +43,7 @@ const ChatUsernamesMultiple = ({ principals, style }) => {
 
   useInterval(async () => {
     principals.forEach(async (principal) => {
-      let temp = await getFromCache(PROFILE_CACHE, principal);
+      let temp = getFromCache(PROFILE_CACHE, principal);
       if (temp) {
         setOtherUserProfiles(
           otherUserProfiles.set(principal.toText(), parseProfile(temp))
@@ -57,11 +53,7 @@ const ChatUsernamesMultiple = ({ principals, style }) => {
         setOtherUserProfiles(
           otherUserProfiles.set(principal.toText(), response["ok"])
         );
-        await addToCache(
-          PROFILE_CACHE,
-          principal,
-          stringifyProfile(response["ok"])
-        );
+        addToCache(PROFILE_CACHE, principal, stringifyProfile(response["ok"]));
       }
     });
   }, POLLING_INTERVAL);

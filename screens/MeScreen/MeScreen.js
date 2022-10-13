@@ -27,6 +27,7 @@ import {
   clearAllCaches,
   getFromCache,
   PROFILE_CACHE,
+  storage,
 } from "../../utility/caches";
 import Toast from "react-native-root-toast";
 import * as Haptics from "expo-haptics";
@@ -40,17 +41,13 @@ const MeScreen = ({ setIsSignedIn }) => {
   const context = useContext(MainContext);
 
   useInterval(async () => {
-    let temp = await getFromCache(PROFILE_CACHE, context);
+    let temp = getFromCache(PROFILE_CACHE, context);
     if (temp) {
       setProfile(parseProfile(temp));
     } else {
       const response = await makeBackendActor(context).getMyProfile();
       setProfile(response["ok"]);
-      await addToCache(
-        PROFILE_CACHE,
-        context,
-        stringifyProfile(response["ok"])
-      );
+      addToCache(PROFILE_CACHE, context, stringifyProfile(response["ok"]));
     }
   }, POLLING_INTERVAL);
 
@@ -68,9 +65,7 @@ const MeScreen = ({ setIsSignedIn }) => {
           onPress: async () => {
             try {
               await makeBackendActor(context).burnAccount();
-              await clearAllCaches();
-              await AsyncStorage.removeItem("@identity");
-              await AsyncStorage.removeItem("@privateKey");
+              clearAllCaches();
               setIsSignedIn(false);
             } catch (exception) {}
           },

@@ -43,11 +43,9 @@ import Laser from "../../assets/trait-layers/eyes/Laser.png";
 import Money from "../../assets/trait-layers/eyes/Money.png";
 import Sad from "../../assets/trait-layers/eyes/Sad.png";
 
-import Airpods from "../../assets/trait-layers/miscellaneous/Airpods.png";
 import Bubblegum from "../../assets/trait-layers/miscellaneous/Bubblegum.png";
 import Cigar from "../../assets/trait-layers/miscellaneous/Cigar.png";
 import DevilOnShoulder from "../../assets/trait-layers/miscellaneous/Devil-On-Shoulder.png";
-import FeatherPenInEar from "../../assets/trait-layers/miscellaneous/Feather-Pen-In-Ear.png";
 import GoldChain from "../../assets/trait-layers/miscellaneous/Gold-Chain.png";
 import Joint from "../../assets/trait-layers/miscellaneous/Joint.png";
 import None from "../../assets/trait-layers/miscellaneous/None.png";
@@ -106,11 +104,9 @@ const CustomProfilePicture = ({ principal, style }) => {
     Sad,
   ];
   const miscellaneous = [
-    Airpods,
     Bubblegum,
     Cigar,
     DevilOnShoulder,
-    FeatherPenInEar,
     GoldChain,
     Joint,
     None,
@@ -119,7 +115,7 @@ const CustomProfilePicture = ({ principal, style }) => {
 
   useEffect(async () => {
     const rand = randomFromPrincipal(principal);
-    let temp = await getFromCache(PROFILE_PICTURE_CACHE, rand);
+    let temp = getFromCache(PROFILE_PICTURE_CACHE, rand);
     if (temp) {
       setUri(temp);
     } else {
@@ -153,7 +149,7 @@ const CustomProfilePicture = ({ principal, style }) => {
         1
       );
       setUri(uri);
-      await addToCache(PROFILE_PICTURE_CACHE, rand, uri);
+      addToCache(PROFILE_PICTURE_CACHE, rand, uri);
     }
   }, []);
 

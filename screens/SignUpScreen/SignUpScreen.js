@@ -21,6 +21,7 @@ import WavyBackground from "react-native-wavy-background";
 import CustomActivityIndicator from "../../components/CustomActivityIndicator/CustomActivityIndicator";
 import OpenPGP from "react-native-fast-openpgp";
 import { generateAsymmetricKeys } from "../../utility/utils";
+import { addToCache, GENERAL_CACHE, storage } from "../../utility/caches";
 
 const SignUpScreen = ({ setIsSignedIn }) => {
   const [username, setUsername] = useState("");
@@ -32,14 +33,11 @@ const SignUpScreen = ({ setIsSignedIn }) => {
     if (regUsername.test(username)) {
       setLoading(true);
       const identity = Ed25519KeyIdentity.generate();
-      await AsyncStorage.setItem(
-        "@identity",
-        JSON.stringify(identity.toJSON())
-      );
+      addToCache(GENERAL_CACHE, "@identity", JSON.stringify(identity.toJSON()));
 
       const keys = await generateAsymmetricKeys();
       const privateKey = keys["privateKey"];
-      await AsyncStorage.setItem("@privateKey", privateKey);
+      addToCache(GENERAL_CACHE, "@privateKey", privateKey);
       const publicKey = keys["publicKey"];
 
       const profileUpdate = {

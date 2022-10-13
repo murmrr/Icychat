@@ -24,17 +24,13 @@ const FindBar = ({ id, chatKey, principal, forAdd }) => {
   const context = useContext(MainContext);
 
   useEffect(async () => {
-    let temp = await getFromCache(PROFILE_CACHE, principal);
+    let temp = getFromCache(PROFILE_CACHE, principal);
     if (temp) {
       setProfile(parseProfile(temp));
     } else {
       const response = await makeBackendActor(context).getProfile(principal);
       setProfile(response["ok"]);
-      await addToCache(
-        PROFILE_CACHE,
-        principal,
-        stringifyProfile(response["ok"])
-      );
+      addToCache(PROFILE_CACHE, principal, stringifyProfile(response["ok"]));
     }
   }, []);
 

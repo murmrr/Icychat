@@ -25,6 +25,7 @@ import OpenPGP from "react-native-fast-openpgp";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { addToCache, getFromCache, PROFILE_CACHE } from "../../utility/caches";
 import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
+import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 
 const FindBarModalTile = ({
   id,
@@ -39,17 +40,13 @@ const FindBarModalTile = ({
   const context = useContext(MainContext);
 
   useEffect(async () => {
-    let temp = await getFromCache(PROFILE_CACHE, principal);
+    let temp = getFromCache(PROFILE_CACHE, principal);
     if (temp) {
       setProfile(parseProfile(temp));
     } else {
       const response = await makeBackendActor(context).getProfile(principal);
       setProfile(response["ok"]);
-      await addToCache(
-        PROFILE_CACHE,
-        principal,
-        stringifyProfile(response["ok"])
-      );
+      addToCache(PROFILE_CACHE, principal, stringifyProfile(response["ok"]));
     }
   }, []);
 
@@ -94,7 +91,7 @@ const FindBarModalTile = ({
   };
 
   return (
-    <TouchableOpacity
+    <TouchableWithoutFeedback
       disabled={loading}
       onPress={() => {
         setModalVisible(false);
@@ -121,7 +118,7 @@ const FindBarModalTile = ({
           <CustomActivityIndicator />
         )}
       </View>
-    </TouchableOpacity>
+    </TouchableWithoutFeedback>
   );
 };
 

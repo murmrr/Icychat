@@ -5,6 +5,7 @@ import Aes from "react-native-aes-crypto";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import OpenPGP from "react-native-fast-openpgp";
 import { Principal } from "@dfinity/principal";
+import { GENERAL_CACHE, getFromCache, storage } from "./caches";
 var lz = require("lz-string");
 
 export const useInterval = (callback, delay) => {
@@ -43,7 +44,7 @@ export const generateAsymmetricKeys = async () => {
 };
 
 export const getMyPublicKey = async () => {
-  const privateKey = await AsyncStorage.getItem("@privateKey");
+  const privateKey = getFromCache(GENERAL_CACHE, "@privateKey");
   return await OpenPGP.convertPrivateKeyToPublicKey(privateKey);
 };
 
@@ -102,10 +103,10 @@ export const parseProfile = (input) => {
 export const stringifyChatHeaders = (input) => {
   const stringified = JSON.stringify(input, (key, value) => {
     if (key == "otherUsers") {
-      let newValue = []
+      let newValue = [];
       value.forEach((p) => {
         newValue.push(p.toText());
-      })
+      });
       return newValue;
     } else if (key == "id" || key == "time") {
       return value.toString();
@@ -119,10 +120,10 @@ export const stringifyChatHeaders = (input) => {
 export const parseChatHeaders = (input) => {
   const parsed = JSON.parse(input, (key, value) => {
     if (key == "otherUsers") {
-      let newValue = []
+      let newValue = [];
       value.forEach((p) => {
         newValue.push(Principal.fromText(p));
-      })
+      });
       return newValue;
     } else if (key == "id" || key == "time") {
       return BigInt(value);

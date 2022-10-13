@@ -1,51 +1,37 @@
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Cache } from "react-native-cache";
+import { MMKV } from "react-native-mmkv";
 
-export const PROFILE_PICTURE_CACHE = new Cache({
-  namespace: "profilePictureCache",
-  policy: {
-    maxEntries: 50000,
-    stdTTL: 0,
-  },
-  backend: AsyncStorage,
+export const GENERAL_CACHE = new MMKV({
+  id: "generalCache",
 });
 
-export const PROFILE_CACHE = new Cache({
-  namespace: "profileCache",
-  policy: {
-    maxEntries: 50000,
-    stdTTL: 0,
-  },
-  backend: AsyncStorage,
+export const PROFILE_PICTURE_CACHE = new MMKV({
+  id: "profilePictureCache",
 });
 
-export const MESSAGE_CACHE = new Cache({
-  namespace: "messageCache",
-  policy: {
-    maxEntries: 50000,
-    stdTTL: 0,
-  },
-  backend: AsyncStorage,
+export const PROFILE_CACHE = new MMKV({
+  id: "profileCache",
 });
 
-export const CONVERSATION_CACHE = new Cache({
-  namespace: "conversationCache",
-  policy: {
-    maxEntries: 50000,
-    stdTTL: 0,
-  },
-  backend: AsyncStorage,
+export const MESSAGE_CACHE = new MMKV({
+  id: "messageCache",
 });
 
-export const getFromCache = async (cacheType, key) => {
-  return await cacheType.get(key);
+export const CONVERSATION_CACHE = new MMKV({
+  id: "conversationCache",
+});
+
+export const getFromCache = (cacheType, key) => {
+  return cacheType.getString(key.toString());
 };
 
-export const addToCache = async (cacheType, key, value) => {
-  await cacheType.set(key, value);
+export const addToCache = (cacheType, key, value) => {
+  cacheType.set(key.toString(), value);
 };
 
-export const clearAllCaches = async () => {
-  await PROFILE_CACHE.clearAll();
-  await MESSAGE_CACHE.clearAll();
+export const clearAllCaches = () => {
+  GENERAL_CACHE.clearAll();
+  PROFILE_PICTURE_CACHE.clearAll();
+  PROFILE_CACHE.clearAll();
+  MESSAGE_CACHE.clearAll();
+  CONVERSATION_CACHE.clearAll();
 };

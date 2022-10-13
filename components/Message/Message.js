@@ -39,7 +39,7 @@ const Message = ({ message, chatKey }) => {
       setProfile(true);
     } else {
       setIsMe(false);
-      let temp = await getFromCache(PROFILE_CACHE, message["sender"]);
+      let temp = getFromCache(PROFILE_CACHE, message["sender"]);
       if (temp) {
         setProfile(parseProfile(temp));
       } else {
@@ -47,17 +47,13 @@ const Message = ({ message, chatKey }) => {
           message["sender"]
         );
         setProfile(response["ok"]);
-        await addToCache(
-          PROFILE_CACHE,
-          message["sender"],
-          stringify(response["ok"])
-        );
+        addToCache(PROFILE_CACHE, message["sender"], stringify(response["ok"]));
       }
     }
   }, []);
 
   useEffect(async () => {
-    let temp = await getFromCache(MESSAGE_CACHE, message["content"]["message"]);
+    let temp = getFromCache(MESSAGE_CACHE, message["content"]["message"]);
     if (temp) {
       setDecryptedMessage(temp);
     } else {
@@ -66,7 +62,7 @@ const Message = ({ message, chatKey }) => {
         chatKey
       );
       setDecryptedMessage(decryptedMessage);
-      await addToCache(
+      addToCache(
         MESSAGE_CACHE,
         message["content"]["message"],
         decryptedMessage
