@@ -116,7 +116,7 @@ const MeScreen = ({ navigation, setIsSignedIn }) => {
             {showPrincipal ? profile["userPrincipal"].toText() : computeAccountId(profile["userPrincipal"])}
           </Text>
           <TouchableOpacity onPress={() => setShowPrincipal(!showPrincipal)}>
-          <Icon name={showPrincipal ? "send" : "bank"} size={18} color={colors.WHITE} style={{padding: 10}}/>
+          <Icon name={showPrincipal ? "send" : "backward"} size={18} color={colors.WHITE} style={{padding: 10}}/>
           </TouchableOpacity>
           </View>
         </View>
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     //borderWidth: 1,
     justifyContent: "space-between",
-    width: scale(300),
+    width: scale(320),
     alignItems: "center",
     //marginTop: verticalScale(6),
   },
