@@ -91,7 +91,7 @@ const FindBarModalTile = ({
   };
 
   return (
-    <TouchableWithoutFeedback
+    <TouchableOpacity
       disabled={loading}
       onPress={() => {
         setModalVisible(false);
@@ -118,7 +118,7 @@ const FindBarModalTile = ({
           <CustomActivityIndicator />
         )}
       </View>
-    </TouchableWithoutFeedback>
+    </TouchableOpacity>
   );
 };
 
