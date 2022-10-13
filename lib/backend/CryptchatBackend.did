@@ -1,10 +1,10 @@
-type UpdateProfileError = variant {ProfileNotFound;};
 type Time = int;
 type SharedChat = 
  record {
    messages: vec Message;
    otherUsers: vec principal;
  };
+type SetPushTokenError = variant {UserNotFound;};
 type SendMessageError = 
  variant {
    IdNotFound;
@@ -50,9 +50,14 @@ type Result_2 =
    err: RegisterError;
    ok;
  };
-type Result_10 = 
+type Result_11 = 
  variant {
    err: AddToChatError;
+   ok;
+ };
+type Result_10 = 
+ variant {
+   err: BurnAccountError;
    ok;
  };
 type Result_1 = 
@@ -62,8 +67,8 @@ type Result_1 =
  };
 type Result = 
  variant {
-   err: UpdateProfileError;
-   ok: Profile;
+   err: SetPushTokenError;
+   ok;
  };
 type RegisterError = 
  variant {
@@ -106,6 +111,7 @@ type ChatHeader =
    lastMessage: opt Message;
    otherUsers: vec principal;
  };
+type BurnAccountError = variant {UserNotFound;};
 type AddToChatError = 
  variant {
    IdNotFound;
@@ -113,7 +119,8 @@ type AddToChatError =
    UserNotFound;
  };
 service : {
-  addToChat: (nat, principal, text) -> (Result_10);
+  addToChat: (nat, principal, text) -> (Result_11);
+  burnAccount: () -> (Result_10);
   createChat: (principal, text, text) -> (Result_9);
   getMyChat: (nat) -> (Result_8) query;
   getMyChatHeaders: () -> (Result_7) query;
@@ -123,5 +130,5 @@ service : {
   getUsers: (text) -> (Result_3) query;
   register: (ProfileUpdate, text) -> (Result_2);
   sendMessage: (nat, MessageContent) -> (Result_1);
-  updateProfile: (ProfileUpdate) -> (Result);
+  setPushToken: (text) -> (Result) query;
 }

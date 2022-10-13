@@ -1,7 +1,7 @@
 import { Actor, HttpAgent, Identity } from "@dfinity/agent";
 
 // @ts-ignore
-import { idlFactory, _SERVICE } from "./backend/backend.did";
+import { idlFactory, _SERVICE } from "./backend/CryptchatBackend.did";
 
 import { BACKEND_CANISTER_ID, IC_HOST } from "../config";
 import AsyncStorage from "@react-native-async-storage/async-storage";

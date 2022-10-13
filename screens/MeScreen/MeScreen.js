@@ -67,6 +67,7 @@ const MeScreen = ({ setIsSignedIn }) => {
           text: "Yes",
           onPress: async () => {
             try {
+              await makeBackendActor(context).burnAccount();
               await clearAllCaches();
               await AsyncStorage.removeItem("@identity");
               await AsyncStorage.removeItem("@privateKey");
