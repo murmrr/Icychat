@@ -6,6 +6,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import OpenPGP from "react-native-fast-openpgp";
 import { Principal } from "@dfinity/principal";
 import { GENERAL_CACHE, getFromCache, storage } from "./caches";
+import CryptoJS from 'crypto-js';
 var lz = require("lz-string");
 
 export const useInterval = (callback, delay) => {
@@ -203,3 +204,75 @@ export const randomFromPrincipal = (principal) => {
   const seed = cyrb128(principal.toString());
   return sfc32(seed[0], seed[1], seed[2], seed[3]);
 };
+
+const byteArrayToWordArray = (
+  byteArray,
+  cryptoAdapter = CryptoJS
+) => {
+  const wordArray = [];
+  let i;
+  for (i = 0; i < byteArray.length; i += 1) {
+    wordArray[(i / 4) | 0] |= byteArray[i] << (24 - 8 * i);
+  }
+  // eslint-disable-next-line
+  const result = cryptoAdapter.lib.WordArray.create(
+    wordArray,
+    byteArray.length
+  );
+  return result;
+};
+
+const wordToByteArray = (word, length) => {
+  const byteArray = [];
+  const xFF = 0xff;
+  if (length > 0) byteArray.push(word >>> 24);
+  if (length > 1) byteArray.push((word >>> 16) & xFF);
+  if (length > 2) byteArray.push((word >>> 8) & xFF);
+  if (length > 3) byteArray.push(word & xFF);
+
+  return byteArray;
+};
+
+const wordArrayToByteArray = (wordArray, length) => {
+  if (
+    wordArray.hasOwnProperty('sigBytes') &&
+    wordArray.hasOwnProperty('words')
+  ) {
+    length = wordArray.sigBytes;
+    wordArray = wordArray.words;
+  }
+
+  let result = [];
+  let bytes;
+  let i = 0;
+  while (length > 0) {
+    bytes = wordToByteArray(wordArray[i], Math.min(4, length));
+    length -= bytes.length;
+    result = [...result, bytes];
+    i++;
+  }
+  return [].concat.apply([], result);
+};
+
+export const computeAccountId = (principal, subaccount, cryptoAdapter = CryptoJS) => {
+  const sha = cryptoAdapter.algo.SHA224.create();
+  sha.update("\x0Aaccount-id"); // Internally parsed with UTF-8, like go does
+  sha.update(byteArrayToWordArray(principal.toUint8Array()));
+  const subBuffer = Buffer.from(Buffer.alloc(32));
+  if (subaccount) {
+    subBuffer.writeUInt32BE(subaccount);
+  }
+  sha.update(byteArrayToWordArray(subBuffer));
+  const hash = sha.finalize();
+
+  /// While this is backed by an array of length 28, it's canonical representation
+  /// is a hex string of length 64. The first 8 characters are the CRC-32 encoded
+  /// hash of the following 56 characters of hex. Both, upper and lower case
+  /// characters are valid in the input string and can even be mixed.
+  /// [ic/rs/rosetta-api/ledger_canister/src/account_identifier.rs]
+  const byteArray = wordArrayToByteArray(hash, 28);
+  const checksum = "asd"//generateChecksum(byteArray);
+  const val = checksum + hash.toString();
+
+  return val;
+}

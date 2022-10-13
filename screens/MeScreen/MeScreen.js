@@ -14,6 +14,7 @@ import { POLLING_INTERVAL } from "../../data/constants";
 import { getBackendActor, makeBackendActor } from "../../lib/actor";
 import { scale, verticalScale } from "../../utility/scalingUtils";
 import {
+  computeAccountId,
   parseProfile,
   stringifyProfile,
   useInterval,
@@ -67,6 +68,9 @@ const MeScreen = ({ navigation, setIsSignedIn }) => {
       setProfile(response["ok"]);
       addToCache(PROFILE_CACHE, context, stringifyProfile(response["ok"]));
     }
+    //console.log(profile["userPrincipal"].toText())
+    //console.log(computeAccountId(profile["userPrincipal"]))
+    //console.log(computeAccountId(Principal.fromText("m37qu-j2p6l-dz64a-gpusl-xoskc-zdtpy-hn3vr-iakwg-anjr7-ih4qv-nqe")))
   }, POLLING_INTERVAL);
 
   const handleDelete = async () => {
