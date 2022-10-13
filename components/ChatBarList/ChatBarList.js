@@ -7,19 +7,30 @@ import {
   makeBackendActor,
 } from "../../lib/actor";
 import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
-import { useInterval } from "../../utility/utils";
+import { parseChatHeaders, stringifyChatHeaders, useInterval } from "../../utility/utils";
 import ChatBar from "../ChatBar/ChatBar";
 import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
 import ItemDivider from "../ItemDivider/ItemDivider";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const ChatBarList = () => {
   const [data, setData] = useState(null);
 
   const context = useContext(MainContext);
 
+  useEffect(async () => {
+    let value = await AsyncStorage.getItem("@myChatHeaders");
+    if (value) {
+      setData(parseChatHeaders(value));
+    }
+  }, [])
+
   useInterval(async () => {
     const response = await makeBackendActor(context).getMyChatHeaders();
-    setData(response["ok"]);
+    if (response["ok"]) {
+      setData(response["ok"]);
+      await AsyncStorage.setItem("@myChatHeaders", stringifyChatHeaders(response["ok"]));
+    }
   }, POLLING_INTERVAL);
 
   const renderItem = ({ item }) => <ChatBar chatHeader={item} />;

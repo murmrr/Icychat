@@ -99,6 +99,66 @@ export const parseProfile = (input) => {
   return parsed;
 };
 
+export const stringifyChatHeaders = (input) => {
+  const stringified = JSON.stringify(input, (key, value) => {
+    if (key == "otherUsers") {
+      let newValue = []
+      value.forEach((p) => {
+        newValue.push(p.toText());
+      })
+      return newValue;
+    } else if (key == "id" || key == "time") {
+      return value.toString();
+    } else {
+      return value;
+    }
+  });
+  return stringified;
+};
+
+export const parseChatHeaders = (input) => {
+  const parsed = JSON.parse(input, (key, value) => {
+    if (key == "otherUsers") {
+      let newValue = []
+      value.forEach((p) => {
+        newValue.push(Principal.fromText(p));
+      })
+      return newValue;
+    } else if (key == "id" || key == "time") {
+      return BigInt(value);
+    } else {
+      return value;
+    }
+  });
+  return parsed;
+};
+
+export const stringifyConversation = (input) => {
+  const stringified = JSON.stringify(input, (key, value) => {
+    if (key == "sender") {
+      return value.toText();
+    } else if (key == "id" || key == "time") {
+      return value.toString();
+    } else {
+      return value;
+    }
+  });
+  return stringified;
+};
+
+export const parseConversation = (input) => {
+  const parsed = JSON.parse(input, (key, value) => {
+    if (key == "sender") {
+      return Principal.fromText(value);
+    } else if (key == "id" || key == "time") {
+      return BigInt(value);
+    } else {
+      return value;
+    }
+  });
+  return parsed;
+};
+
 cyrb128 = (str) => {
   let h1 = 1779033703,
     h2 = 3144134277,

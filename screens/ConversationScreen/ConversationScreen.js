@@ -16,12 +16,13 @@ import Message from "../../components/Message/Message";
 import colors from "../../data/colors";
 import { POLLING_INTERVAL } from "../../data/constants";
 import { getBackendActor, makeBackendActor } from "../../lib/actor";
-import { useInterval } from "../../utility/utils";
+import { parseConversation, stringifyConversation, useInterval } from "../../utility/utils";
 import { useIsFocused } from "@react-navigation/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import CustomActivityIndicator from "../../components/CustomActivityIndicator/CustomActivityIndicator";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
+import { addToCache, CONVERSATION_CACHE, getFromCache } from "../../utility/caches";
 
 const ConversationScreen = ({ navigation, route }) => {
   const { id, chatKey, principals } = route.params;
@@ -31,9 +32,19 @@ const ConversationScreen = ({ navigation, route }) => {
 
   const insets = useSafeAreaInsets();
 
+  useEffect(async () => {
+    let value = await getFromCache(CONVERSATION_CACHE, id.toString());
+    if (value) {
+      setData(parseConversation(value));
+    }
+  }, [])
+
   useInterval(async () => {
     const response = await makeBackendActor(context).getMyChat(id);
-    setData(response["ok"]);
+    if (response["ok"]) {
+      setData(response["ok"]);
+      await addToCache(CONVERSATION_CACHE, id.toString(), stringifyConversation(response["ok"]));
+    }
   }, POLLING_INTERVAL);
 
   useLayoutEffect(() => {
