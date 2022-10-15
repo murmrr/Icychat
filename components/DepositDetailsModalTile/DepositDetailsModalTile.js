@@ -10,20 +10,30 @@ import { BlurView } from "expo-blur";
 import Icon from "react-native-vector-icons/FontAwesome";
 import InputWrapper from "../InputWrapper/InputWrapper";
 import { computeAccountId } from "../../utility/utils";
+import FieldWrapper from "../FieldWrapper/FieldWrapper";
 
 const DepositDetailsModalTile = ({ principal, setModalVisible }) => {
   return (
-    <TouchableOpacity
-      onPress={() => {
-        setModalVisible(false);
-      }}
-      style={styles.touchableView}
-    >
+    <>
+      <TouchableOpacity
+        onPress={() => {
+          setModalVisible(false);
+        }}
+        style={styles.touchableView}
+      />
       <View style={styles.container}>
-        <InputWrapper label="Principal" data={principal.toText()} color={colors.BLUE} />
-        <InputWrapper label="Account ID" data={computeAccountId(principal)} color={colors.BLUE} />
+        <FieldWrapper
+          label="Principal"
+          data={principal.toText()}
+          color={colors.BLUE}
+        />
+        <FieldWrapper
+          label="Account ID"
+          data={computeAccountId(principal)}
+          color={colors.BLUE}
+        />
       </View>
-    </TouchableOpacity>
+    </>
   );
 };
 
@@ -31,8 +41,8 @@ const styles = StyleSheet.create({
   touchableView: {
     width: "100%",
     height: "100%",
-    alignItems: "center",
-    justifyContent: "center",
+    position: "absolute",
+    zIndex: 0,
   },
   container: {
     backgroundColor: colors.LIGHT_GRAY,
@@ -40,8 +50,8 @@ const styles = StyleSheet.create({
     height: scale(300),
     borderRadius: 20,
     alignItems: "center",
-    justifyContent: "center"
-  }
+    justifyContent: "center",
+  },
 });
 
 export default DepositDetailsModalTile;
