@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import {
   Alert,
   KeyboardAvoidingView,
+  Modal,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -35,10 +36,12 @@ import * as Haptics from "expo-haptics";
 import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
 import { Ed25519KeyIdentity, Ed25519PublicKey } from "@dfinity/identity";
 import { Principal } from "@dfinity/principal";
+import { BlurView } from "expo-blur";
+import DepositDetailsModalTile from "../../components/DepositDetailsModalTile/DepositDetailsModalTile";
 
 const MeScreen = ({ navigation, setIsSignedIn }) => {
   const [profile, setProfile] = useState(null);
-  const [showPrincipal, setShowPrincipal] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const context = useContext(MainContext);
 
@@ -69,9 +72,6 @@ const MeScreen = ({ navigation, setIsSignedIn }) => {
       setProfile(response["ok"]);
       addToCache(PROFILE_CACHE, context, stringifyProfile(response["ok"]));
     }
-    //console.log(profile["userPrincipal"].toText())
-    //console.log(computeAccountId(profile["userPrincipal"]))
-    //console.log(computeAccountId(Principal.fromText("m37qu-j2p6l-dz64a-gpusl-xoskc-zdtpy-hn3vr-iakwg-anjr7-ih4qv-nqe")))
   }, POLLING_INTERVAL);
 
   const handleDelete = async () => {
@@ -98,34 +98,46 @@ const MeScreen = ({ navigation, setIsSignedIn }) => {
   };
 
   return profile ? (
-    <ScrollView
-      style={{ backgroundColor: colors.DARK_PRIMARY }}
-      contentContainerStyle={styles.container}
-    >
-      <View style={styles.profileContainer}>
-        <View style={styles.avatarContainer}>
-          <CustomProfilePicture
-            principal={profile["userPrincipal"]}
-            style={styles.avatar}
-          />
-        </View>
-        <View style={styles.textContainer}>
-          <Text style={styles.username}>{profile["username"]}</Text>
-          <View style={styles.principalContainer}>
-          <Text style={styles.principal}>
-            {showPrincipal ? profile["userPrincipal"].toText() : computeAccountId(profile["userPrincipal"])}
-          </Text>
-          <TouchableOpacity onPress={() => setShowPrincipal(!showPrincipal)}>
-          <Icon name={showPrincipal ? "send" : "backward"} size={18} color={colors.WHITE} style={{padding: 10}}/>
-          </TouchableOpacity>
+    <>
+      <Modal animationType="slide" transparent={true} visible={modalVisible}>
+        <BlurView intensity={5} tint="dark" style={styles.modalTileContainer}>
+          <DepositDetailsModalTile principal={profile["userPrincipal"]} setModalVisible={setModalVisible} />
+        </BlurView>
+      </Modal>
+      <ScrollView
+        style={{ backgroundColor: colors.DARK_PRIMARY }}
+        contentContainerStyle={styles.container}
+      >
+        <View style={styles.profileContainer}>
+          <View style={styles.avatarContainer}>
+            <CustomProfilePicture
+              principal={profile["userPrincipal"]}
+              style={styles.avatar}
+            />
+          </View>
+          <View style={styles.textContainer}>
+            <Text style={styles.username}>{profile["username"]}</Text>
+            <View style={styles.principalContainer}>
+              <Text style={styles.principal}>
+                {profile["userPrincipal"].toText()}
+              </Text>
+              <TouchableOpacity onPress={() => setModalVisible(true)}>
+                <Icon
+                  name="bank"
+                  size={19}
+                  color={colors.WHITE}
+                  style={{ padding: 10 }}
+                />
+              </TouchableOpacity>
+            </View>
           </View>
         </View>
-      </View>
-      <TouchableOpacity onPress={handleDelete} style={styles.button}>
-        <Text style={styles.buttonText}>Burn</Text>
-        <Icon name="fire" size={14} color={colors.WHITE} />
-      </TouchableOpacity>
-    </ScrollView>
+        <TouchableOpacity onPress={handleDelete} style={styles.button}>
+          <Text style={styles.buttonText}>Burn</Text>
+          <Icon name="fire" size={14} color={colors.WHITE} />
+        </TouchableOpacity>
+      </ScrollView>
+    </>
   ) : (
     <View style={styles.loadingContainer}>
       <CustomActivityIndicator />
@@ -134,6 +146,11 @@ const MeScreen = ({ navigation, setIsSignedIn }) => {
 };
 
 const styles = StyleSheet.create({
+  modalTileContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   container: {
     flex: 1,
     flexDirection: "column",
@@ -169,11 +186,9 @@ const styles = StyleSheet.create({
   },
   principalContainer: {
     flexDirection: "row",
-    //borderWidth: 1,
-    justifyContent: "space-between",
+    justifyContent: "space-evenly",
     width: scale(320),
     alignItems: "center",
-    //marginTop: verticalScale(6),
   },
   principal: {
     textAlign: "center",

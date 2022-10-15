@@ -6,8 +6,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import OpenPGP from "react-native-fast-openpgp";
 import { Principal } from "@dfinity/principal";
 import { GENERAL_CACHE, getFromCache, storage } from "./caches";
-import CryptoJS from 'crypto-js';
-import crc32 from 'buffer-crc32';
+import CryptoJS from "crypto-js";
+import crc32 from "buffer-crc32";
 
 export const useInterval = (callback, delay) => {
   const savedCallback = useRef();
@@ -205,10 +205,7 @@ export const randomFromPrincipal = (principal) => {
   return sfc32(seed[0], seed[1], seed[2], seed[3]);
 };
 
-const byteArrayToWordArray = (
-  byteArray,
-  cryptoAdapter = CryptoJS
-) => {
+const byteArrayToWordArray = (byteArray, cryptoAdapter = CryptoJS) => {
   const wordArray = [];
   let i;
   for (i = 0; i < byteArray.length; i += 1) {
@@ -235,8 +232,8 @@ const wordToByteArray = (word, length) => {
 
 const wordArrayToByteArray = (wordArray, length) => {
   if (
-    wordArray.hasOwnProperty('sigBytes') &&
-    wordArray.hasOwnProperty('words')
+    wordArray.hasOwnProperty("sigBytes") &&
+    wordArray.hasOwnProperty("words")
   ) {
     length = wordArray.sigBytes;
     wordArray = wordArray.words;
@@ -256,15 +253,19 @@ const wordArrayToByteArray = (wordArray, length) => {
 
 const intToHex = (val) => {
   return val < 0 ? (Number(val) >>> 0).toString(16) : Number(val).toString(16);
-}
+};
 
 const generateChecksum = (hash) => {
   const crc = crc32.unsigned(Buffer.from(hash));
   const hex = intToHex(crc);
-  return hex.padStart(8, '0');
+  return hex.padStart(8, "0");
 };
 
-export const computeAccountId = (principal, subaccount, cryptoAdapter = CryptoJS) => {
+export const computeAccountId = (
+  principal,
+  subaccount,
+  cryptoAdapter = CryptoJS
+) => {
   const sha = cryptoAdapter.algo.SHA224.create();
   sha.update("\x0Aaccount-id"); // Internally parsed with UTF-8, like go does
   sha.update(byteArrayToWordArray(principal.toUint8Array()));
@@ -285,4 +286,4 @@ export const computeAccountId = (principal, subaccount, cryptoAdapter = CryptoJS
   const val = checksum + hash.toString();
 
   return val;
-}
+};
