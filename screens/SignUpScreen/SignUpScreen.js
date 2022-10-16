@@ -80,17 +80,16 @@ const SignUpScreen = ({ setIsSignedIn }) => {
             />
           </View>
           <InputWrapper label="Username">
-
-          {showInvalid ? (
-        <>
-          <View style={styles.invalid}>
-            <Text style={styles.invalidText}>Invalid Username!</Text>
-          </View>
-          <View style={styles.invalidTriangle} />
-        </>
-      ) : (
-        <></>
-      )}
+            {showInvalid ? (
+              <>
+                <View style={styles.invalid}>
+                  <Text style={styles.invalidText}>Invalid Username!</Text>
+                </View>
+                <View style={styles.invalidTriangle} />
+              </>
+            ) : (
+              <></>
+            )}
             <TextInput
               placeholder="Pick a username"
               editable={!loading}

@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 import colors from "../../data/colors";
-import { scale } from "../../utility/scalingUtils";
+import { scale, verticalScale } from "../../utility/scalingUtils";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import * as Clipboard from "expo-clipboard";
@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
   container: (color) => ({
     borderWidth: 1.7,
     marginTop: scale(10),
-    height: 59,
+    height: verticalScale(52),
     width: scale(270),
     alignSelf: "center",
     alignItems: "center",
