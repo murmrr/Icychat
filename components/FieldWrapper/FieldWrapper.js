@@ -4,15 +4,30 @@ import { scale } from "../../utility/scalingUtils";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import * as Clipboard from "expo-clipboard";
+import { useState } from "react";
 
 const FieldWrapper = ({ label, data, color }) => {
+  const [showCopied, setShowCopied] = useState(false);
+
   const onPress = () => {
     Clipboard.setString(data);
+    setShowCopied(true);
+    setTimeout(() => setShowCopied(false), 1000);
   };
 
   return (
     <View style={styles.root}>
       <Text style={styles.heading}>{label}</Text>
+      {showCopied ? (
+        <>
+          <View style={styles.copy}>
+            <Text style={styles.copyText}>Copied!</Text>
+          </View>
+          <View style={styles.copyTriangle} />
+        </>
+      ) : (
+        <></>
+      )}
       <View style={styles.container(color)}>
         <View style={styles.nestedContainer}>
           <Text numberOfLines={1} style={styles.data}>
@@ -42,6 +57,37 @@ const styles = StyleSheet.create({
     fontSize: scale(18),
     fontFamily: "Poppins-SemiBold",
     marginLeft: 10,
+  },
+  copy: {
+    position: "absolute",
+    backgroundColor: colors.BLUE,
+    width: scale(35),
+    height: scale(15),
+    borderRadius: 4,
+    right: scale(15),
+    top: scale(25),
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 1,
+  },
+  copyText: {
+    color: colors.WHITE,
+    fontSize: scale(6),
+    fontFamily: "Poppins-Medium",
+    zIndex: 0,
+  },
+  copyTriangle: {
+    borderTopWidth: scale(8),
+    borderRightWidth: scale(8),
+    borderBottomWidth: 0,
+    borderLeftWidth: scale(8),
+    borderTopColor: colors.BLUE,
+    borderRightColor: "transparent",
+    borderBottomColor: "transparent",
+    borderLeftColor: "transparent",
+    position: "absolute",
+    right: scale(24.5),
+    top: scale(38),
   },
   container: (color) => ({
     borderWidth: 1.7,

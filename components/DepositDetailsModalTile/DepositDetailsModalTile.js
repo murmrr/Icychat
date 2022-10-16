@@ -23,13 +23,13 @@ const DepositDetailsModalTile = ({ principal, setModalVisible }) => {
       />
       <View style={styles.container}>
         <FieldWrapper
-          label="Principal"
-          data={principal.toText()}
+          label="Account ID"
+          data={computeAccountId(principal)}
           color={colors.BLUE}
         />
         <FieldWrapper
-          label="Account ID"
-          data={computeAccountId(principal)}
+          label="Principal"
+          data={principal.toText()}
           color={colors.BLUE}
         />
       </View>

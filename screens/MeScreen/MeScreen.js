@@ -31,7 +31,6 @@ import {
   PROFILE_CACHE,
   storage,
 } from "../../utility/caches";
-import Toast from "react-native-root-toast";
 import * as Haptics from "expo-haptics";
 import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
 import { Ed25519KeyIdentity, Ed25519PublicKey } from "@dfinity/identity";
