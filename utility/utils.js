@@ -287,3 +287,7 @@ export const computeAccountId = (
 
   return val;
 };
+
+export const convertToICP = (units) => {
+  return units / 100000000n;
+}

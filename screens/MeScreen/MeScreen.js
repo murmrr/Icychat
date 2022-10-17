@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import {
   Alert,
+  Image,
   KeyboardAvoidingView,
   Modal,
   StyleSheet,
@@ -12,10 +13,11 @@ import { ScrollView, TextInput } from "react-native-gesture-handler";
 import InputWrapper from "../../components/InputWrapper/InputWrapper";
 import colors from "../../data/colors";
 import { POLLING_INTERVAL } from "../../data/constants";
-import { getBackendActor, makeBackendActor } from "../../lib/actor";
+import { getBackendActor, makeBackendActor, makeLedgerActor } from "../../lib/actor";
 import { scale, verticalScale } from "../../utility/scalingUtils";
 import {
   computeAccountId,
+  convertToICP,
   parseProfile,
   stringifyProfile,
   useInterval,
@@ -27,6 +29,7 @@ import CustomActivityIndicator from "../../components/CustomActivityIndicator/Cu
 import {
   addToCache,
   clearAllCaches,
+  GENERAL_CACHE,
   getFromCache,
   PROFILE_CACHE,
   storage,
@@ -41,8 +44,16 @@ import DepositDetailsModalTile from "../../components/DepositDetailsModalTile/De
 const MeScreen = ({ navigation, setIsSignedIn }) => {
   const [profile, setProfile] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
+  const [amount, setAmount] = useState(-1);
 
   const context = useContext(MainContext);
+
+  useEffect(() => {
+    let value = getFromCache(GENERAL_CACHE, "@balance");
+    if (value) {
+      setAmount(BigInt(value));
+    }
+  }, [])
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -61,6 +72,17 @@ const MeScreen = ({ navigation, setIsSignedIn }) => {
       ),
     });
   }, []);
+
+  useInterval(async () => {
+    const accountBalanceArgs = {
+      account: [...new Uint8Array(Buffer.from(computeAccountId(Ed25519KeyIdentity.fromJSON(
+        JSON.stringify(context)).getPrincipal()), "hex"))]
+    };
+    const response = await makeLedgerActor(context).account_balance(accountBalanceArgs);
+    const numICP = convertToICP(response["e8s"])
+    setAmount(numICP);
+    addToCache(GENERAL_CACHE, "@balance", numICP.toString());
+  }, POLLING_INTERVAL)
 
   useInterval(async () => {
     let temp = getFromCache(PROFILE_CACHE, context);
@@ -133,6 +155,15 @@ const MeScreen = ({ navigation, setIsSignedIn }) => {
               </TouchableOpacity>
             </View>
           </View>
+          <View style={styles.balanceContainer}>
+          <Image 
+            source={require("../../assets/icp-token-logo.png")}
+            style={styles.icpLogo}
+          />
+          <View style={styles.amountContainer}>
+            {amount != -1 ? <Text style={styles.amount}>{amount.toString()}</Text> : <CustomActivityIndicator />}
+          </View>
+        </View>
         </View>
         <TouchableOpacity onPress={handleDelete} style={styles.button}>
           <Text style={styles.buttonText}>Burn</Text>
@@ -197,6 +228,31 @@ const styles = StyleSheet.create({
     color: colors.GRAY,
     fontSize: 8,
     fontFamily: "Poppins-Regular",
+  },
+  balanceContainer: {
+    marginTop: verticalScale(-25),
+    width: scale(180),
+    height: scale(100),
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  icpLogo: {
+    width: scale(35),
+    height: scale(35),
+    borderRadius: scale(35),
+    backgroundColor: colors.LIGHT_GRAY
+  },
+  amountContainer: {
+    alignItems: "center",
+    justifyContent: "center",
+    marginLeft: scale(10),
+  },
+  amount: {
+    textAlign: "center",
+    color: colors.WHITE,
+    fontSize: scale(22),
+    fontFamily: "Poppins-SemiBold",
   },
   editButton: {
     marginTop: verticalScale(25),

@@ -1,0 +1,26 @@
+diff --git a/node_modules/@dfinity/candid/lib/cjs/idl.js b/node_modules/@dfinity/candid/lib/cjs/idl.js
+index ddf1b94..b9be9b7 100644
+--- a/node_modules/@dfinity/candid/lib/cjs/idl.js
++++ b/node_modules/@dfinity/candid/lib/cjs/idl.js
+@@ -507,7 +507,20 @@ class FixedNatClass extends PrimitiveType {
+         return v.visitFixedNat(this, d);
+     }
+     covariant(x) {
+-        const max = BigInt(2) ** BigInt(this.bits);
++        let max;
++        switch (this.bits) {
++          case 8:
++            max = 256n;
++            break;
++          case 16:
++            max = 65536n;
++            break;
++          case 32:
++            max = 4294967296n;
++            break;
++          case 64:
++            max = 18446744073709551616n;
++        }
+         if (typeof x === 'bigint' && x >= BigInt(0)) {
+             return x < max;
+         }
