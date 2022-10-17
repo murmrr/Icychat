@@ -13,7 +13,11 @@ import { ScrollView, TextInput } from "react-native-gesture-handler";
 import InputWrapper from "../../components/InputWrapper/InputWrapper";
 import colors from "../../data/colors";
 import { POLLING_INTERVAL } from "../../data/constants";
-import { getBackendActor, makeBackendActor, makeLedgerActor } from "../../lib/actor";
+import {
+  getBackendActor,
+  makeBackendActor,
+  makeLedgerActor,
+} from "../../lib/actor";
 import { scale, verticalScale } from "../../utility/scalingUtils";
 import {
   computeAccountId,
@@ -44,7 +48,7 @@ import DepositDetailsModalTile from "../../components/DepositDetailsModalTile/De
 const MeScreen = ({ navigation, setIsSignedIn }) => {
   const [profile, setProfile] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
-  const [amount, setAmount] = useState(-1);
+  const [amount, setAmount] = useState(null);
 
   const context = useContext(MainContext);
 
@@ -53,7 +57,7 @@ const MeScreen = ({ navigation, setIsSignedIn }) => {
     if (value) {
       setAmount(BigInt(value));
     }
-  }, [])
+  }, []);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -75,14 +79,26 @@ const MeScreen = ({ navigation, setIsSignedIn }) => {
 
   useInterval(async () => {
     const accountBalanceArgs = {
-      account: [...new Uint8Array(Buffer.from(computeAccountId(Ed25519KeyIdentity.fromJSON(
-        JSON.stringify(context)).getPrincipal()), "hex"))]
+      account: [
+        ...new Uint8Array(
+          Buffer.from(
+            computeAccountId(
+              Ed25519KeyIdentity.fromJSON(
+                JSON.stringify(context)
+              ).getPrincipal()
+            ),
+            "hex"
+          )
+        ),
+      ],
     };
-    const response = await makeLedgerActor(context).account_balance(accountBalanceArgs);
-    const numICP = convertToICP(response["e8s"])
-    setAmount(numICP);
-    addToCache(GENERAL_CACHE, "@balance", numICP.toString());
-  }, POLLING_INTERVAL)
+    const response = await makeLedgerActor(context).account_balance(
+      accountBalanceArgs
+    );
+    const numE8s = response["e8s"];
+    setAmount(numE8s);
+    addToCache(GENERAL_CACHE, "@balance", numE8s.toString());
+  }, POLLING_INTERVAL);
 
   useInterval(async () => {
     let temp = getFromCache(PROFILE_CACHE, context);
@@ -156,14 +172,18 @@ const MeScreen = ({ navigation, setIsSignedIn }) => {
             </View>
           </View>
           <View style={styles.balanceContainer}>
-          <Image 
-            source={require("../../assets/icp-token-logo.png")}
-            style={styles.icpLogo}
-          />
-          <View style={styles.amountContainer}>
-            {amount != -1 ? <Text style={styles.amount}>{amount.toString()}</Text> : <CustomActivityIndicator />}
+            <Image
+              source={require("../../assets/icp-token-logo.png")}
+              style={styles.icpLogo}
+            />
+            <View style={styles.amountContainer}>
+              {amount ? (
+                <Text style={styles.amount}>{amount.toString()}</Text>
+              ) : (
+                <CustomActivityIndicator />
+              )}
+            </View>
           </View>
-        </View>
         </View>
         <TouchableOpacity onPress={handleDelete} style={styles.button}>
           <Text style={styles.buttonText}>Burn</Text>
@@ -241,7 +261,7 @@ const styles = StyleSheet.create({
     width: scale(35),
     height: scale(35),
     borderRadius: scale(35),
-    backgroundColor: colors.LIGHT_GRAY
+    backgroundColor: colors.LIGHT_GRAY,
   },
   amountContainer: {
     alignItems: "center",

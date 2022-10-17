@@ -289,5 +289,5 @@ export const computeAccountId = (
 };
 
 export const convertToICP = (units) => {
-  return units / 100000000n;
-}
+  return Number((units * 100000000n) / 100000000n) / 100000000;
+};

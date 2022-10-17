@@ -2,10 +2,10 @@ import { StyleSheet, Text, View } from "react-native";
 import colors from "../../data/colors";
 import { scale } from "../../utility/scalingUtils";
 
-const InputWrapper = ({ label, children }) => {
+const InputWrapper = ({ label, color, children, style }) => {
   return (
-    <View style={styles.root}>
-      <View style={styles.labelContainer}>
+    <View style={[styles.root, style]}>
+      <View style={styles.labelContainer(color)}>
         <Text style={styles.labelText}>{label}</Text>
       </View>
       <View style={styles.inputContainer}>{children}</View>
@@ -23,13 +23,13 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     borderColor: colors.GRAY,
   },
-  labelContainer: {
+  labelContainer: (color) => ({
     position: "absolute",
     top: -13,
     left: 20,
     width: "auto",
-    backgroundColor: colors.DARK_PRIMARY,
-  },
+    backgroundColor: color ? color : colors.DARK_PRIMARY,
+  }),
   labelText: {
     color: colors.GRAY,
     alignSelf: "center",

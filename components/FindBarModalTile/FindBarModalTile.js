@@ -26,6 +26,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { addToCache, getFromCache, PROFILE_CACHE } from "../../utility/caches";
 import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import SendModalTile from "../SendModalTile/SendModalTile";
+import SendToUserModalTile from "../SendModalTile/SendModalTile";
 
 const FindBarModalTile = ({
   id,
@@ -35,7 +37,8 @@ const FindBarModalTile = ({
   setModalVisible,
 }) => {
   const [profile, setProfile] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loadingChat, setLoadingChat] = useState(false);
+  const [forSend, setForSend] = useState(false);
 
   const context = useContext(MainContext);
 
@@ -51,7 +54,7 @@ const FindBarModalTile = ({
   }, []);
 
   const createChat = async () => {
-    setLoading(true);
+    setLoadingChat(true);
 
     const otherUserPublicKey = (
       await makeBackendActor(context).getPublicKey(principal)
@@ -86,38 +89,55 @@ const FindBarModalTile = ({
         otherUserChatKey
       );
     }
-    setLoading(false);
+    setLoadingChat(false);
     setModalVisible(false);
   };
 
   return (
     <TouchableOpacity
-      disabled={loading}
+      disabled={loadingChat || forSend}
       onPress={() => {
         setModalVisible(false);
       }}
       style={styles.touchableView}
     >
-      <View style={styles.container(profile)}>
-        {profile ? (
-          <View style={styles.profileContainer}>
-            <CustomProfilePicture principal={principal} style={styles.avatar} />
-            <Text style={styles.username}>{profile["username"]}</Text>
-            <Text style={styles.principal}>{principal.toText()}</Text>
-            <TouchableOpacity onPress={createChat} style={styles.button}>
-              {loading ? (
-                <CustomActivityIndicator />
+      {forSend ? (
+        <SendModalTile setForSend={setForSend} />
+      ) : (
+        <View style={styles.container(profile, forAdd)}>
+          {profile ? (
+            <View style={styles.profileContainer}>
+              <CustomProfilePicture
+                principal={principal}
+                style={styles.avatar}
+              />
+              <Text style={styles.username}>{profile["username"]}</Text>
+              <Text style={styles.principal}>{principal.toText()}</Text>
+              <TouchableOpacity onPress={createChat} style={styles.button}>
+                {loadingChat ? (
+                  <CustomActivityIndicator />
+                ) : (
+                  <Text style={styles.buttonText}>
+                    {forAdd ? "Add" : "Create Chat"}
+                  </Text>
+                )}
+              </TouchableOpacity>
+              {forAdd ? (
+                <></>
               ) : (
-                <Text style={styles.buttonText}>
-                  {forAdd ? "Add" : "Create Chat"}
-                </Text>
+                <TouchableOpacity
+                  onPress={() => setForSend(true)}
+                  style={[styles.button, { marginTop: verticalScale(10) }]}
+                >
+                  <Text style={styles.buttonText}>Send</Text>
+                </TouchableOpacity>
               )}
-            </TouchableOpacity>
-          </View>
-        ) : (
-          <CustomActivityIndicator />
-        )}
-      </View>
+            </View>
+          ) : (
+            <CustomActivityIndicator />
+          )}
+        </View>
+      )}
     </TouchableOpacity>
   );
 };
@@ -129,10 +149,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  container: (profile) => ({
+  container: (profile, forAdd) => ({
     backgroundColor: colors.LIGHT_GRAY,
     width: scale(310),
-    height: scale(280),
+    height: forAdd ? verticalScale(250) : verticalScale(308),
     borderRadius: 15,
     alignItems: "center",
     justifyContent: profile ? "" : "center",
@@ -165,7 +185,7 @@ const styles = StyleSheet.create({
   button: {
     marginTop: verticalScale(30),
     width: scale(280),
-    height: scale(50),
+    height: verticalScale(48),
     backgroundColor: colors.BLUE,
     borderRadius: 15,
     justifyContent: "center",
