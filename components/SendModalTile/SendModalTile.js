@@ -26,11 +26,12 @@ import InputWrapper from "../InputWrapper/InputWrapper";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { TextInput } from "react-native-gesture-handler";
 
-const SendModalTile = ({ principal, setForSend }) => {
+const SendModalTile = ({ forFreeform, principal, setForSend }) => {
   const [amount, setAmount] = useState(-1n);
   const [transferFee, setTransferFee] = useState(-1n);
   const [available, setAvailable] = useState(-1n);
   const [amountToSend, setAmountToSend] = useState("");
+  const [accountId, setAccountId] = useState("");
   const [sending, setSending] = useState(false);
 
   const context = useContext(MainContext);
@@ -81,13 +82,34 @@ const SendModalTile = ({ principal, setForSend }) => {
     setTransferFee(response["transfer_fee"]["e8s"]);
   }, POLLING_INTERVAL);
 
+  const onChangeAccountId = (id) => {
+    setAccountId(id);
+  };
+
   const onChangeAmountToSend = (amount) => {
-    setAmountToSend(amount);
+    var RE = /^-{0,1}\d*\.{0,1}\d+$/;
+
+    if (amount == "") {
+      setAmountToSend(amount);
+      return;
+    }
+
+    if (!isNaN(parseFloat(amount)) && isFinite(amount)) {
+      const numeric = parseFloat(amount);
+      if (numeric >= 0.0 && numeric < formatE8s(available)) {
+        setAmountToSend(amount);
+      }
+    }
   };
 
   const onSend = async () => {
     setSending(true);
-    const otherAccountId = computeAccountId(principal);
+    var otherAccountId;
+    if (forFreeform) {
+      otherAccountId = accountId;
+    } else {
+      otherAccountId = computeAccountId(principal);
+    }
     const amount = formatICP(amountToSend);
     const transferArgs = {
       to: [...new Uint8Array(Buffer.from(otherAccountId, "hex"))],
@@ -98,14 +120,15 @@ const SendModalTile = ({ principal, setForSend }) => {
       amount: { e8s: BigInt(amount) },
     };
     const response = await makeLedgerActor(context).transfer(transferArgs);
-    console.log(response);
     setSending(false);
   };
 
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      keyboardVerticalOffset={verticalScale(120)}
+      keyboardVerticalOffset={
+        forFreeform ? verticalScale(70) : verticalScale(120)
+      }
     >
       <View style={styles.container}>
         {available != -1n ? (
@@ -137,6 +160,21 @@ const SendModalTile = ({ principal, setForSend }) => {
                 </View>
               </View>
             </View>
+            {forFreeform ? (
+              <InputWrapper
+                label={"Account ID"}
+                color={colors.LIGHT_GRAY}
+                style={styles.wrapper}
+              >
+                <TextInput
+                  value={accountId}
+                  onChangeText={onChangeAccountId}
+                  style={styles.accountIdInput}
+                />
+              </InputWrapper>
+            ) : (
+              <></>
+            )}
             <InputWrapper
               label={"Amount"}
               color={colors.LIGHT_GRAY}
@@ -146,22 +184,29 @@ const SendModalTile = ({ principal, setForSend }) => {
                 value={amountToSend}
                 keyboardType="decimal-pad"
                 onChangeText={onChangeAmountToSend}
-                placeholder="useless placeholder"
                 style={styles.input}
               />
               <TouchableOpacity
-                onPress={() => setAmountToSend(String(available))}
+                onPress={() => setAmountToSend(String(formatE8s(available)))}
                 style={styles.maxButton}
               >
                 <Text style={styles.maxButtonText}>MAX</Text>
               </TouchableOpacity>
             </InputWrapper>
             <TouchableOpacity
-              disabled={amountToSend == "" || formatICP(amountToSend) == 0n}
+              disabled={
+                amountToSend == "" ||
+                formatICP(amountToSend) == 0n ||
+                (forFreeform && accountId == "")
+              }
               onPress={onSend}
               style={styles.button}
             >
-              {sending ? <></> : <Text style={styles.buttonText}>Send</Text>}
+              {sending ? (
+                <CustomActivityIndicator />
+              ) : (
+                <Text style={styles.buttonText}>Send</Text>
+              )}
             </TouchableOpacity>
           </>
         ) : (
@@ -221,6 +266,14 @@ const styles = StyleSheet.create({
   },
   wrapper: {
     marginTop: 0,
+  },
+  accountIdInput: {
+    height: "100%",
+    width: "70%",
+    color: colors.WHITE,
+    fontSize: 18,
+    fontFamily: "Poppins-Regular",
+    marginLeft: scale(20),
   },
   input: {
     height: "100%",
