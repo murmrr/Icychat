@@ -6,7 +6,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import * as Clipboard from "expo-clipboard";
 import { useState } from "react";
 
-const FieldWrapper = ({ label, data, color }) => {
+const FieldWrapper = ({ label, data, color, top }) => {
   const [showCopied, setShowCopied] = useState(false);
 
   const onPress = () => {
@@ -16,7 +16,7 @@ const FieldWrapper = ({ label, data, color }) => {
   };
 
   return (
-    <View style={styles.root}>
+    <View style={styles.root(top)}>
       <Text style={styles.heading}>{label}</Text>
       {showCopied ? (
         <>
@@ -48,10 +48,11 @@ const FieldWrapper = ({ label, data, color }) => {
 };
 
 const styles = StyleSheet.create({
-  root: {
+  root: (top) => ({
     width: scale(270),
     marginVertical: scale(25),
-  },
+    marginTop: top ? 0 : scale(25),
+  }),
   heading: {
     color: colors.WHITE,
     fontSize: scale(18),

@@ -32,6 +32,7 @@ const DepositDetailsModalTile = ({ principal, setModalVisible }) => {
             label="Account ID"
             data={computeAccountId(principal)}
             color={colors.BLUE}
+            top={true}
           />
           <FieldWrapper
             label="Principal"
@@ -68,6 +69,7 @@ const styles = StyleSheet.create({
   button: {
     width: scale(260),
     height: verticalScale(48),
+    marginTop: verticalScale(10),
     backgroundColor: colors.BLUE,
     borderRadius: 15,
     justifyContent: "center",
