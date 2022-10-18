@@ -22,6 +22,7 @@ import { scale, verticalScale } from "../../utility/scalingUtils";
 import {
   computeAccountId,
   convertToICP,
+  formatE8s,
   parseProfile,
   stringifyProfile,
   useInterval,
@@ -48,7 +49,7 @@ import DepositDetailsModalTile from "../../components/DepositDetailsModalTile/De
 const MeScreen = ({ navigation, setIsSignedIn }) => {
   const [profile, setProfile] = useState(null);
   const [modalVisible, setModalVisible] = useState(false);
-  const [amount, setAmount] = useState(null);
+  const [amount, setAmount] = useState(-1n);
 
   const context = useContext(MainContext);
 
@@ -177,8 +178,8 @@ const MeScreen = ({ navigation, setIsSignedIn }) => {
               style={styles.icpLogo}
             />
             <View style={styles.amountContainer}>
-              {amount ? (
-                <Text style={styles.amount}>{amount.toString()}</Text>
+              {amount != -1n ? (
+                <Text style={styles.amount}>{formatE8s(amount)}</Text>
               ) : (
                 <CustomActivityIndicator />
               )}

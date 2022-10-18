@@ -17,6 +17,8 @@ import { scale, verticalScale } from "../../utility/scalingUtils";
 import {
   computeAccountId,
   convertToICP,
+  formatE8s,
+  formatICP,
   useInterval,
 } from "../../utility/utils";
 import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
@@ -24,16 +26,17 @@ import InputWrapper from "../InputWrapper/InputWrapper";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { TextInput } from "react-native-gesture-handler";
 
-const SendModalTile = ({ setForSend }) => {
-  const [amount, setAmount] = useState(null);
-  const [transferFee, setTransferFee] = useState(null);
-  const [available, setAvailable] = useState("");
+const SendModalTile = ({ principal, setForSend }) => {
+  const [amount, setAmount] = useState(-1n);
+  const [transferFee, setTransferFee] = useState(-1n);
+  const [available, setAvailable] = useState(-1n);
   const [amountToSend, setAmountToSend] = useState("");
+  const [sending, setSending] = useState(false);
 
   const context = useContext(MainContext);
 
   useEffect(() => {
-    if (amount && transferFee) {
+    if (amount != -1 && transferFee != -1) {
       const difference = amount - transferFee;
       if (difference > 0n) {
         setAvailable(difference);
@@ -82,7 +85,22 @@ const SendModalTile = ({ setForSend }) => {
     setAmountToSend(amount);
   };
 
-  const onSend = () => {};
+  const onSend = async () => {
+    setSending(true);
+    const otherAccountId = computeAccountId(principal);
+    const amount = formatICP(amountToSend);
+    const transferArgs = {
+      to: [...new Uint8Array(Buffer.from(otherAccountId, "hex"))],
+      fee: { e8s: BigInt(transferFee) },
+      memo: BigInt(0n),
+      from_subaccount: [],
+      created_at_time: [],
+      amount: { e8s: BigInt(amount) },
+    };
+    const response = await makeLedgerActor(context).transfer(transferArgs);
+    console.log(response);
+    setSending(false);
+  };
 
   return (
     <KeyboardAvoidingView
@@ -90,7 +108,7 @@ const SendModalTile = ({ setForSend }) => {
       keyboardVerticalOffset={verticalScale(120)}
     >
       <View style={styles.container}>
-        {available != -1 ? (
+        {available != -1n ? (
           <>
             <TouchableOpacity
               onPress={() => setForSend(false)}
@@ -111,8 +129,8 @@ const SendModalTile = ({ setForSend }) => {
                   style={styles.icpLogo}
                 />
                 <View style={styles.amountContainer}>
-                  {amount ? (
-                    <Text style={styles.amount}>{available}</Text>
+                  {amount != -1n ? (
+                    <Text style={styles.amount}>{formatE8s(available)}</Text>
                   ) : (
                     <CustomActivityIndicator />
                   )}
@@ -126,6 +144,7 @@ const SendModalTile = ({ setForSend }) => {
             >
               <TextInput
                 value={amountToSend}
+                keyboardType="decimal-pad"
                 onChangeText={onChangeAmountToSend}
                 placeholder="useless placeholder"
                 style={styles.input}
@@ -137,8 +156,12 @@ const SendModalTile = ({ setForSend }) => {
                 <Text style={styles.maxButtonText}>MAX</Text>
               </TouchableOpacity>
             </InputWrapper>
-            <TouchableOpacity onPress={onSend} style={styles.button}>
-              <Text style={styles.buttonText}>Send</Text>
+            <TouchableOpacity
+              disabled={amountToSend == "" || formatICP(amountToSend) == 0n}
+              onPress={onSend}
+              style={styles.button}
+            >
+              {sending ? <></> : <Text style={styles.buttonText}>Send</Text>}
             </TouchableOpacity>
           </>
         ) : (

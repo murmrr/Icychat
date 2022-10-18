@@ -288,6 +288,10 @@ export const computeAccountId = (
   return val;
 };
 
-export const convertToICP = (units) => {
+export const formatE8s = (units) => {
   return Number((units * 100000000n) / 100000000n) / 100000000;
+};
+
+export const formatICP = (units) => {
+  return BigInt(Number(units) * 100000000);
 };

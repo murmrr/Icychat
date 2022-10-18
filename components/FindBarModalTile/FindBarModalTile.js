@@ -102,7 +102,7 @@ const FindBarModalTile = ({
       style={styles.touchableView}
     >
       {forSend ? (
-        <SendModalTile setForSend={setForSend} />
+        <SendModalTile principal={principal} setForSend={setForSend} />
       ) : (
         <View style={styles.container(profile, forAdd)}>
           {profile ? (
