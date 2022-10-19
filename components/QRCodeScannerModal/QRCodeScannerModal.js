@@ -15,6 +15,8 @@ import FindBarModalTile from "../FindBarModalTile/FindBarModalTile";
 import { Camera } from "expo-camera";
 import { BlurView } from "expo-blur";
 import Icon from "react-native-vector-icons/FontAwesome";
+import FindBarModal from "../FindBarModal/FindBarModal";
+import AddToChatModal from "../AddToChatModal/AddToChatModal";
 
 const QRCodeScannerModal = ({
   id,
@@ -25,6 +27,10 @@ const QRCodeScannerModal = ({
 }) => {
   const [hasPermission, setHasPermission] = useState(null);
   const [otherUserPrincipal, setOtherUserPrincipal] = useState(false);
+
+  useEffect(() => {
+    setOtherUserPrincipal(false);
+  }, [modalVisible]);
 
   useEffect(() => {
     const getBarCodeScannerPermissions = async () => {
@@ -47,7 +53,96 @@ const QRCodeScannerModal = ({
       } catch (error) {}
     }
   };
-
+  return otherUserPrincipal ? (
+    forAdd ? (
+      <AddToChatModal
+        id={id}
+        chatKey={chatKey}
+        principal={otherUserPrincipal}
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
+    ) : (
+      <FindBarModal
+        principal={otherUserPrincipal}
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
+    )
+  ) : (
+    <Modal transparent={true} visible={modalVisible}>
+      <View style={styles.container}>
+        <View
+          style={{
+            backgroundColor: "rgba(255, 255, 255, .5)",
+            position: "absolute",
+            zIndex: 1,
+            top: 0,
+            left: 0,
+            right: 0,
+            bottom: verticalScale(555),
+          }}
+        />
+        <View
+          style={{
+            backgroundColor: "rgba(255, 255, 255, .5)",
+            position: "absolute",
+            zIndex: 1,
+            top: verticalScale(368),
+            left: 0,
+            right: 0,
+            bottom: 0,
+          }}
+        />
+        <View
+          style={{
+            backgroundColor: "rgba(255, 255, 255, .5)",
+            position: "absolute",
+            zIndex: 1,
+            top: verticalScale(125),
+            left: 0,
+            right: scale(310),
+            bottom: verticalScale(312),
+          }}
+        />
+        <View
+          style={{
+            backgroundColor: "rgba(255, 255, 255, .5)",
+            position: "absolute",
+            zIndex: 1,
+            top: verticalScale(125),
+            left: scale(310),
+            right: 0,
+            bottom: verticalScale(312),
+          }}
+        />
+        <TouchableOpacity
+          onPress={() => {
+            setModalVisible(false);
+          }}
+          style={styles.button}
+        >
+          <Icon name="arrow-left" size={16} color={colors.WHITE} />
+        </TouchableOpacity>
+        <View style={styles.viewfinder} />
+        {hasPermission ? (
+          <Camera
+            style={styles.camera}
+            type={Camera.Constants.Type.back}
+            barCodeScannerSettings={{
+              barCodeTypes: [BarCodeScanner.Constants.BarCodeType.qr],
+            }}
+            onBarCodeScanned={
+              otherUserPrincipal ? undefined : handleBarCodeScanned
+            }
+          />
+        ) : (
+          <></>
+        )}
+      </View>
+    </Modal>
+  );
+  /*
   return (
     <Modal transparent={true} visible={modalVisible}>
       {otherUserPrincipal ? (
@@ -133,6 +228,7 @@ const QRCodeScannerModal = ({
       )}
     </Modal>
   );
+  */
 };
 
 const styles = StyleSheet.create({
