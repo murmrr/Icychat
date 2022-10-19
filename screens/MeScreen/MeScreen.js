@@ -29,7 +29,7 @@ import {
 } from "../../utility/utils";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import CustomProfilePicture from "../../components/CustomProfilePicture/CustomProfilePicture";
-import Icon from "react-native-vector-icons/FontAwesome";
+import Icon from "react-native-vector-icons/FontAwesome5";
 import CustomActivityIndicator from "../../components/CustomActivityIndicator/CustomActivityIndicator";
 import {
   addToCache,
@@ -113,10 +113,10 @@ const MeScreen = ({ navigation, setIsSignedIn }) => {
     }
   }, POLLING_INTERVAL);
 
-  const handleDelete = async () => {
+  const handleGhost = async () => {
     Alert.alert(
-      "Delete Account",
-      "Are you sure you want to burn your account?",
+      "Ghost Account",
+      "Are you sure you want to ghost your account?",
       [
         {
           text: "No",
@@ -126,7 +126,6 @@ const MeScreen = ({ navigation, setIsSignedIn }) => {
           text: "Yes",
           onPress: async () => {
             try {
-              await makeBackendActor(context).burnAccount();
               clearAllCaches();
               setIsSignedIn(false);
             } catch (exception) {}
@@ -134,6 +133,25 @@ const MeScreen = ({ navigation, setIsSignedIn }) => {
         },
       ]
     );
+  };
+
+  const handleBurn = async () => {
+    Alert.alert("Burn Account", "Are you sure you want to burn your account?", [
+      {
+        text: "No",
+        onPress: () => {},
+      },
+      {
+        text: "Yes",
+        onPress: async () => {
+          try {
+            await makeBackendActor(context).burnAccount();
+            clearAllCaches();
+            setIsSignedIn(false);
+          } catch (exception) {}
+        },
+      },
+    ]);
   };
 
   return profile ? (
@@ -162,7 +180,7 @@ const MeScreen = ({ navigation, setIsSignedIn }) => {
               </Text>
               <TouchableOpacity onPress={() => setModalVisible(true)}>
                 <Icon
-                  name="bank"
+                  name="piggy-bank"
                   size={19}
                   color={colors.WHITE}
                   style={{ padding: 10 }}
@@ -184,7 +202,20 @@ const MeScreen = ({ navigation, setIsSignedIn }) => {
             </View>
           </View>
         </View>
-        <TouchableOpacity onPress={handleDelete} style={styles.button}>
+        <TouchableOpacity
+          onPress={handleGhost}
+          style={[
+            styles.button,
+            {
+              marginBottom: verticalScale(-25),
+              backgroundColor: colors.YELLOW,
+            },
+          ]}
+        >
+          <Text style={styles.buttonText}>Ghost</Text>
+          <Icon name="ghost" size={14} color={colors.WHITE} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={handleBurn} style={styles.button}>
           <Text style={styles.buttonText}>Burn</Text>
           <Icon name="fire" size={14} color={colors.WHITE} />
         </TouchableOpacity>

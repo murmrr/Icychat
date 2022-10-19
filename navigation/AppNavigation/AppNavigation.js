@@ -8,6 +8,7 @@ import {
 } from "react-native-safe-area-context";
 import { Ed25519KeyIdentity } from "@dfinity/identity";
 import { GENERAL_CACHE, getFromCache, storage } from "../../utility/caches";
+import CustomActivityIndicator from "../../components/CustomActivityIndicator/CustomActivityIndicator";
 
 const AppNavigation = () => {
   const [isSignedIn, setIsSignedIn] = useState(false);
@@ -31,10 +32,16 @@ const AppNavigation = () => {
 
   return (
     <SafeAreaProvider>
-      {isSignedIn ? (
-        <MainNavigation identity={identity} setIsSignedIn={setIsSignedIn} />
+      {identity ? (
+        <>
+          {isSignedIn ? (
+            <MainNavigation identity={identity} setIsSignedIn={setIsSignedIn} />
+          ) : (
+            <AuthNavigation setIsSignedIn={setIsSignedIn} />
+          )}
+        </>
       ) : (
-        <AuthNavigation setIsSignedIn={setIsSignedIn} />
+        <></>
       )}
     </SafeAreaProvider>
   );

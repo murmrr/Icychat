@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
     zIndex: 0,
   },
   nestedContainer: {
-    backgroundColor: colors.LIGHT_GRAY,
+    backgroundColor: colors.MIDNIGHT_BLUE,
     width: scale(300),
     height: verticalScale(330),
     borderRadius: 20,

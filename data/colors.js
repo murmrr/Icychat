@@ -28,6 +28,8 @@ export default {
   DARK_GRAY: "#181A20",
   LIGHT_GRAY: "#343645",
   BLUE: "#4D5DFA",
+  MIDNIGHT_BLUE: "#0d1f3c",
+  YELLOW: "#FDB32a",
   DARK_PURPLE: "#242042",
   RED: "#rgb(238, 50, 50)",
 };

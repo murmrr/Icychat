@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   nestedContainer: (profile) => ({
-    backgroundColor: colors.LIGHT_GRAY,
+    backgroundColor: colors.MIDNIGHT_BLUE,
     width: scale(310),
     height: verticalScale(250),
     borderRadius: 15,

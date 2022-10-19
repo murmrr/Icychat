@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
     top: -13,
     left: 20,
     width: "auto",
+    borderRadius: 8,
     backgroundColor: color ? color : colors.DARK_PRIMARY,
   }),
   labelText: {

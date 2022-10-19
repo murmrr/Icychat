@@ -22,6 +22,7 @@ import CustomActivityIndicator from "../../components/CustomActivityIndicator/Cu
 import OpenPGP from "react-native-fast-openpgp";
 import { generateAsymmetricKeys } from "../../utility/utils";
 import { addToCache, GENERAL_CACHE, storage } from "../../utility/caches";
+import BubbleToast from "../../components/BubbleToast/BubbleToast";
 
 const SignUpScreen = ({ setIsSignedIn }) => {
   const [username, setUsername] = useState("");
@@ -53,7 +54,6 @@ const SignUpScreen = ({ setIsSignedIn }) => {
     } else {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
       setShowInvalid(true);
-      setTimeout(() => setShowInvalid(false), 1000);
     }
   };
 
@@ -80,16 +80,16 @@ const SignUpScreen = ({ setIsSignedIn }) => {
             />
           </View>
           <InputWrapper label="Username">
-            {showInvalid ? (
-              <>
-                <View style={styles.invalid}>
-                  <Text style={styles.invalidText}>Invalid Username!</Text>
-                </View>
-                <View style={styles.invalidTriangle} />
-              </>
-            ) : (
-              <></>
-            )}
+            <BubbleToast
+              text={"Invalid!"}
+              fontSize={scale(12)}
+              width={scale(60)}
+              left={scale(30.5)}
+              top={scale(-80)}
+              bottom={verticalScale(0)}
+              visible={showInvalid}
+              setVisible={setShowInvalid}
+            />
             <TextInput
               placeholder="Pick a username"
               editable={!loading}
@@ -128,37 +128,6 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-  },
-  invalid: {
-    position: "absolute",
-    backgroundColor: colors.BLUE,
-    width: scale(90),
-    height: scale(30),
-    borderRadius: 4,
-    left: scale(27.5 - 13),
-    top: scale(-52),
-    alignItems: "center",
-    justifyContent: "center",
-    zIndex: 1,
-  },
-  invalidText: {
-    color: colors.WHITE,
-    fontSize: scale(9),
-    fontFamily: "Poppins-Medium",
-    zIndex: 0,
-  },
-  invalidTriangle: {
-    borderTopWidth: scale(15),
-    borderRightWidth: scale(15),
-    borderBottomWidth: 0,
-    borderLeftWidth: scale(15),
-    borderTopColor: colors.BLUE,
-    borderRightColor: "transparent",
-    borderBottomColor: "transparent",
-    borderLeftColor: "transparent",
-    position: "absolute",
-    left: scale(23.5 + 25 + 8 - 13),
-    top: scale(-24),
   },
   usernameInput: {
     height: "100%",

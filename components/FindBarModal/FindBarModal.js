@@ -112,11 +112,7 @@ const FindBarModal = ({ principal, modalVisible, setModalVisible }) => {
                     }}
                     style={[styles.button, { marginTop: verticalScale(10) }]}
                   >
-                    {loadingChat ? (
-                      <CustomActivityIndicator />
-                    ) : (
-                      <Text style={styles.buttonText}>Send</Text>
-                    )}
+                    <Text style={styles.buttonText}>Send</Text>
                   </TouchableOpacity>
                 </View>
               ) : (
@@ -145,7 +141,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   nestedContainer: (profile) => ({
-    backgroundColor: colors.LIGHT_GRAY,
+    backgroundColor: colors.MIDNIGHT_BLUE,
     width: scale(310),
     height: verticalScale(308),
     borderRadius: 15,

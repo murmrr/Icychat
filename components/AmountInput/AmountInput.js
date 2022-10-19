@@ -36,7 +36,7 @@ const AmountInput = ({ amount, setAmount, available }) => {
     >
       <View style={styles.nestedContainer}>
         <TextInput
-          placeholder="0.00"
+          placeholder="0.00000000"
           placeholderTextColor={colors.GRAY}
           value={amount}
           onChangeText={onChangeAmount}

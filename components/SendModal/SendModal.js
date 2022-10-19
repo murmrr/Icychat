@@ -116,7 +116,7 @@ const SendModal = ({ principal, setForSend }) => {
 
 const styles = StyleSheet.create({
   container: (principal) => ({
-    backgroundColor: colors.LIGHT_GRAY,
+    backgroundColor: colors.MIDNIGHT_BLUE,
     width: scale(330),
     height: principal ? verticalScale(230) : verticalScale(300),
     borderRadius: 15,
@@ -151,6 +151,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignContent: "center",
     justifyContent: "center",
+    marginTop: verticalScale(5),
   },
   icpLogo: {
     width: scale(35),
