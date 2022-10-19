@@ -13,7 +13,7 @@ import { computeAccountId } from "../../utility/utils";
 import FieldWrapper from "../FieldWrapper/FieldWrapper";
 import SendModalTile from "../SendModalTile/SendModalTile";
 
-const DepositDetailsModalTile = ({ principal, setModalVisible }) => {
+const DepositDetailsModal = ({ principal, setModalVisible }) => {
   const [forSend, setForSend] = useState(false);
 
   return (
@@ -61,7 +61,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.LIGHT_GRAY,
     width: scale(300),
-    height: verticalScale(360),
+    height: verticalScale(330),
     borderRadius: 20,
     alignItems: "center",
     justifyContent: "center",
@@ -82,4 +82,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DepositDetailsModalTile;
+export default DepositDetailsModal;

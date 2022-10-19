@@ -30,17 +30,15 @@ import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import SendModalTile from "../SendModalTile/SendModalTile";
 import SendToUserModalTile from "../SendModalTile/SendModalTile";
 
-const FindBarModalTile = ({
+const AddToChatModal = ({
   id,
   chatKey,
   principal,
-  forAdd,
   modalVisible,
   setModalVisible,
 }) => {
   const [profile, setProfile] = useState(null);
   const [loadingChat, setLoadingChat] = useState(false);
-  const [forSend, setForSend] = useState(false);
 
   const context = useContext(MainContext);
 
@@ -61,36 +59,18 @@ const FindBarModalTile = ({
     const otherUserPublicKey = (
       await makeBackendActor(context).getPublicKey(principal)
     )["ok"];
-    if (forAdd) {
-      const otherUserChatKey = await encryptAsymmetric(
-        chatKey,
-        otherUserPublicKey
-      );
 
-      const response = await makeBackendActor(context).addToChat(
-        id,
-        principal,
-        otherUserChatKey
-      );
-    } else {
-      const chatKey = await generateSymmetricKey();
+    const otherUserChatKey = await encryptAsymmetric(
+      chatKey,
+      otherUserPublicKey
+    );
 
-      const myChatKey = await encryptAsymmetric(
-        chatKey,
-        await getMyPublicKey()
-      );
+    const response = await makeBackendActor(context).addToChat(
+      id,
+      principal,
+      otherUserChatKey
+    );
 
-      const otherUserChatKey = await encryptAsymmetric(
-        chatKey,
-        otherUserPublicKey
-      );
-
-      const response = await makeBackendActor(context).createChat(
-        principal,
-        myChatKey,
-        otherUserChatKey
-      );
-    }
     setLoadingChat(false);
     setModalVisible(false);
   };
@@ -99,16 +79,13 @@ const FindBarModalTile = ({
     <Modal animationType="slide" transparent={true} visible={modalVisible}>
       <View style={styles.container}>
         <TouchableOpacity
-          disabled={loadingChat || forSend}
+          disabled={loadingChat}
           onPress={() => {
             setModalVisible(false);
           }}
           style={styles.touchableView}
         />
-        {forSend ? (
-          <SendModalTile principal={principal} setForSend={setForSend} />
-        ) : (
-          <View style={styles.nestedContainer(profile, forAdd)}>
+          <View style={styles.nestedContainer(profile)}>
             {profile ? (
               <View style={styles.profileContainer}>
                 <CustomProfilePicture
@@ -122,26 +99,15 @@ const FindBarModalTile = ({
                     <CustomActivityIndicator />
                   ) : (
                     <Text style={styles.buttonText}>
-                      {forAdd ? "Add" : "Create Chat"}
+                      Add
                     </Text>
                   )}
                 </TouchableOpacity>
-                {forAdd ? (
-                  <></>
-                ) : (
-                  <TouchableOpacity
-                    onPress={() => setForSend(true)}
-                    style={[styles.button, { marginTop: verticalScale(10) }]}
-                  >
-                    <Text style={styles.buttonText}>Send</Text>
-                  </TouchableOpacity>
-                )}
               </View>
             ) : (
               <CustomActivityIndicator />
             )}
           </View>
-        )}
       </View>
     </Modal>
   );
@@ -161,10 +127,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  nestedContainer: (profile, forAdd) => ({
+  nestedContainer: (profile) => ({
     backgroundColor: colors.LIGHT_GRAY,
     width: scale(310),
-    height: forAdd ? verticalScale(250) : verticalScale(308),
+    height: verticalScale(250),
     borderRadius: 15,
     alignItems: "center",
     justifyContent: profile ? "" : "center",
@@ -210,4 +176,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default FindBarModalTile;
+export default AddToChatModal;

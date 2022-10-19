@@ -14,10 +14,12 @@ import { useInterval } from "../../utility/utils";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { BlurView } from "expo-blur";
-import QRCodeModalTile from "../../components/QRCodeModalTile/QRCodeModalTile";
+import QRCodeModalTile from "../../components/QRCodeModal/QRCodeModal";
 import { BarCodeScanner } from "expo-barcode-scanner";
-import QRScannerModalTile from "../../components/QRCodeScannerModalTile/QRCodeScannerModalTile";
+import QRScannerModalTile from "../../components/QRCodeScannerModal/QRCodeScannerModal";
 import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
+import QRCodeModal from "../../components/QRCodeModal/QRCodeModal";
+import QRCodeScannerModal from "../../components/QRCodeScannerModal/QRCodeScannerModal";
 
 const FindScreen = ({ forAdd, navigation, route }) => {
   const id = forAdd ? route.params.id : null;
@@ -104,23 +106,17 @@ const FindScreen = ({ forAdd, navigation, route }) => {
 
   return (
     <>
-      <Modal animationType="slide" transparent={true} visible={qrModalVisible}>
-        <BlurView intensity={5} tint="dark" style={styles.modalTileContainer}>
-          <QRCodeModalTile setModalVisible={setQrModalVisible} />
-        </BlurView>
-      </Modal>
-      <Modal
-        animationType="slide"
-        visible={qrScannerModalVisible}
-        transparent={true}
-      >
-        <QRScannerModalTile
-          id={id}
-          chatKey={chatKey}
-          forAdd={forAdd}
-          setModalVisible={setQrScannerModalVisible}
-        />
-      </Modal>
+      <QRCodeModal
+        modalVisible={qrModalVisible}
+        setModalVisible={setQrModalVisible}
+      />
+      <QRCodeScannerModal
+        id={id}
+        chatKey={chatKey}
+        forAdd={forAdd}
+        modalVisible={qrScannerModalVisible}
+        setModalVisible={setQrScannerModalVisible}
+      />
       <View style={styles.container(query == "")}>
         {allUsers ? (
           <FlatList
@@ -148,11 +144,6 @@ const FindScreen = ({ forAdd, navigation, route }) => {
 };
 
 const styles = StyleSheet.create({
-  modalTileContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
   container: (isEmpty) => ({
     height: "100%",
     backgroundColor: colors.DARK_PRIMARY,

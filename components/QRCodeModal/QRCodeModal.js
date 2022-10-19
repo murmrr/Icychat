@@ -1,5 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
-import { StyleSheet, TouchableOpacity, View, Image, Text } from "react-native";
+import {
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  Image,
+  Text,
+  Modal,
+} from "react-native";
 import { scale, verticalScale } from "../../utility/scalingUtils";
 import colors from "../../data/colors";
 import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
@@ -24,8 +31,9 @@ import {
 } from "../../utility/caches";
 import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import { BlurView } from "expo-blur";
 
-const QRCodeModalTile = ({ setModalVisible }) => {
+const QRCodeModal = ({ modalVisible, setModalVisible }) => {
   const [uri, setUri] = useState(null);
   const [profile, setProfile] = useState(null);
 
@@ -59,30 +67,33 @@ const QRCodeModalTile = ({ setModalVisible }) => {
   }, []);
 
   return (
-    <TouchableWithoutFeedback
-      onPress={() => {
-        setModalVisible(false);
-      }}
-      style={styles.touchableView}
-    >
+    <Modal animationType="slide" transparent={true} visible={modalVisible}>
       <View style={styles.container}>
-        {uri && profile ? (
-          <View style={styles.qrContainer}>
-            <CustomProfilePicture
-              principal={profile["userPrincipal"]}
-              style={styles.avatar}
-            />
-            <Text style={styles.username}>{profile["username"]}</Text>
-            <Image
-              source={{ uri: uri }}
-              style={{ width: scale(190), height: scale(190) }}
-            />
-          </View>
-        ) : (
-          <CustomActivityIndicator />
-        )}
+        <TouchableOpacity
+          onPress={() => {
+            setModalVisible(false);
+          }}
+          style={styles.touchableView}
+        />
+        <View style={styles.nestedContainer}>
+          {uri && profile ? (
+            <View style={styles.qrContainer}>
+              <CustomProfilePicture
+                principal={profile["userPrincipal"]}
+                style={styles.avatar}
+              />
+              <Text style={styles.username}>{profile["username"]}</Text>
+              <Image
+                source={{ uri: uri }}
+                style={{ width: scale(190), height: scale(190) }}
+              />
+            </View>
+          ) : (
+            <CustomActivityIndicator />
+          )}
+        </View>
       </View>
-    </TouchableWithoutFeedback>
+    </Modal>
   );
 };
 
@@ -90,10 +101,17 @@ const styles = StyleSheet.create({
   touchableView: {
     width: "100%",
     height: "100%",
+    position: "absolute",
+    alignContent: "center",
+    justifyContent: "center",
+    zIndex: 0,
+  },
+  container: {
+    flex: 1,
     alignItems: "center",
     justifyContent: "center",
   },
-  container: {
+  nestedContainer: {
     backgroundColor: colors.BLUE,
     width: scale(240),
     height: scale(300),
@@ -125,4 +143,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default QRCodeModalTile;
+export default QRCodeModal;

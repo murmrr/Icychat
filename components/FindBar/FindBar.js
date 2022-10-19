@@ -16,6 +16,8 @@ import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
 import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
 import { addToCache, getFromCache, PROFILE_CACHE } from "../../utility/caches";
 import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
+import FindBarModal from "../FindBarModal/FindBarModal";
+import AddToChatModal from "../AddToChatModal/AddToChatModal";
 
 const FindBar = ({ id, chatKey, principal, forAdd }) => {
   const [profile, setProfile] = useState(null);
@@ -36,17 +38,17 @@ const FindBar = ({ id, chatKey, principal, forAdd }) => {
 
   return (
     <>
-      <Modal animationType="slide" transparent={true} visible={modalVisible}>
-        <BlurView intensity={5} tint="dark" style={styles.modalTileContainer}>
-          <FindBarModalTile
-            id={id}
-            chatKey={chatKey}
-            principal={principal}
-            forAdd={forAdd}
-            setModalVisible={setModalVisible}
-          />
-        </BlurView>
-      </Modal>
+      {forAdd ? (      <AddToChatModal
+      id={id}
+      chatKey={chatKey}
+        principal={principal}
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />) : (      <FindBarModal
+        principal={principal}
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />)}
       <TouchableOpacity onPress={() => setModalVisible(true)}>
         <View style={styles.container}>
           <View style={styles.avatarContainer}>
@@ -69,12 +71,6 @@ const FindBar = ({ id, chatKey, principal, forAdd }) => {
 };
 
 const styles = StyleSheet.create({
-  modalTileContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22,
-  },
   container: {
     flexDirection: "row",
     height: moderateScale(64.53),

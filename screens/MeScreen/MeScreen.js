@@ -44,7 +44,8 @@ import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
 import { Ed25519KeyIdentity, Ed25519PublicKey } from "@dfinity/identity";
 import { Principal } from "@dfinity/principal";
 import { BlurView } from "expo-blur";
-import DepositDetailsModalTile from "../../components/DepositDetailsModalTile/DepositDetailsModalTile";
+import DepositDetailsModalTile from "../../components/DepositDetailsModal/DepositDetailsModal";
+import DepositDetailsModal from "../../components/DepositDetailsModal/DepositDetailsModal";
 
 const MeScreen = ({ navigation, setIsSignedIn }) => {
   const [profile, setProfile] = useState(null);
@@ -139,7 +140,7 @@ const MeScreen = ({ navigation, setIsSignedIn }) => {
     <>
       <Modal animationType="slide" transparent={true} visible={modalVisible}>
         <BlurView intensity={5} tint="dark" style={styles.modalTileContainer}>
-          <DepositDetailsModalTile
+          <DepositDetailsModal
             principal={profile["userPrincipal"]}
             setModalVisible={setModalVisible}
           />

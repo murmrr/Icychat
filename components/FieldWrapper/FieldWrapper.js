@@ -50,8 +50,8 @@ const FieldWrapper = ({ label, data, color, top }) => {
 const styles = StyleSheet.create({
   root: (top) => ({
     width: scale(270),
-    marginVertical: scale(25),
-    marginTop: top ? 0 : scale(25),
+    marginVertical: verticalScale(22),
+    marginTop: top ? 0 : verticalScale(22),
   }),
   heading: {
     color: colors.WHITE,
