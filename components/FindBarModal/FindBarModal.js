@@ -29,14 +29,12 @@ import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import SendModalTile from "../SendModalTile/SendModalTile";
 import SendToUserModalTile from "../SendModalTile/SendModalTile";
+import SendModal from "../SendModal/SendModal";
 
-const FindBarModal = ({
-  principal,
-  modalVisible,
-  setModalVisible,
-}) => {
+const FindBarModal = ({ principal, modalVisible, setModalVisible }) => {
   const [profile, setProfile] = useState(null);
   const [loadingChat, setLoadingChat] = useState(false);
+  const [forSend, setForSend] = useState(false);
 
   const context = useContext(MainContext);
 
@@ -60,10 +58,7 @@ const FindBarModal = ({
 
     const chatKey = await generateSymmetricKey();
 
-    const myChatKey = await encryptAsymmetric(
-      chatKey,
-      await getMyPublicKey()
-    );
+    const myChatKey = await encryptAsymmetric(chatKey, await getMyPublicKey());
 
     const otherUserChatKey = await encryptAsymmetric(
       chatKey,
@@ -86,33 +81,50 @@ const FindBarModal = ({
         <TouchableOpacity
           disabled={loadingChat}
           onPress={() => {
+            setForSend(false);
             setModalVisible(false);
           }}
           style={styles.touchableView}
         />
-          <View style={styles.nestedContainer(profile)}>
-            {profile ? (
-              <View style={styles.profileContainer}>
-                <CustomProfilePicture
-                  principal={principal}
-                  style={styles.avatar}
-                />
-                <Text style={styles.username}>{profile["username"]}</Text>
-                <Text style={styles.principal}>{principal.toText()}</Text>
-                <TouchableOpacity onPress={createChat} style={styles.button}>
-                  {loadingChat ? (
-                    <CustomActivityIndicator />
-                  ) : (
-                    <Text style={styles.buttonText}>
-                      Create Chat
-                    </Text>
-                  )}
-                </TouchableOpacity>
-              </View>
-            ) : (
-              <CustomActivityIndicator />
-            )}
-          </View>
+        {forSend ? (
+          <SendModal principal={principal} setForSend={setForSend} />
+        ) : (
+          <>
+            <View style={styles.nestedContainer(profile)}>
+              {profile ? (
+                <View style={styles.profileContainer}>
+                  <CustomProfilePicture
+                    principal={principal}
+                    style={styles.avatar}
+                  />
+                  <Text style={styles.username}>{profile["username"]}</Text>
+                  <Text style={styles.principal}>{principal.toText()}</Text>
+                  <TouchableOpacity onPress={createChat} style={styles.button}>
+                    {loadingChat ? (
+                      <CustomActivityIndicator />
+                    ) : (
+                      <Text style={styles.buttonText}>Create Chat</Text>
+                    )}
+                  </TouchableOpacity>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setForSend(true);
+                    }}
+                    style={[styles.button, { marginTop: verticalScale(10) }]}
+                  >
+                    {loadingChat ? (
+                      <CustomActivityIndicator />
+                    ) : (
+                      <Text style={styles.buttonText}>Send</Text>
+                    )}
+                  </TouchableOpacity>
+                </View>
+              ) : (
+                <CustomActivityIndicator />
+              )}
+            </View>
+          </>
+        )}
       </View>
     </Modal>
   );
@@ -135,7 +147,7 @@ const styles = StyleSheet.create({
   nestedContainer: (profile) => ({
     backgroundColor: colors.LIGHT_GRAY,
     width: scale(310),
-    height: verticalScale(250),
+    height: verticalScale(308),
     borderRadius: 15,
     alignItems: "center",
     justifyContent: profile ? "" : "center",

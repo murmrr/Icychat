@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, TouchableOpacity, View, Image, Text } from "react-native";
+import {
+  StyleSheet,
+  TouchableOpacity,
+  View,
+  Image,
+  Text,
+  Modal,
+} from "react-native";
 import { scale, verticalScale } from "../../utility/scalingUtils";
 import colors from "../../data/colors";
 import { BarCodeScanner } from "expo-barcode-scanner";
@@ -12,53 +19,62 @@ import InputWrapper from "../InputWrapper/InputWrapper";
 import { computeAccountId } from "../../utility/utils";
 import FieldWrapper from "../FieldWrapper/FieldWrapper";
 import SendModalTile from "../SendModalTile/SendModalTile";
+import SendModal from "../SendModal/SendModal";
 
-const DepositDetailsModal = ({ principal, setModalVisible }) => {
+const DepositDetailsModal = ({ principal, modalVisible, setModalVisible }) => {
   const [forSend, setForSend] = useState(false);
 
   return (
-    <>
-      <TouchableOpacity
-        onPress={() => {
-          setModalVisible(false);
-        }}
-        style={styles.touchableView}
-      />
-      {forSend ? (
-        <SendModalTile forFreeform={true} setForSend={setForSend} />
-      ) : (
-        <View style={styles.container}>
-          <FieldWrapper
-            label="Account ID"
-            data={computeAccountId(principal)}
-            color={colors.BLUE}
-            top={true}
-          />
-          <FieldWrapper
-            label="Principal"
-            data={principal.toText()}
-            color={colors.BLUE}
-          />
-          <TouchableOpacity
-            onPress={() => setForSend(true)}
-            style={styles.button}
-          >
-            <Text style={styles.buttonText}>Withdraw</Text>
-          </TouchableOpacity>
-        </View>
-      )}
-    </>
+    <Modal animationType="slide" transparent={true} visible={modalVisible}>
+      <View style={styles.container}>
+        <TouchableOpacity
+          onPress={() => {
+            setForSend(false);
+            setModalVisible(false);
+          }}
+          style={styles.touchableView}
+        />
+        {forSend ? (
+          <SendModal setForSend={setForSend} />
+        ) : (
+          <View style={styles.nestedContainer}>
+            <FieldWrapper
+              label="Account ID"
+              data={computeAccountId(principal)}
+              color={colors.BLUE}
+              top={true}
+            />
+            <FieldWrapper
+              label="Principal"
+              data={principal.toText()}
+              color={colors.BLUE}
+            />
+            <TouchableOpacity
+              onPress={() => setForSend(true)}
+              style={styles.button}
+            >
+              <Text style={styles.buttonText}>Withdraw</Text>
+            </TouchableOpacity>
+          </View>
+        )}
+      </View>
+    </Modal>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   touchableView: {
     width: "100%",
     height: "100%",
     position: "absolute",
     zIndex: 0,
   },
-  container: {
+  nestedContainer: {
     backgroundColor: colors.LIGHT_GRAY,
     width: scale(300),
     height: verticalScale(330),

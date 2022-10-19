@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from "react-native";
 import colors from "../../data/colors";
-import { scale } from "../../utility/scalingUtils";
+import { scale, verticalScale } from "../../utility/scalingUtils";
 
 const InputWrapper = ({ label, color, children, style }) => {
   return (
@@ -16,7 +16,7 @@ const InputWrapper = ({ label, color, children, style }) => {
 const styles = StyleSheet.create({
   root: {
     borderWidth: 1.7,
-    marginTop: 30,
+    marginTop: verticalScale(28),
     height: 59,
     width: scale(304),
     alignSelf: "center",

@@ -138,14 +138,11 @@ const MeScreen = ({ navigation, setIsSignedIn }) => {
 
   return profile ? (
     <>
-      <Modal animationType="slide" transparent={true} visible={modalVisible}>
-        <BlurView intensity={5} tint="dark" style={styles.modalTileContainer}>
-          <DepositDetailsModal
-            principal={profile["userPrincipal"]}
-            setModalVisible={setModalVisible}
-          />
-        </BlurView>
-      </Modal>
+      <DepositDetailsModal
+        principal={profile["userPrincipal"]}
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
       <ScrollView
         style={{ backgroundColor: colors.DARK_PRIMARY }}
         contentContainerStyle={styles.container}

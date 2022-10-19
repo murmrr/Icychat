@@ -38,17 +38,21 @@ const FindBar = ({ id, chatKey, principal, forAdd }) => {
 
   return (
     <>
-      {forAdd ? (      <AddToChatModal
-      id={id}
-      chatKey={chatKey}
-        principal={principal}
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-      />) : (      <FindBarModal
-        principal={principal}
-        modalVisible={modalVisible}
-        setModalVisible={setModalVisible}
-      />)}
+      {forAdd ? (
+        <AddToChatModal
+          id={id}
+          chatKey={chatKey}
+          principal={principal}
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+        />
+      ) : (
+        <FindBarModal
+          principal={principal}
+          modalVisible={modalVisible}
+          setModalVisible={setModalVisible}
+        />
+      )}
       <TouchableOpacity onPress={() => setModalVisible(true)}>
         <View style={styles.container}>
           <View style={styles.avatarContainer}>

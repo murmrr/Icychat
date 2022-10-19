@@ -85,29 +85,27 @@ const AddToChatModal = ({
           }}
           style={styles.touchableView}
         />
-          <View style={styles.nestedContainer(profile)}>
-            {profile ? (
-              <View style={styles.profileContainer}>
-                <CustomProfilePicture
-                  principal={principal}
-                  style={styles.avatar}
-                />
-                <Text style={styles.username}>{profile["username"]}</Text>
-                <Text style={styles.principal}>{principal.toText()}</Text>
-                <TouchableOpacity onPress={createChat} style={styles.button}>
-                  {loadingChat ? (
-                    <CustomActivityIndicator />
-                  ) : (
-                    <Text style={styles.buttonText}>
-                      Add
-                    </Text>
-                  )}
-                </TouchableOpacity>
-              </View>
-            ) : (
-              <CustomActivityIndicator />
-            )}
-          </View>
+        <View style={styles.nestedContainer(profile)}>
+          {profile ? (
+            <View style={styles.profileContainer}>
+              <CustomProfilePicture
+                principal={principal}
+                style={styles.avatar}
+              />
+              <Text style={styles.username}>{profile["username"]}</Text>
+              <Text style={styles.principal}>{principal.toText()}</Text>
+              <TouchableOpacity onPress={createChat} style={styles.button}>
+                {loadingChat ? (
+                  <CustomActivityIndicator />
+                ) : (
+                  <Text style={styles.buttonText}>Add</Text>
+                )}
+              </TouchableOpacity>
+            </View>
+          ) : (
+            <CustomActivityIndicator />
+          )}
+        </View>
       </View>
     </Modal>
   );

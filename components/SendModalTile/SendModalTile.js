@@ -25,6 +25,8 @@ import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIn
 import InputWrapper from "../InputWrapper/InputWrapper";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { TextInput } from "react-native-gesture-handler";
+import AmountInput from "../AmountInput/AmountInput";
+import AccountIdInput from "../AccountIdInput/AccountIdInput";
 
 const SendModalTile = ({ forFreeform, principal, setForSend }) => {
   const [amount, setAmount] = useState(-1n);
@@ -160,21 +162,7 @@ const SendModalTile = ({ forFreeform, principal, setForSend }) => {
                 </View>
               </View>
             </View>
-            {forFreeform ? (
-              <InputWrapper
-                label={"Account ID"}
-                color={colors.LIGHT_GRAY}
-                style={styles.wrapper}
-              >
-                <TextInput
-                  value={accountId}
-                  onChangeText={onChangeAccountId}
-                  style={styles.accountIdInput}
-                />
-              </InputWrapper>
-            ) : (
-              <></>
-            )}
+            {forFreeform ? <AccountIdInput /> : <></>}
             <InputWrapper
               label={"Amount"}
               color={colors.LIGHT_GRAY}
