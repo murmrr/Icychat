@@ -3,7 +3,21 @@ import { View } from "react-native";
 import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
 
 const ProfilePictureStackMultiple = ({ principals, style }) => {
-  return <CustomProfilePicture principal={principals[0]} style={style} />;
+  return (
+    <>
+      {[...principals.values()].map((principal, index) => {
+        return (
+          <CustomProfilePicture
+            principal={principal}
+            style={[
+              style,
+              { position: "absolute", opacity: 1 / principals.length },
+            ]}
+          />
+        );
+      })}
+    </>
+  );
 };
 
 const ProfilePictureStack = ({ principals, style }) => {
