@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback, useRef } from "react";
 import {
   Text,
   View,
@@ -11,9 +11,15 @@ import { scale, verticalScale } from "../../utility/scalingUtils";
 import InputWrapper from "../InputWrapper/InputWrapper";
 
 const AccountIdInput = ({ accountId, setAccountId }) => {
-  const onChangeAccountId = (accountId) => {
-    setAccountId(accountId);
-  };
+  const inputRef = useRef();
+
+  const onChangeAccountId = useCallback((id) => {
+    const RE = /[^a-f0-9]$/;
+
+    const cleansed = id.replace(RE, "");
+    inputRef.current.setNativeProps({ text: cleansed });
+    setAccountId(cleansed)
+  }, []);
 
   return (
     <InputWrapper
@@ -23,9 +29,10 @@ const AccountIdInput = ({ accountId, setAccountId }) => {
     >
       <View style={styles.nestedContainer}>
         <TextInput
+        autoCapitalize="none"
           placeholder="To:"
           placeholderTextColor={colors.GRAY}
-          value={accountId}
+          ref={inputRef}
           onChangeText={onChangeAccountId}
           style={styles.input}
         />
