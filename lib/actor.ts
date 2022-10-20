@@ -2,17 +2,15 @@ import { Actor, HttpAgent, Identity } from "@dfinity/agent";
 
 // @ts-ignore
 import {
-  idlFactory as backendidlFactory,
-  _SERVICE as backend_SERVICE,
-} from "./backend/CryptchatBackend.did";
+  idlFactory as icychatidlFactory,
+  _SERVICE as icychat_SERVICE,
+} from "./icychat/Icychat.did";
 import {
   idlFactory as ledgeridlFactory,
   _SERVICE as ledger_SERVICE,
-} from "./ledger/Ledger_Candid.did";
+} from "./ledger/Ledger.did";
 
-import { BACKEND_CANISTER_ID, IC_HOST, LEDGER_CANISTER_ID } from "../config";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Ed25519KeyIdentity } from "@dfinity/identity";
+import { ICYCHAT_CANISTER_ID, IC_HOST, LEDGER_CANISTER_ID } from "../config";
 
 export const makeBackendActor = (identity: Identity) => {
   const agent = new HttpAgent({
@@ -20,9 +18,9 @@ export const makeBackendActor = (identity: Identity) => {
     host: IC_HOST,
   });
 
-  return Actor.createActor<backend_SERVICE>(backendidlFactory, {
+  return Actor.createActor<icychat_SERVICE>(icychatidlFactory, {
     agent,
-    canisterId: BACKEND_CANISTER_ID!,
+    canisterId: ICYCHAT_CANISTER_ID!,
   });
 };
 

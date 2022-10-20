@@ -27,21 +27,21 @@ const AppNavigation = () => {
     if (isSignedIn) {
       let value = getFromCache(GENERAL_CACHE, "@identity");
       setIdentity(Ed25519KeyIdentity.fromParsedJson(JSON.parse(value)));
+    } else {
+      setIdentity(null);
     }
   }, [isSignedIn]);
 
   return (
     <SafeAreaProvider>
-      {identity ? (
-        <>
-          {isSignedIn ? (
-            <MainNavigation identity={identity} setIsSignedIn={setIsSignedIn} />
-          ) : (
-            <AuthNavigation setIsSignedIn={setIsSignedIn} />
-          )}
-        </>
+      {isSignedIn ? (
+        identity ? (
+          <MainNavigation identity={identity} setIsSignedIn={setIsSignedIn} />
+        ) : (
+          <></>
+        )
       ) : (
-        <></>
+        <AuthNavigation setIsSignedIn={setIsSignedIn} />
       )}
     </SafeAreaProvider>
   );

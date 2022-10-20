@@ -18,7 +18,7 @@ const AccountIdInput = ({ accountId, setAccountId }) => {
 
     const cleansed = id.replace(RE, "");
     inputRef.current.setNativeProps({ text: cleansed });
-    setAccountId(cleansed)
+    setAccountId(cleansed);
   }, []);
 
   return (
@@ -29,7 +29,7 @@ const AccountIdInput = ({ accountId, setAccountId }) => {
     >
       <View style={styles.nestedContainer}>
         <TextInput
-        autoCapitalize="none"
+          autoCapitalize="none"
           placeholder="To:"
           placeholderTextColor={colors.GRAY}
           ref={inputRef}
