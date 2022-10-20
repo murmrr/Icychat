@@ -1,5 +1,12 @@
 import React, { useContext, useEffect, useState } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import {
+  Animated,
+  FlatList,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { POLLING_INTERVAL } from "../../data/constants";
 import {
   createBackendActor,
@@ -22,9 +29,17 @@ import {
   getFromCache,
   storage,
 } from "../../utility/caches";
+import Swipeable from "react-native-gesture-handler/Swipeable";
+import { moderateScale, scale } from "../../utility/scalingUtils";
+import Icon from "react-native-vector-icons/FontAwesome5";
+import colors from "../../data/colors";
 
 const ChatBarList = () => {
   const [data, setData] = useState(null);
+  const [deletedIds, setDeletedIds] = useState([]);
+
+  let row = [];
+  let prevOpenedRow;
 
   const context = useContext(MainContext);
 
@@ -47,7 +62,55 @@ const ChatBarList = () => {
     }
   }, POLLING_INTERVAL);
 
-  const renderItem = ({ item }) => <ChatBar chatHeader={item} />;
+  const closeRow = (index) => {
+    if (prevOpenedRow && prevOpenedRow != row[index]) {
+      prevOpenedRow.close();
+    }
+    prevOpenedRow = row[index];
+  };
+
+  const renderRowItem = ({ item, index }, onDelete) => {
+    const renderRightView = (process, dragX, onDeleteHandler) => {
+      const trans = dragX.interpolate({
+        inputRange: [0, scale(90)],
+        outputRange: [scale(90), scale(180)],
+      });
+
+      return (
+        <Animated.View
+          style={{
+            backgroundColor: colors.RED,
+            width: scale(90),
+            margin: 0,
+            transform: [{ translateX: trans }],
+          }}
+        >
+          <TouchableOpacity
+            onPress={onDelete}
+            style={{ flex: 1, alignItems: "center", justifyContent: "center" }}
+          >
+            <Icon name="trash-alt" size={20} color={colors.WHITE} />
+          </TouchableOpacity>
+        </Animated.View>
+      );
+    };
+
+    return (
+      <Swipeable
+        renderRightActions={(process, dragX) =>
+          renderRightView(process, dragX, onDelete)
+        }
+        onSwipeableOpen={() => closeRow(index)}
+        ref={(ref) => (row[index] = ref)}
+        friction={2}
+        overshootRight={false}
+        rightThreshold={-90}
+        leftThreshold={90}
+      >
+        <ChatBar chatHeader={item} />
+      </Swipeable>
+    );
+  };
 
   const keyExtractor = (item) => item["id"];
 
@@ -55,13 +118,22 @@ const ChatBarList = () => {
     <View style={styles.container}>
       {data ? (
         <FlatList
-          data={data.sort((a, b) => {
-            if (a["lastMessage"].length > 0 && b["lastMessage"].length > 0) {
-              return a["lastMessage"][0]["time"] < b["lastMessage"][0]["time"];
-            }
-            return 0;
-          })}
-          renderItem={renderItem}
+          data={data
+            .filter((chat) => !deletedIds.includes(chat.id))
+            .sort((a, b) => {
+              if (a["lastMessage"].length > 0 && b["lastMessage"].length > 0) {
+                return (
+                  a["lastMessage"][0]["time"] < b["lastMessage"][0]["time"]
+                );
+              }
+              return 0;
+            })}
+          renderItem={(v) =>
+            renderRowItem(v, async () => {
+              setDeletedIds((deletedIds) => [...deletedIds, v.item.id]);
+              await makeBackendActor(context).leaveChat(v.item.id);
+            })
+          }
           keyExtractor={keyExtractor}
           ItemSeparatorComponent={ItemDivider}
         />
