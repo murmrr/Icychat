@@ -4,14 +4,12 @@ import { scale, verticalScale } from "../../utility/scalingUtils";
 import colors from "../../data/colors";
 import { BarCodeScanner } from "expo-barcode-scanner";
 import { Principal } from "@dfinity/principal";
-import FindBarModalTile from "../FindBarModalTile/FindBarModalTile";
 import { Camera } from "expo-camera";
 import { BlurView } from "expo-blur";
 import Icon from "react-native-vector-icons/FontAwesome";
 import InputWrapper from "../InputWrapper/InputWrapper";
 import { computeAccountId } from "../../utility/utils";
 import FieldWrapper from "../FieldWrapper/FieldWrapper";
-import SendModalTile from "../SendModalTile/SendModalTile";
 import SendModal from "../SendModal/SendModal";
 import Modal from "react-native-modal";
 

@@ -27,8 +27,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { addToCache, getFromCache, PROFILE_CACHE } from "../../utility/caches";
 import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
 import { TouchableWithoutFeedback } from "react-native-gesture-handler";
-import SendModalTile from "../SendModalTile/SendModalTile";
-import SendToUserModalTile from "../SendModalTile/SendModalTile";
 
 const AddToChatModal = ({
   id,

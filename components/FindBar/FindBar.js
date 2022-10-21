@@ -9,7 +9,6 @@ import {
   stringifyProfile,
   useInterval,
 } from "../../utility/utils";
-import FindBarModalTile from "../FindBarModalTile/FindBarModalTile";
 import colors from "../../data/colors";
 import { BlurView } from "expo-blur";
 import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
