@@ -60,7 +60,6 @@ const SignUpScreen = ({ setIsSignedIn }) => {
   return (
     <KeyboardAvoidingView
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      keyboardVerticalOffset={-10}
       style={{ flex: 1 }}
     >
       <ScrollView
@@ -140,7 +139,7 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: scale(19),
-    marginBottom: scale(48),
+    marginBottom: scale(36),
     backgroundColor: colors.BLUE,
     width: scale(304),
     height: scale(40),

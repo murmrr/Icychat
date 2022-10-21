@@ -6,7 +6,6 @@ import {
   Text,
   TouchableOpacity,
   View,
-  Modal,
 } from "react-native";
 import { PGP_OPTIONS, POLLING_INTERVAL } from "../../data/constants";
 import { getBackendActor, makeBackendActor } from "../../lib/actor";
@@ -30,6 +29,7 @@ import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import SendModalTile from "../SendModalTile/SendModalTile";
 import SendToUserModalTile from "../SendModalTile/SendModalTile";
 import SendModal from "../SendModal/SendModal";
+import Modal from "react-native-modal";
 
 const FindBarModal = ({ principal, modalVisible, setModalVisible }) => {
   const [profile, setProfile] = useState(null);
@@ -76,7 +76,12 @@ const FindBarModal = ({ principal, modalVisible, setModalVisible }) => {
   };
 
   return (
-    <Modal animationType="slide" transparent={true} visible={modalVisible}>
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={modalVisible}
+      avoidKeyboard={true}
+    >
       <View style={styles.container}>
         <TouchableOpacity
           disabled={loadingChat}

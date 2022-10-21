@@ -31,6 +31,7 @@ import {
   CONVERSATION_CACHE,
   getFromCache,
 } from "../../utility/caches";
+import { useHeaderHeight } from "@react-navigation/elements";
 
 const ConversationScreen = ({ navigation, route }) => {
   const { id, chatKey, principals } = route.params;
@@ -39,6 +40,7 @@ const ConversationScreen = ({ navigation, route }) => {
   const context = useContext(MainContext);
 
   const insets = useSafeAreaInsets();
+  const headerHeight = useHeaderHeight();
 
   useEffect(async () => {
     let value = getFromCache(CONVERSATION_CACHE, id.toString());
@@ -116,7 +118,7 @@ const ConversationScreen = ({ navigation, route }) => {
     <View style={styles.container}>
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={100}
+        keyboardVerticalOffset={headerHeight}
         style={styles.keyboardContainer}
       >
         <FlatList

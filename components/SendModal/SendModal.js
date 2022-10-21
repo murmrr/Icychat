@@ -1,6 +1,13 @@
 import { Ed25519KeyIdentity } from "@dfinity/identity";
 import React, { useContext, useEffect, useState } from "react";
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Image,
+  KeyboardAvoidingView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import colors from "../../data/colors";
 import { POLLING_INTERVAL } from "../../data/constants";
 import { makeLedgerActor } from "../../lib/actor";
@@ -12,6 +19,7 @@ import AccountIdInput from "../AccountIdInput/AccountIdInput";
 import AmountInput from "../AmountInput/AmountInput";
 import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
 import Icon from "react-native-vector-icons/FontAwesome";
+import { useHeaderHeight } from "@react-navigation/elements";
 
 const SendModal = ({ principal, setForSend }) => {
   const [balance, setBalance] = useState(null);
@@ -21,6 +29,8 @@ const SendModal = ({ principal, setForSend }) => {
   const [amount, setAmount] = useState(null);
 
   const context = useContext(MainContext);
+
+  const headerHeight = useHeaderHeight();
 
   useEffect(() => {
     if (balance != null && transferFee != null) {
@@ -118,7 +128,7 @@ const styles = StyleSheet.create({
   container: (principal) => ({
     backgroundColor: colors.MIDNIGHT_BLUE,
     width: scale(330),
-    height: principal ? verticalScale(230) : verticalScale(300),
+    height: principal ? verticalScale(250) : verticalScale(320),
     borderRadius: 15,
     alignItems: "center",
     justifyContent: "center",

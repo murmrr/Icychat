@@ -33,17 +33,19 @@ const QRCodeScannerModal = ({
   }, [modalVisible]);
 
   useEffect(() => {
-    const getBarCodeScannerPermissions = async () => {
-      const { status } = await Camera.requestCameraPermissionsAsync();
-      if (status !== "granted") {
-        setModalVisible(false);
-      } else {
-        setHasPermission(true);
-      }
-    };
+    if (modalVisible) {
+      const getBarCodeScannerPermissions = async () => {
+        const { status } = await Camera.requestCameraPermissionsAsync();
+        if (status !== "granted") {
+          setModalVisible(false);
+        } else {
+          setHasPermission(true);
+        }
+      };
 
-    getBarCodeScannerPermissions();
-  }, []);
+      getBarCodeScannerPermissions();
+    }
+  }, [modalVisible]);
 
   const handleBarCodeScanned = ({ type, data }) => {
     if ((type = BarCodeScanner.Constants.BarCodeType.qr)) {
@@ -238,7 +240,7 @@ const styles = StyleSheet.create({
     left: 20,
     zIndex: 1,
     padding: 12,
-    backgroundColor: colors.DARK_GRAY,
+    backgroundColor: colors.DARK_PRIMARY,
     borderRadius: 50,
   },
   viewfinder: {
@@ -248,7 +250,6 @@ const styles = StyleSheet.create({
     top: verticalScale(125),
     borderWidth: 3,
     borderColor: colors.WHITE,
-    //tborderRadius: 20,
     borderStyle: "dashed",
     zIndex: 1,
   },

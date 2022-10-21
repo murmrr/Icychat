@@ -1,12 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  StyleSheet,
-  TouchableOpacity,
-  View,
-  Image,
-  Text,
-  Modal,
-} from "react-native";
+import { StyleSheet, TouchableOpacity, View, Image, Text } from "react-native";
 import { scale, verticalScale } from "../../utility/scalingUtils";
 import colors from "../../data/colors";
 import { BarCodeScanner } from "expo-barcode-scanner";
@@ -20,12 +13,18 @@ import { computeAccountId } from "../../utility/utils";
 import FieldWrapper from "../FieldWrapper/FieldWrapper";
 import SendModalTile from "../SendModalTile/SendModalTile";
 import SendModal from "../SendModal/SendModal";
+import Modal from "react-native-modal";
 
 const DepositDetailsModal = ({ principal, modalVisible, setModalVisible }) => {
   const [forSend, setForSend] = useState(false);
 
   return (
-    <Modal animationType="slide" transparent={true} visible={modalVisible}>
+    <Modal
+      animationType="slide"
+      transparent={true}
+      visible={modalVisible}
+      avoidKeyboard={true}
+    >
       <View style={styles.container}>
         <TouchableOpacity
           onPress={() => {

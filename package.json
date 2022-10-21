@@ -69,6 +69,7 @@
     "react-native-loading-spinner-overlay": "^2.0.0",
     "react-native-markdown-display": "^7.0.0-alpha.2",
     "react-native-mmkv": "^2.4.3",
+    "react-native-modal": "^13.0.1",
     "react-native-onesignal": "^4.4.1",
     "react-native-photo-manipulator": "^1.2.7",
     "react-native-polyfill-globals": "^3.1.0",

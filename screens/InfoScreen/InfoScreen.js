@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
   container: {
     padding: verticalScale(15),
     flex: 1,
-    backgroundColor: colors.DARK_GRAY,
+    backgroundColor: colors.DARK_PRIMARY,
     alignItems: "center",
   },
 });
