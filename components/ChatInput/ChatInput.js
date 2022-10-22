@@ -12,7 +12,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Ed25519KeyIdentity } from "@dfinity/identity";
 import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
 
-const ChatInput = ({ id, chatKey }) => {
+const ChatInput = ({ id, chatKey, messageBuffer, setMessageBuffer }) => {
   const [message, setMessage] = useState("");
   const [sending, setSending] = useState(false);
   const inputRef = useRef();
@@ -24,10 +24,23 @@ const ChatInput = ({ id, chatKey }) => {
       setSending(true);
 
       const encryptedMessage = await encryptSymmetric(message, chatKey);
+
       const messageContent = {
         message: encryptedMessage,
       };
+      const bufferedMessage = {
+        content: {
+          message: encryptedMessage,
+        },
+        id: BigInt(messageBuffer.length + 1),
+        sender: Ed25519KeyIdentity.fromJSON(
+          JSON.stringify(context)
+        ).getPrincipal(),
+        time: BigInt(Date.now()) * 1000000n,
+      };
+      setMessageBuffer((messageBuffer) => [...messageBuffer, bufferedMessage]);
       await makeBackendActor(context).sendMessage(id, messageContent);
+
       inputRef.current.clear();
       setMessage("");
 
