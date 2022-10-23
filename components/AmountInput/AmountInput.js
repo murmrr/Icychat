@@ -44,7 +44,7 @@ const AmountInput = ({ amount, setAmount, available }) => {
           style={styles.input}
         />
         <TouchableOpacity
-          onPress={() => setAmount(available.toString())}
+          onPress={() => setAmount(String(formatE8s(available)))}
           style={styles.button}
         >
           <Text style={styles.buttonText}>MAX</Text>

@@ -14,7 +14,12 @@ import { makeLedgerActor } from "../../lib/actor";
 import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
 import { addToCache, GENERAL_CACHE, getFromCache } from "../../utility/caches";
 import { scale, verticalScale } from "../../utility/scalingUtils";
-import { computeAccountId, formatE8s, useInterval } from "../../utility/utils";
+import {
+  computeAccountId,
+  formatE8s,
+  formatICP,
+  useInterval,
+} from "../../utility/utils";
 import AccountIdInput from "../AccountIdInput/AccountIdInput";
 import AmountInput from "../AmountInput/AmountInput";
 import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
@@ -27,6 +32,7 @@ const SendModal = ({ principal, setForSend }) => {
   const [available, setAvailable] = useState(null);
   const [accountId, setAccountId] = useState(null);
   const [amount, setAmount] = useState(null);
+  const [sending, setSending] = useState(false);
 
   const context = useContext(MainContext);
 
@@ -77,6 +83,28 @@ const SendModal = ({ principal, setForSend }) => {
     setTransferFee(response["transfer_fee"]["e8s"]);
   }, POLLING_INTERVAL);
 
+  const sendAmount = async () => {
+    let toAccountId;
+    if (principal) {
+      toAccountId = computeAccountId(principal);
+    } else {
+      toAccountId = accountId;
+    }
+
+    const transferArgs = {
+      to: [...new Uint8Array(Buffer.from(toAccountId, "hex"))],
+      fee: { e8s: transferFee },
+      memo: 0n,
+      from_subaccount: [],
+      created_at_time: [],
+      amount: { e8s: formatICP(amount) },
+    };
+
+    setSending(true);
+    await makeLedgerActor(context).transfer(transferArgs);
+    setSending(false);
+  };
+
   return (
     <View style={styles.container(principal)}>
       <TouchableOpacity
@@ -113,8 +141,12 @@ const SendModal = ({ principal, setForSend }) => {
             setAmount={setAmount}
             available={available}
           />
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Send</Text>
+          <TouchableOpacity onPress={sendAmount} style={styles.button}>
+            {sending ? (
+              <CustomActivityIndicator />
+            ) : (
+              <Text style={styles.buttonText}>Send</Text>
+            )}
           </TouchableOpacity>
         </>
       ) : (
