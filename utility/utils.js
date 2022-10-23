@@ -205,6 +205,16 @@ export const randomFromPrincipal = (principal) => {
   return sfc32(seed[0], seed[1], seed[2], seed[3]);
 };
 
+export const randomFromPrincipals = (principals) => {
+  let appended = "";
+  principals.forEach((principal) => {
+    appended += principal.toString();
+  })
+
+  const seed = cyrb128(appended);
+  return sfc32(seed[0], seed[1], seed[2], seed[3]);
+};
+
 const byteArrayToWordArray = (byteArray, cryptoAdapter = CryptoJS) => {
   const wordArray = [];
   let i;

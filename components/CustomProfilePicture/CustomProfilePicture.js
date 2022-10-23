@@ -52,7 +52,7 @@ import None from "../../assets/trait-layers/miscellaneous/None.png";
 import SnakeOnShoulder from "../../assets/trait-layers/miscellaneous/Snake-On-Shoulder.png";
 
 import RNPhotoManipulator from "react-native-photo-manipulator";
-import { randomFromPrincipal } from "../../utility/utils";
+import { randomFromPrincipal, randomFromPrincipals } from "../../utility/utils";
 import {
   addToCache,
   getFromCache,
