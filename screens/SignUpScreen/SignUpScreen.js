@@ -65,19 +65,13 @@ const SignUpScreen = ({ setIsSignedIn }) => {
       <ScrollView
         contentContainerStyle={{ flexGrow: 1 }}
         keyboardShouldPersistTaps="handled"
+        enabled={false}
       >
         <View style={styles.container}>
-          <View style={styles.wavyContainer}>
-            <WavyBackground
-              height={verticalScale(150)}
-              width={scale(1100)}
-              amplitude={25}
-              frequency={2}
-              offset={150}
-              color={colors.BLUE}
-              top
-            />
-          </View>
+          <Image
+            source={require("../../assets/logo.png")}
+            style={styles.logo}
+          />
           <InputWrapper label="Username">
             <BubbleToast
               text={"Invalid!"}
@@ -118,7 +112,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     alignItems: "center",
-    justifyContent: "flex-end",
+    justifyContent: "center",
     backgroundColor: colors.DARK_PRIMARY,
   },
   wavyContainer: {
@@ -127,6 +121,12 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
+  },
+  logo: {
+    width: scale(200),
+    height: scale(200),
+    marginBottom: verticalScale(30),
+    marginTop: verticalScale(-50),
   },
   usernameInput: {
     height: "100%",
@@ -138,11 +138,10 @@ const styles = StyleSheet.create({
     paddingRight: 12,
   },
   button: {
-    marginTop: scale(19),
-    marginBottom: scale(36),
+    marginTop: verticalScale(16),
     backgroundColor: colors.BLUE,
     width: scale(304),
-    height: scale(40),
+    height: verticalScale(38),
     alignSelf: "center",
     borderRadius: 22,
     display: "flex",
