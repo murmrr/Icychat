@@ -1,30 +1,23 @@
+import { useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { moderateScale, scale } from "../../utility/scalingUtils";
-import {
-  convertTime,
-  decryptAsymmetric,
-  decryptSymmetric,
-  useInterval,
-} from "../../utility/utils";
-import { POLLING_INTERVAL } from "../../data/constants";
-import { getBackendActor } from "../../lib/actor";
-import { useNavigation } from "@react-navigation/native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import colors from "../../data/colors";
-import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
-import ProfilePictureStack from "../ProfilePictureStack/ProfilePictureStack";
-import ChatUsernames from "../ChatUsernames/ChatUsernames";
-import OpenPGP from "react-native-fast-openpgp";
-import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import {
   addToCache,
   GENERAL_CACHE,
   getFromCache,
   MESSAGE_CACHE,
-  storage,
 } from "../../utility/caches";
+import { moderateScale } from "../../utility/scalingUtils";
+import {
+  convertTime,
+  decryptAsymmetric,
+  decryptSymmetric,
+} from "../../utility/utils";
+import ChatUsernames from "../ChatUsernames/ChatUsernames";
+import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
+import ProfilePictureStack from "../ProfilePictureStack/ProfilePictureStack";
 
 const ChatBar = ({ chatHeader }) => {
   const [decryptedMessage, setDecryptedMessage] = useState(null);

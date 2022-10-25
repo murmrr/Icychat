@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Image, StyleSheet, View } from "react-native";
-import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
 import RNPhotoManipulator from "react-native-photo-manipulator";
-import { getFromCache, PROFILE_CACHE } from "../../utility/caches";
+import rnTextSize from "react-native-text-size";
 import MultipleProfilePictureBackground from "../../assets/multiple-profile-picture-background.png";
-import rnTextSize, { TSFontSpecs } from "react-native-text-size";
+import { getFromCache, PROFILE_CACHE } from "../../utility/caches";
 import { scale } from "../../utility/scalingUtils";
+import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
 
 const ProfilePictureStackMultiple = ({ principals, style }) => {
   const [uri, setUri] = useState(null);

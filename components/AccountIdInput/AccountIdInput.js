@@ -1,11 +1,5 @@
 import React, { useCallback, useRef } from "react";
-import {
-  Text,
-  View,
-  TextInput,
-  TouchableOpacity,
-  StyleSheet,
-} from "react-native";
+import { StyleSheet, TextInput, View } from "react-native";
 import colors from "../../data/colors";
 import { scale, verticalScale } from "../../utility/scalingUtils";
 import InputWrapper from "../InputWrapper/InputWrapper";

@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Animated, StyleSheet, Text, View } from "react-native";
 import colors from "../../data/colors";
-import { scale } from "../../utility/scalingUtils";
 
 const BubbleToast = ({
   text,

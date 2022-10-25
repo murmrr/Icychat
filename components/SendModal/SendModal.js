@@ -1,13 +1,8 @@
 import { Ed25519KeyIdentity } from "@dfinity/identity";
+import { useHeaderHeight } from "@react-navigation/elements";
 import React, { useContext, useEffect, useState } from "react";
-import {
-  Image,
-  KeyboardAvoidingView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import Icon from "react-native-vector-icons/FontAwesome";
 import colors from "../../data/colors";
 import { POLLING_INTERVAL } from "../../data/constants";
 import { makeLedgerActor } from "../../lib/actor";
@@ -23,8 +18,6 @@ import {
 import AccountIdInput from "../AccountIdInput/AccountIdInput";
 import AmountInput from "../AmountInput/AmountInput";
 import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
-import Icon from "react-native-vector-icons/FontAwesome";
-import { useHeaderHeight } from "@react-navigation/elements";
 
 const SendModal = ({ principal, setForSend }) => {
   const [balance, setBalance] = useState(null);

@@ -1,8 +1,8 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React from "react";
+import { StyleSheet, View } from "react-native";
+import Icon from "react-native-vector-icons/FontAwesome";
 import colors from "../../data/colors";
 import ProfilePictureStack from "../ProfilePictureStack/ProfilePictureStack";
-import Icon from "react-native-vector-icons/FontAwesome";
 
 const CustomHeader = ({ principals }) => {
   return (

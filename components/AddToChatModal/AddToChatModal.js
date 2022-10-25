@@ -1,32 +1,17 @@
 import React, { useContext, useEffect, useState } from "react";
-import {
-  Dimensions,
-  Button,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  Modal,
-} from "react-native";
-import { PGP_OPTIONS, POLLING_INTERVAL } from "../../data/constants";
-import { getBackendActor, makeBackendActor } from "../../lib/actor";
+import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import colors from "../../data/colors";
+import { makeBackendActor } from "../../lib/actor";
+import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
+import { addToCache, getFromCache, PROFILE_CACHE } from "../../utility/caches";
 import { scale, verticalScale } from "../../utility/scalingUtils";
 import {
   encryptAsymmetric,
-  generateSymmetricKey,
-  getMyPublicKey,
   parseProfile,
   stringifyProfile,
-  useInterval,
 } from "../../utility/utils";
-import colors from "../../data/colors";
-import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
 import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
-import OpenPGP from "react-native-fast-openpgp";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { addToCache, getFromCache, PROFILE_CACHE } from "../../utility/caches";
-import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
 
 const AddToChatModal = ({
   id,

@@ -1,6 +1,7 @@
+import { Ed25519KeyIdentity } from "@dfinity/identity";
+import * as Haptics from "expo-haptics";
 import React, { useState } from "react";
 import {
-  Button,
   Image,
   KeyboardAvoidingView,
   StyleSheet,
@@ -9,20 +10,14 @@ import {
   View,
 } from "react-native";
 import { ScrollView, TextInput } from "react-native-gesture-handler";
-import { scale, verticalScale } from "../../utility/scalingUtils";
-import { Ed25519KeyIdentity } from "@dfinity/identity";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { getBackendActor, makeBackendActor } from "../../lib/actor";
-import colors from "../../data/colors";
-import InputWrapper from "../../components/InputWrapper/InputWrapper";
-import Toast from "react-native-root-toast";
-import * as Haptics from "expo-haptics";
-import WavyBackground from "react-native-wavy-background";
-import CustomActivityIndicator from "../../components/CustomActivityIndicator/CustomActivityIndicator";
-import OpenPGP from "react-native-fast-openpgp";
-import { generateAsymmetricKeys } from "../../utility/utils";
-import { addToCache, GENERAL_CACHE, storage } from "../../utility/caches";
 import BubbleToast from "../../components/BubbleToast/BubbleToast";
+import CustomActivityIndicator from "../../components/CustomActivityIndicator/CustomActivityIndicator";
+import InputWrapper from "../../components/InputWrapper/InputWrapper";
+import colors from "../../data/colors";
+import { makeBackendActor } from "../../lib/actor";
+import { addToCache, GENERAL_CACHE } from "../../utility/caches";
+import { scale, verticalScale } from "../../utility/scalingUtils";
+import { generateAsymmetricKeys } from "../../utility/utils";
 
 const SignUpScreen = ({ setIsSignedIn }) => {
   const [username, setUsername] = useState("");

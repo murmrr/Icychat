@@ -1,6 +1,5 @@
 import React, { useLayoutEffect } from "react";
-import { StyleSheet, View } from "react-native";
-import { Button } from "react-native-elements";
+import { StyleSheet } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import CustomBackButton from "../../components/CustomBackButton/CustomBackButton";

@@ -1,13 +1,11 @@
-import { useEffect, useRef } from "react";
-import moment from "moment";
-import { NativeModules, Platform } from "react-native";
-import Aes from "react-native-aes-crypto";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import OpenPGP from "react-native-fast-openpgp";
 import { Principal } from "@dfinity/principal";
-import { GENERAL_CACHE, getFromCache, storage } from "./caches";
-import CryptoJS from "crypto-js";
 import crc32 from "buffer-crc32";
+import CryptoJS from "crypto-js";
+import moment from "moment";
+import { useEffect, useRef } from "react";
+import Aes from "react-native-aes-crypto";
+import OpenPGP from "react-native-fast-openpgp";
+import { GENERAL_CACHE, getFromCache } from "./caches";
 
 export const useInterval = (callback, delay) => {
   const savedCallback = useRef();

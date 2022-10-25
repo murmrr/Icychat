@@ -1,51 +1,37 @@
+import { Ed25519KeyIdentity } from "@dfinity/identity";
 import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import {
   Alert,
   Image,
-  KeyboardAvoidingView,
-  Modal,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
 } from "react-native";
-import { ScrollView, TextInput } from "react-native-gesture-handler";
-import InputWrapper from "../../components/InputWrapper/InputWrapper";
-import colors from "../../data/colors";
-import { POLLING_INTERVAL } from "../../data/constants";
-import {
-  getBackendActor,
-  makeBackendActor,
-  makeLedgerActor,
-} from "../../lib/actor";
-import { scale, verticalScale } from "../../utility/scalingUtils";
-import {
-  computeAccountId,
-  convertToICP,
-  formatE8s,
-  parseProfile,
-  stringifyProfile,
-  useInterval,
-} from "../../utility/utils";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import CustomProfilePicture from "../../components/CustomProfilePicture/CustomProfilePicture";
+import { ScrollView } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import CustomActivityIndicator from "../../components/CustomActivityIndicator/CustomActivityIndicator";
+import CustomProfilePicture from "../../components/CustomProfilePicture/CustomProfilePicture";
+import DepositDetailsModal from "../../components/DepositDetailsModal/DepositDetailsModal";
+import colors from "../../data/colors";
+import { POLLING_INTERVAL } from "../../data/constants";
+import { makeBackendActor, makeLedgerActor } from "../../lib/actor";
+import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
 import {
   addToCache,
   clearAllCaches,
   GENERAL_CACHE,
   getFromCache,
   PROFILE_CACHE,
-  storage,
 } from "../../utility/caches";
-import * as Haptics from "expo-haptics";
-import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
-import { Ed25519KeyIdentity, Ed25519PublicKey } from "@dfinity/identity";
-import { Principal } from "@dfinity/principal";
-import { BlurView } from "expo-blur";
-import DepositDetailsModalTile from "../../components/DepositDetailsModal/DepositDetailsModal";
-import DepositDetailsModal from "../../components/DepositDetailsModal/DepositDetailsModal";
+import { scale, verticalScale } from "../../utility/scalingUtils";
+import {
+  computeAccountId,
+  formatE8s,
+  parseProfile,
+  stringifyProfile,
+  useInterval,
+} from "../../utility/utils";
 
 const MeScreen = ({ navigation, setIsSignedIn }) => {
   const [profile, setProfile] = useState(null);

@@ -3,7 +3,6 @@ import { useLayoutEffect } from "react";
 import colors from "../../data/colors";
 import AboutScreen from "../../screens/AboutScreen/AboutScreen";
 import InfoScreen from "../../screens/InfoScreen/InfoScreen";
-import MeScreen from "../../screens/MeScreen/MeScreen";
 import SettingsScreen from "../../screens/SettingsScreen/SettingsScreen";
 
 const Stack = createStackNavigator();

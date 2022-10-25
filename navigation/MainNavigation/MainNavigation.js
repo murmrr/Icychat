@@ -1,15 +1,13 @@
-import FindScreen from "../../screens/FindScreen/FindScreen";
-import MeScreen from "../../screens/MeScreen/MeScreen";
-import React, { createContext, useEffect } from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import ChatsNavigation from "../ChatsNavigation/ChatsNavigation";
-import colors from "../../data/colors";
+import React, { createContext, useEffect } from "react";
+import OneSignal from "react-native-onesignal";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import TabBarIcon from "../../components/TabBarIcon/TabBarIcon";
-import InfoNavigation from "../MeNavigation/MeNavigation";
-import MeNavigation from "../MeNavigation/MeNavigation";
-import OneSignal from 'react-native-onesignal';
+import colors from "../../data/colors";
 import { makeBackendActor } from "../../lib/actor";
+import FindScreen from "../../screens/FindScreen/FindScreen";
+import ChatsNavigation from "../ChatsNavigation/ChatsNavigation";
+import MeNavigation from "../MeNavigation/MeNavigation";
 
 export const MainContext = createContext("");
 
@@ -25,7 +23,7 @@ const MainNavigation = ({ identity, setIsSignedIn }) => {
     if (device["userId"]) {
       await makeBackendActor(identity).setMyPushToken(device["userId"]);
     }
-  }, [])
+  }, []);
 
   return (
     <MainContext.Provider value={identity}>

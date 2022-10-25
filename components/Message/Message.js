@@ -1,27 +1,22 @@
+import { Ed25519KeyIdentity } from "@dfinity/identity";
 import React, { useContext, useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { POLLING_INTERVAL } from "../../data/constants";
-import { getBackendActor, makeBackendActor } from "../../lib/actor";
-import { scale } from "../../utility/scalingUtils";
-import {
-  convertTime,
-  decryptSymmetric,
-  parseProfile,
-  useInterval,
-} from "../../utility/utils";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Ed25519KeyIdentity } from "@dfinity/identity";
 import colors from "../../data/colors";
-import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
-import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
-import OpenPGP from "react-native-fast-openpgp";
+import { makeBackendActor } from "../../lib/actor";
+import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
 import {
   addToCache,
   getFromCache,
   MESSAGE_CACHE,
   PROFILE_CACHE,
 } from "../../utility/caches";
-import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
+import {
+  convertTime,
+  decryptSymmetric,
+  parseProfile,
+} from "../../utility/utils";
+import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
+import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
 
 const Message = ({ message, chatKey }) => {
   const [profile, setProfile] = useState(null);

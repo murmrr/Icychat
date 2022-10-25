@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Text } from "react-native";
 import { POLLING_INTERVAL } from "../../data/constants";
-import { getBackendActor, makeBackendActor } from "../../lib/actor";
+import { makeBackendActor } from "../../lib/actor";
 import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
 import { addToCache, getFromCache, PROFILE_CACHE } from "../../utility/caches";
 import {

@@ -3,17 +3,17 @@ import {
   Animated,
   FlatList,
   StyleSheet,
-  Text,
   TouchableOpacity,
   View,
 } from "react-native";
+import Swipeable from "react-native-gesture-handler/Swipeable";
+import Icon from "react-native-vector-icons/FontAwesome5";
+import colors from "../../data/colors";
 import { POLLING_INTERVAL } from "../../data/constants";
-import {
-  createBackendActor,
-  getBackendActor,
-  makeBackendActor,
-} from "../../lib/actor";
+import { makeBackendActor } from "../../lib/actor";
 import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
+import { addToCache, GENERAL_CACHE, getFromCache } from "../../utility/caches";
+import { scale } from "../../utility/scalingUtils";
 import {
   parseChatHeaders,
   stringifyChatHeaders,
@@ -22,17 +22,6 @@ import {
 import ChatBar from "../ChatBar/ChatBar";
 import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
 import ItemDivider from "../ItemDivider/ItemDivider";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import {
-  addToCache,
-  GENERAL_CACHE,
-  getFromCache,
-  storage,
-} from "../../utility/caches";
-import Swipeable from "react-native-gesture-handler/Swipeable";
-import { moderateScale, scale } from "../../utility/scalingUtils";
-import Icon from "react-native-vector-icons/FontAwesome5";
-import colors from "../../data/colors";
 
 const ChatBarList = () => {
   const [data, setData] = useState(null);

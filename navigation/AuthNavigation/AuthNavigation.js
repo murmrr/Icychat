@@ -1,5 +1,4 @@
 import { createStackNavigator } from "@react-navigation/stack";
-import colors from "../../data/colors";
 import SignUpScreen from "../../screens/SignUpScreen/SignUpScreen";
 
 const Stack = createStackNavigator();

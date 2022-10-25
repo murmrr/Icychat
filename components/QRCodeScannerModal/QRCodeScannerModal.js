@@ -1,21 +1,13 @@
-import React, { useEffect, useState } from "react";
-import {
-  StyleSheet,
-  TouchableOpacity,
-  View,
-  Image,
-  Text,
-  Modal,
-} from "react-native";
-import { scale, verticalScale } from "../../utility/scalingUtils";
-import colors from "../../data/colors";
-import { BarCodeScanner } from "expo-barcode-scanner";
 import { Principal } from "@dfinity/principal";
+import { BarCodeScanner } from "expo-barcode-scanner";
 import { Camera } from "expo-camera";
-import { BlurView } from "expo-blur";
+import React, { useEffect, useState } from "react";
+import { Modal, StyleSheet, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
-import FindBarModal from "../FindBarModal/FindBarModal";
+import colors from "../../data/colors";
+import { scale, verticalScale } from "../../utility/scalingUtils";
 import AddToChatModal from "../AddToChatModal/AddToChatModal";
+import FindBarModal from "../FindBarModal/FindBarModal";
 
 const QRCodeScannerModal = ({
   id,

@@ -1,10 +1,10 @@
 import React from "react";
 import {
+  StyleSheet,
   Text,
-  View,
   TextInput,
   TouchableOpacity,
-  StyleSheet,
+  View,
 } from "react-native";
 import colors from "../../data/colors";
 import { scale, verticalScale } from "../../utility/scalingUtils";

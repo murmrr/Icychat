@@ -1,9 +1,9 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import Icon from "react-native-vector-icons/FontAwesome";
 import colors from "../../data/colors";
 import { scale, verticalScale } from "../../utility/scalingUtils";
-import Icon from "react-native-vector-icons/FontAwesome";
 
 const InfoButton = ({ name, onPress }) => {
   return (

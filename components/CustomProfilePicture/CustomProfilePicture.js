@@ -52,12 +52,12 @@ import None from "../../assets/trait-layers/miscellaneous/None.png";
 import SnakeOnShoulder from "../../assets/trait-layers/miscellaneous/Snake-On-Shoulder.png";
 
 import RNPhotoManipulator from "react-native-photo-manipulator";
-import { randomFromPrincipal, randomFromPrincipals } from "../../utility/utils";
 import {
   addToCache,
   getFromCache,
   PROFILE_PICTURE_CACHE,
 } from "../../utility/caches";
+import { randomFromPrincipal } from "../../utility/utils";
 
 const CustomProfilePicture = ({ principal, style }) => {
   const [uri, setUri] = useState(null);

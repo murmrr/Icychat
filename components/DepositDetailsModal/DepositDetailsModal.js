@@ -1,17 +1,11 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, TouchableOpacity, View, Image, Text } from "react-native";
-import { scale, verticalScale } from "../../utility/scalingUtils";
+import React, { useState } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import Modal from "react-native-modal";
 import colors from "../../data/colors";
-import { BarCodeScanner } from "expo-barcode-scanner";
-import { Principal } from "@dfinity/principal";
-import { Camera } from "expo-camera";
-import { BlurView } from "expo-blur";
-import Icon from "react-native-vector-icons/FontAwesome";
-import InputWrapper from "../InputWrapper/InputWrapper";
+import { scale, verticalScale } from "../../utility/scalingUtils";
 import { computeAccountId } from "../../utility/utils";
 import FieldWrapper from "../FieldWrapper/FieldWrapper";
 import SendModal from "../SendModal/SendModal";
-import Modal from "react-native-modal";
 
 const DepositDetailsModal = ({ principal, modalVisible, setModalVisible }) => {
   const [forSend, setForSend] = useState(false);

@@ -1,37 +1,33 @@
+import { useHeaderHeight } from "@react-navigation/elements";
 import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import {
-  Button,
   FlatList,
   KeyboardAvoidingView,
   Platform,
   StyleSheet,
   View,
-  Text,
 } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 import AddToChatButton from "../../components/AddToChatButton/AddToChatButton";
 import ChatInput from "../../components/ChatInput/ChatInput";
+import CustomActivityIndicator from "../../components/CustomActivityIndicator/CustomActivityIndicator";
 import CustomBackButton from "../../components/CustomBackButton/CustomBackButton";
 import CustomHeader from "../../components/CustomHeader/CustomHeader";
 import Message from "../../components/Message/Message";
 import colors from "../../data/colors";
 import { POLLING_INTERVAL } from "../../data/constants";
-import { getBackendActor, makeBackendActor } from "../../lib/actor";
-import {
-  parseConversation,
-  stringifyConversation,
-  useInterval,
-} from "../../utility/utils";
-import { useIsFocused } from "@react-navigation/native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import CustomActivityIndicator from "../../components/CustomActivityIndicator/CustomActivityIndicator";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { makeBackendActor } from "../../lib/actor";
 import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
 import {
   addToCache,
   CONVERSATION_CACHE,
   getFromCache,
 } from "../../utility/caches";
-import { useHeaderHeight } from "@react-navigation/elements";
+import {
+  parseConversation,
+  stringifyConversation,
+  useInterval,
+} from "../../utility/utils";
 
 const ConversationScreen = ({ navigation, route }) => {
   const { id, chatKey, principals } = route.params;

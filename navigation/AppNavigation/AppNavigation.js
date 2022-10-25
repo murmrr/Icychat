@@ -1,14 +1,9 @@
-import React, { createContext, useEffect, useState } from "react";
+import { Ed25519KeyIdentity } from "@dfinity/identity";
+import React, { useEffect, useState } from "react";
+import { SafeAreaProvider } from "react-native-safe-area-context";
+import { GENERAL_CACHE, getFromCache } from "../../utility/caches";
 import AuthNavigation from "../AuthNavigation/AuthNavigation";
 import MainNavigation from "../MainNavigation/MainNavigation";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import {
-  SafeAreaProvider,
-  useSafeAreaInsets,
-} from "react-native-safe-area-context";
-import { Ed25519KeyIdentity } from "@dfinity/identity";
-import { GENERAL_CACHE, getFromCache, storage } from "../../utility/caches";
-import CustomActivityIndicator from "../../components/CustomActivityIndicator/CustomActivityIndicator";
 
 const AppNavigation = () => {
   const [isSignedIn, setIsSignedIn] = useState(false);

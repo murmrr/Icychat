@@ -1,25 +1,19 @@
-import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
-import { FlatList, Modal, StyleSheet, Text, View } from "react-native";
-import AddToChatButton from "../../components/AddToChatButton/AddToChatButton";
+import React, { useContext, useLayoutEffect, useState } from "react";
+import { FlatList, StyleSheet, View } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import Icon from "react-native-vector-icons/FontAwesome";
 import CustomActivityIndicator from "../../components/CustomActivityIndicator/CustomActivityIndicator";
 import CustomBackButton from "../../components/CustomBackButton/CustomBackButton";
-import CustomHeader from "../../components/CustomHeader/CustomHeader";
 import FindBar from "../../components/FindBar/FindBar";
 import FindSearchBar from "../../components/FindSearchBar/FindSearchBar";
 import ItemDivider from "../../components/ItemDivider/ItemDivider";
-import colors from "../../data/colors";
-import { POLLING_INTERVAL } from "../../data/constants";
-import { getBackendActor, makeBackendActor } from "../../lib/actor";
-import { useInterval } from "../../utility/utils";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import Icon from "react-native-vector-icons/FontAwesome";
-import { BlurView } from "expo-blur";
-import QRCodeModalTile from "../../components/QRCodeModal/QRCodeModal";
-import { BarCodeScanner } from "expo-barcode-scanner";
-import QRScannerModalTile from "../../components/QRCodeScannerModal/QRCodeScannerModal";
-import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
 import QRCodeModal from "../../components/QRCodeModal/QRCodeModal";
 import QRCodeScannerModal from "../../components/QRCodeScannerModal/QRCodeScannerModal";
+import colors from "../../data/colors";
+import { POLLING_INTERVAL } from "../../data/constants";
+import { makeBackendActor } from "../../lib/actor";
+import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
+import { useInterval } from "../../utility/utils";
 
 const FindScreen = ({ forAdd, navigation, route }) => {
   const id = forAdd ? route.params.id : null;

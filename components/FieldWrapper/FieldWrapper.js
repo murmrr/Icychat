@@ -1,10 +1,10 @@
-import { StyleSheet, Text, View } from "react-native";
-import colors from "../../data/colors";
-import { scale, verticalScale } from "../../utility/scalingUtils";
-import Icon from "react-native-vector-icons/FontAwesome";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import * as Clipboard from "expo-clipboard";
 import { useState } from "react";
+import { StyleSheet, Text, View } from "react-native";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import Icon from "react-native-vector-icons/FontAwesome";
+import colors from "../../data/colors";
+import { scale, verticalScale } from "../../utility/scalingUtils";
 import BubbleToast from "../BubbleToast/BubbleToast";
 
 const FieldWrapper = ({ label, data, color, top }) => {

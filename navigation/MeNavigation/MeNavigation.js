@@ -1,7 +1,6 @@
 import { createStackNavigator } from "@react-navigation/stack";
 import { useLayoutEffect } from "react";
 import colors from "../../data/colors";
-import InfoScreen from "../../screens/InfoScreen/InfoScreen";
 import MeScreen from "../../screens/MeScreen/MeScreen";
 import InfoNavigation from "../InfoNavigation/InfoNavigation";
 

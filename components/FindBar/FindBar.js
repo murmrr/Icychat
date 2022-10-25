@@ -1,22 +1,16 @@
 import React, { useContext, useEffect, useState } from "react";
-import { Modal, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { POLLING_INTERVAL } from "../../data/constants";
-import { getBackendActor, makeBackendActor } from "../../lib/actor";
-import { moderateScale, scale } from "../../utility/scalingUtils";
-import {
-  parseProfile,
-  stringifyProfile,
-  useInterval,
-} from "../../utility/utils";
 import colors from "../../data/colors";
-import { BlurView } from "expo-blur";
-import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
-import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
-import { addToCache, getFromCache, PROFILE_CACHE } from "../../utility/caches";
+import { makeBackendActor } from "../../lib/actor";
 import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
-import FindBarModal from "../FindBarModal/FindBarModal";
+import { addToCache, getFromCache, PROFILE_CACHE } from "../../utility/caches";
+import { moderateScale } from "../../utility/scalingUtils";
+import { parseProfile, stringifyProfile } from "../../utility/utils";
 import AddToChatModal from "../AddToChatModal/AddToChatModal";
+import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
+import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
+import FindBarModal from "../FindBarModal/FindBarModal";
 
 const FindBar = ({ id, chatKey, principal, forAdd }) => {
   const [profile, setProfile] = useState(null);

@@ -1,37 +1,27 @@
+import { Ed25519KeyIdentity } from "@dfinity/identity";
 import React, { useContext, useEffect, useState } from "react";
 import {
+  Image,
+  Modal,
   StyleSheet,
+  Text,
   TouchableOpacity,
   View,
-  Image,
-  Text,
-  Modal,
 } from "react-native";
-import { scale, verticalScale } from "../../utility/scalingUtils";
-import colors from "../../data/colors";
-import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Ed25519KeyIdentity } from "@dfinity/identity";
 import RNQRGenerator from "rn-qr-generator";
-import { Principal } from "@dfinity/principal";
-import {
-  parseProfile,
-  stringifyProfile,
-  useInterval,
-} from "../../utility/utils";
-import { POLLING_INTERVAL } from "../../data/constants";
-import { getBackendActor, makeBackendActor } from "../../lib/actor";
-import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
+import colors from "../../data/colors";
+import { makeBackendActor } from "../../lib/actor";
+import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
 import {
   addToCache,
   GENERAL_CACHE,
   getFromCache,
   PROFILE_CACHE,
-  storage,
 } from "../../utility/caches";
-import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
-import { BlurView } from "expo-blur";
+import { scale, verticalScale } from "../../utility/scalingUtils";
+import { parseProfile, stringifyProfile } from "../../utility/utils";
+import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
+import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
 
 const QRCodeModal = ({ modalVisible, setModalVisible }) => {
   const [uri, setUri] = useState(null);
