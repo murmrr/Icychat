@@ -49,6 +49,7 @@
     "expo-sharing": "~10.1.0",
     "expo-splash-screen": "~0.14.1",
     "expo-status-bar": "~1.2.0",
+    "expo-system-ui": "~1.1.0",
     "expo-video-player": "^2.0.3",
     "expo-web-browser": "~10.1.0",
     "javascript-time-ago": "^2.3.10",

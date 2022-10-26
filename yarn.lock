@@ -4507,6 +4507,15 @@ expo-status-bar@~1.2.0:
   resolved "https://registry.yarnpkg.com/expo-status-bar/-/expo-status-bar-1.2.0.tgz#16e73205da563f9536f562e439081e30e318a82e"
   integrity sha512-pVZZ/kDCXFK79E4dCtRecs3XLC8aiwlciutSd/fFmUPJSQZ1Txia6hlKajPt0GAYft8/YnT0V3URXzWZOBniYQ==
 
+expo-system-ui@~1.1.0:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/expo-system-ui/-/expo-system-ui-1.1.1.tgz#8022c89a09ce846f1b547824001936f1e6296691"
+  integrity sha512-Q0e0OYoPqPiKgTaj/lQt1DdCKapM7pPmnPPR1FCculpebhXy44MKMjGFv+xSl7/YkOoq8lHiRSAWMRjqP10DKg==
+  dependencies:
+    "@expo/config-plugins" "^4.0.2"
+    "@react-native/normalize-color" "^2.0.0"
+    debug "^4.3.2"
+
 expo-updates-interface@~0.5.0:
   version "0.5.2"
   resolved "https://registry.yarnpkg.com/expo-updates-interface/-/expo-updates-interface-0.5.2.tgz#5bb1e9be05db8013d5904fa8ed636c8c40604290"
