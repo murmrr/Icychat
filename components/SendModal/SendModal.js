@@ -96,6 +96,7 @@ const SendModal = ({ principal, setForSend }) => {
     setSending(true);
     await makeLedgerActor(context).transfer(transferArgs);
     setSending(false);
+    setAmount(null);
   };
 
   return (
