@@ -32,9 +32,10 @@ import {
 } from "../../utility/utils";
 
 const ConversationScreen = ({ navigation, route }) => {
-  const { id, chatKey, principals } = route.params;
+  const { id, chatKey } = route.params;
 
   const [modalVisible, setModalVisible] = useState(false);
+  const [principals, setPrincipals] = useState(route.params.principals);
   const [data, setData] = useState(
     isInCache(CONVERSATION_CACHE, id.toString())
       ? parseConversation(getFromCache(CONVERSATION_CACHE, id.toString()))
@@ -49,6 +50,7 @@ const ConversationScreen = ({ navigation, route }) => {
   useInterval(async () => {
     let response = await makeIcychatActor(context).getMyChat(id);
     if (response["ok"]) {
+      setPrincipals(response["ok"]["otherUsers"]);
       setData(response["ok"]);
       addToCache(
         CONVERSATION_CACHE,
@@ -110,7 +112,7 @@ const ConversationScreen = ({ navigation, route }) => {
         headerShadowVisible: false,
       });
     };
-  }, []);
+  }, [principals]);
 
   const renderItem = ({ item }) => <Message message={item} chatKey={chatKey} />;
 

@@ -7,7 +7,7 @@ import {
   View,
 } from "react-native";
 import colors from "../../data/colors";
-import { scale, verticalScale } from "../../utility/scalingUtils";
+import { moderateScale, scale } from "../../utility/scalingUtils";
 import FindBar from "../FindBar/FindBar";
 import ItemDivider from "../ItemDivider/ItemDivider";
 
@@ -60,8 +60,10 @@ const styles = StyleSheet.create({
     backgroundColor: colors.MIDNIGHT_BLUE,
     borderRadius: 10,
     width: scale(330),
-    height: verticalScale(
-      numPrincipals < 5 ? numPrincipals * 64.53 + numPrincipals * 17.5 : 410.15
+    height: moderateScale(
+      numPrincipals < 5
+        ? numPrincipals * 64.53 + 2 * numPrincipals * 17.5
+        : 410.15
     ),
   }),
 });
