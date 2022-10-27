@@ -85,10 +85,14 @@ const FindScreen = ({ forAdd, navigation, route }) => {
   }, []);
 
   useInterval(async () => {
-    const response = await makeIcychatActor(context).getUsers(query);
-    setAllUsers(response["ok"]);
-    if (searchBarLoading) {
-      setSearchBarLoading(false);
+    if (query == "") {
+      setAllUsers([]);
+    } else {
+      const response = await makeIcychatActor(context).getUsers(query);
+      setAllUsers(response["ok"]);
+      if (searchBarLoading) {
+        setSearchBarLoading(false);
+      }
     }
   }, POLLING_INTERVAL);
 

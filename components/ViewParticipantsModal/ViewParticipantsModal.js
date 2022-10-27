@@ -28,10 +28,12 @@ const ViewParticipantsModal = ({
         <View style={styles.nestedContainer(principals.length)}>
           <ScrollView>
             {[...principals.values()].map((principal, index) => {
-              return <>
-              <FindBar principal={principal} />
-              {index < principals.length - 1 ? <ItemDivider /> : <></>}
-              </>;
+              return (
+                <>
+                  <FindBar principal={principal} />
+                  {index < principals.length - 1 ? <ItemDivider /> : <></>}
+                </>
+              );
             })}
           </ScrollView>
         </View>

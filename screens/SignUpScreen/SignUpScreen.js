@@ -15,9 +15,13 @@ import CustomActivityIndicator from "../../components/CustomActivityIndicator/Cu
 import InputWrapper from "../../components/InputWrapper/InputWrapper";
 import colors from "../../data/colors";
 import { makeIcychatActor } from "../../lib/actor";
-import { addToCache, GENERAL_CACHE } from "../../utility/caches";
+import { addToCache, GENERAL_CACHE, PROFILE_CACHE } from "../../utility/caches";
 import { scale, verticalScale } from "../../utility/scalingUtils";
-import { generateAsymmetricKeys } from "../../utility/utils";
+import {
+  generateAsymmetricKeys,
+  stringifyChatHeaders,
+  stringifyProfile,
+} from "../../utility/utils";
 
 const SignUpScreen = ({ setIsSignedIn }) => {
   const [username, setUsername] = useState("");
@@ -31,6 +35,16 @@ const SignUpScreen = ({ setIsSignedIn }) => {
       setLoading(true);
       const identity = Ed25519KeyIdentity.generate();
       addToCache(GENERAL_CACHE, "@identity", JSON.stringify(identity.toJSON()));
+      addToCache(GENERAL_CACHE, "@myChatHeaders", stringifyChatHeaders([]));
+      const profile = {
+        userPrincipal: identity.getPrincipal(),
+        username: username,
+      };
+      addToCache(
+        PROFILE_CACHE,
+        Ed25519KeyIdentity.fromParsedJson(identity.toJSON()),
+        stringifyProfile(profile)
+      );
 
       const keys = await generateAsymmetricKeys();
       const privateKey = keys["privateKey"];
