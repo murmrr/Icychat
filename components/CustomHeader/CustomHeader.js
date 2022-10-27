@@ -1,14 +1,16 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, TouchableOpacity } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
 import colors from "../../data/colors";
 import ProfilePictureStack from "../ProfilePictureStack/ProfilePictureStack";
 
-const CustomHeader = ({ principals }) => {
+const CustomHeader = ({ principals, setModalVisible }) => {
   return (
     <View style={styles.container}>
       <Icon name="lock" size={25} color={colors.WHITE} style={styles.icon} />
-      <ProfilePictureStack principals={principals} style={styles.avatar} />
+      <TouchableOpacity onPress={() => setModalVisible(true)}>
+        <ProfilePictureStack principals={principals} style={styles.avatar} />
+      </TouchableOpacity>
     </View>
   );
 };

@@ -14,6 +14,7 @@ import CustomActivityIndicator from "../../components/CustomActivityIndicator/Cu
 import CustomBackButton from "../../components/CustomBackButton/CustomBackButton";
 import CustomHeader from "../../components/CustomHeader/CustomHeader";
 import Message from "../../components/Message/Message";
+import ViewParticipantsModal from "../../components/ViewParticipantsModal/ViewParticipantsModal";
 import colors from "../../data/colors";
 import { POLLING_INTERVAL } from "../../data/constants";
 import { makeIcychatActor } from "../../lib/actor";
@@ -32,6 +33,8 @@ import {
 
 const ConversationScreen = ({ navigation, route }) => {
   const { id, chatKey, principals } = route.params;
+
+  const [modalVisible, setModalVisible] = useState(false);
   const [data, setData] = useState(
     isInCache(CONVERSATION_CACHE, id.toString())
       ? parseConversation(getFromCache(CONVERSATION_CACHE, id.toString()))
@@ -85,7 +88,12 @@ const ConversationScreen = ({ navigation, route }) => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      headerTitle: (props) => <CustomHeader principals={principals} />,
+      headerTitle: (props) => (
+        <CustomHeader
+          principals={principals}
+          setModalVisible={setModalVisible}
+        />
+      ),
       headerLeft: (props) => <CustomBackButton navigation={navigation} />,
       headerRight: (props) => (
         <AddToChatButton id={id} chatKey={chatKey} navigation={navigation} />
@@ -137,30 +145,37 @@ const ConversationScreen = ({ navigation, route }) => {
   const keyExtractor = (item) => item["id"];
 
   return data ? (
-    <View style={styles.container}>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={headerHeight}
-        style={styles.keyboardContainer}
-      >
-        <FlatList
-          data={data["messages"].sort((a, b) => {
-            return a["time"] < b["time"];
-          })}
-          inverted={true}
-          extraData={data["messages"]}
-          renderItem={renderItem}
-          keyExtractor={keyExtractor}
-          style={styles.messagesContainer}
-        />
-        <ChatInput
-          id={id}
-          chatKey={chatKey}
-          messageBuffer={messageBuffer}
-          setMessageBuffer={setMessageBuffer}
-        />
-      </KeyboardAvoidingView>
-    </View>
+    <>
+      <ViewParticipantsModal
+        principals={principals}
+        modalVisible={modalVisible}
+        setModalVisible={setModalVisible}
+      />
+      <View style={styles.container}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          keyboardVerticalOffset={headerHeight}
+          style={styles.keyboardContainer}
+        >
+          <FlatList
+            data={data["messages"].sort((a, b) => {
+              return a["time"] < b["time"];
+            })}
+            inverted={true}
+            extraData={data["messages"]}
+            renderItem={renderItem}
+            keyExtractor={keyExtractor}
+            style={styles.messagesContainer}
+          />
+          <ChatInput
+            id={id}
+            chatKey={chatKey}
+            messageBuffer={messageBuffer}
+            setMessageBuffer={setMessageBuffer}
+          />
+        </KeyboardAvoidingView>
+      </View>
+    </>
   ) : (
     <View style={styles.loadingContainer}>
       <CustomActivityIndicator />

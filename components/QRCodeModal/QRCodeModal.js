@@ -90,6 +90,11 @@ const QRCodeModal = ({ modalVisible, setModalVisible }) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   touchableView: {
     width: "100%",
     height: "100%",
@@ -97,11 +102,6 @@ const styles = StyleSheet.create({
     alignContent: "center",
     justifyContent: "center",
     zIndex: 0,
-  },
-  container: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
   },
   nestedContainer: {
     backgroundColor: colors.BLUE,
