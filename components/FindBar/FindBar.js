@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { Placeholder, PlaceholderLine, PlaceholderMedia } from "rn-placeholder";
 import colors from "../../data/colors";
 import { makeIcychatActor } from "../../lib/actor";
 import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
@@ -10,10 +11,9 @@ import {
   isInCache,
   PROFILE_CACHE,
 } from "../../utility/caches";
-import { moderateScale } from "../../utility/scalingUtils";
+import { moderateScale, verticalScale } from "../../utility/scalingUtils";
 import { parseProfile, stringifyProfile } from "../../utility/utils";
 import AddToChatModal from "../AddToChatModal/AddToChatModal";
-import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
 import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
 import FindBarModal from "../FindBarModal/FindBarModal";
 
@@ -35,7 +35,7 @@ const FindBar = ({ id, chatKey, principal, forAdd }) => {
     }
   }, []);
 
-  return (
+  return profile ? (
     <>
       {forAdd ? (
         <AddToChatModal
@@ -59,16 +59,44 @@ const FindBar = ({ id, chatKey, principal, forAdd }) => {
           </View>
           <View style={styles.textContainer}>
             <View style={styles.usernameContainer}>
-              {profile ? (
-                <Text style={styles.username}>{profile["username"]}</Text>
-              ) : (
-                <CustomActivityIndicator />
-              )}
+              <Text style={styles.username}>{profile["username"]}</Text>
             </View>
             <Text style={styles.principal}>{principal.toText()}</Text>
           </View>
         </View>
       </TouchableOpacity>
+    </>
+  ) : (
+    <>
+      <Placeholder>
+        <View style={styles.container}>
+          <View style={styles.avatarContainer}>
+            <PlaceholderMedia
+              style={[styles.avatar, { backgroundColor: colors.LIGHT_GRAY }]}
+              size={350 / 5}
+            />
+          </View>
+          <View style={styles.textContainer}>
+            <PlaceholderLine
+              style={[
+                styles.username,
+                {
+                  marginBottom: verticalScale(5),
+                  marginTop: verticalScale(1),
+                  backgroundColor: colors.LIGHT_GRAY,
+                },
+              ]}
+              width={30}
+              height={moderateScale(18)}
+            />
+            <PlaceholderLine
+              style={[styles.principal, { backgroundColor: colors.LIGHT_GRAY }]}
+              width={80}
+              height={moderateScale(6)}
+            />
+          </View>
+        </View>
+      </Placeholder>
     </>
   );
 };
