@@ -21,6 +21,7 @@ import ProfilePictureStack from "../ProfilePictureStack/ProfilePictureStack";
 
 const ChatBar = ({ chatHeader }) => {
   const [decryptedMessage, setDecryptedMessage] = useState(null);
+  const [chatKey, setChatKey] = useState(null);
 
   const navigation = useNavigation();
 
@@ -28,6 +29,7 @@ const ChatBar = ({ chatHeader }) => {
     const myChatKey = chatHeader["key"];
     const privateKey = getFromCache(GENERAL_CACHE, "@privateKey");
     const chatKey = await decryptAsymmetric(myChatKey, privateKey);
+    setChatKey(chatKey);
 
     if (chatHeader["lastMessage"].length > 0) {
       let temp = getFromCache(
@@ -55,17 +57,14 @@ const ChatBar = ({ chatHeader }) => {
 
   return (
     <TouchableOpacity
-      onPress={async () => {
-        const myChatKey = chatHeader["key"];
-        const privateKey = getFromCache(GENERAL_CACHE, "@privateKey");
-        const chatKey = await decryptAsymmetric(myChatKey, privateKey);
-
-        navigation.navigate("OneOnOneChat", {
+      onPress={() => {
+        navigation.navigate("ConversationScreen", {
           id: chatHeader["id"],
           chatKey: chatKey,
           principals: chatHeader["otherUsers"],
         });
       }}
+      disabled={chatKey == null}
     >
       <View style={styles.container}>
         <View style={styles.avatarContainer}>

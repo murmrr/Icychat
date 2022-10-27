@@ -40,8 +40,6 @@ const ConversationScreen = ({ navigation, route }) => {
       ? parseConversation(getFromCache(CONVERSATION_CACHE, id.toString()))
       : null
   );
-  const [messageBuffer, setMessageBuffer] = useState([]);
-  const [justUpdated, setJustUpdated] = useState(false);
 
   const context = useContext(MainContext);
 
@@ -51,32 +49,6 @@ const ConversationScreen = ({ navigation, route }) => {
   useInterval(async () => {
     let response = await makeIcychatActor(context).getMyChat(id);
     if (response["ok"]) {
-      const myIndexOf = (arr, elem) => {
-        for (let i = 0; i < arr.length; ++i) {
-          if (arr[i]["content"]["message"] == elem["content"]["message"]) {
-            return i;
-          }
-        }
-        return -1;
-      };
-      let notContained = [];
-      for (let i = 0; i < messageBuffer.length; ++i) {
-        if (myIndexOf(response["ok"]["messages"], messageBuffer[i]) == -1) {
-          notContained.push(messageBuffer[i]);
-          break;
-        }
-      }
-
-      /*
-      if (notContained.length == 0) {
-        setMessageBuffer([])
-      } else {
-        notContained.forEach((temp) => {
-          response["ok"]["messages"].push(temp)
-        })
-      }
-      */
-
       setData(response["ok"]);
       addToCache(
         CONVERSATION_CACHE,
@@ -167,12 +139,7 @@ const ConversationScreen = ({ navigation, route }) => {
             keyExtractor={keyExtractor}
             style={styles.messagesContainer}
           />
-          <ChatInput
-            id={id}
-            chatKey={chatKey}
-            messageBuffer={messageBuffer}
-            setMessageBuffer={setMessageBuffer}
-          />
+          <ChatInput id={id} chatKey={chatKey} />
         </KeyboardAvoidingView>
       </View>
     </>

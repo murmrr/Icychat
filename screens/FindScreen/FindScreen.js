@@ -90,9 +90,9 @@ const FindScreen = ({ forAdd, navigation, route }) => {
     } else {
       const response = await makeIcychatActor(context).getUsers(query);
       setAllUsers(response["ok"]);
-      if (searchBarLoading) {
-        setSearchBarLoading(false);
-      }
+    }
+    if (searchBarLoading) {
+      setSearchBarLoading(false);
     }
   }, POLLING_INTERVAL);
 

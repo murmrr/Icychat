@@ -1,4 +1,3 @@
-import { Ed25519KeyIdentity } from "@dfinity/identity";
 import React, { useContext, useRef, useState } from "react";
 import { StyleSheet, TextInput, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -10,7 +9,7 @@ import { scale } from "../../utility/scalingUtils";
 import { encryptSymmetric } from "../../utility/utils";
 import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
 
-const ChatInput = ({ id, chatKey, messageBuffer, setMessageBuffer }) => {
+const ChatInput = ({ id, chatKey }) => {
   const [message, setMessage] = useState("");
   const [sending, setSending] = useState(false);
   const inputRef = useRef();
@@ -26,17 +25,6 @@ const ChatInput = ({ id, chatKey, messageBuffer, setMessageBuffer }) => {
       const messageContent = {
         message: encryptedMessage,
       };
-      const bufferedMessage = {
-        content: {
-          message: encryptedMessage,
-        },
-        id: BigInt(messageBuffer.length + 1),
-        sender: Ed25519KeyIdentity.fromJSON(
-          JSON.stringify(context)
-        ).getPrincipal(),
-        time: BigInt(Date.now()) * 1000000n,
-      };
-      setMessageBuffer((messageBuffer) => [...messageBuffer, bufferedMessage]);
       await makeIcychatActor(context).sendMessage(id, messageContent);
 
       inputRef.current.clear();

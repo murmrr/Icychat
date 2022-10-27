@@ -1,8 +1,8 @@
 import { createStackNavigator } from "@react-navigation/stack";
-import { useLayoutEffect } from "react";
+import { useLayoutEffect, useState } from "react";
 import colors from "../../data/colors";
 import ChatsScreen from "../../screens/ChatsScreen/ChatsScreen";
-import OneOnOneChatScreen from "../../screens/ConversationScreen/ConversationScreen";
+import ConversationScreen from "../../screens/ConversationScreen/ConversationScreen";
 import FindScreen from "../../screens/FindScreen/FindScreen";
 
 const Stack = createStackNavigator();
@@ -33,7 +33,7 @@ const ChatsNavigation = ({ navigation }) => {
       }}
     >
       <Stack.Screen name="ChatsScreen" component={ChatsScreen} />
-      <Stack.Screen name="OneOnOneChat" component={OneOnOneChatScreen} />
+      <Stack.Screen name="ConversationScreen" component={ConversationScreen} />
       <Stack.Screen name="Add">
         {(props) => <FindScreen forAdd={true} {...props} />}
       </Stack.Screen>

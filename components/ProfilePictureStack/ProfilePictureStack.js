@@ -3,7 +3,6 @@ import { Image, StyleSheet, View } from "react-native";
 import RNPhotoManipulator from "react-native-photo-manipulator";
 import rnTextSize from "react-native-text-size";
 import MultipleProfilePictureBackground from "../../assets/multiple-profile-picture-background.png";
-import { getFromCache, PROFILE_CACHE } from "../../utility/caches";
 import { scale } from "../../utility/scalingUtils";
 import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
 
@@ -11,7 +10,7 @@ const ProfilePictureStackMultiple = ({ principals, style }) => {
   const [uri, setUri] = useState(null);
 
   useEffect(async () => {
-    const _text = String(principals.length);
+    const _text = principals.length < 10 ? String(principals.length) : "+";
     const _textSize = scale(300);
 
     const fontSpecs = {
@@ -25,25 +24,20 @@ const ProfilePictureStackMultiple = ({ principals, style }) => {
       ...fontSpecs,
     });
 
-    let temp = getFromCache(PROFILE_CACHE, principals);
-    if (temp) {
-      setUri(temp);
-    } else {
-      const image = MultipleProfilePictureBackground;
-      const texts = [
-        {
-          position: { x: 512 - size["width"] / 2, y: 512 - size["height"] / 2 },
-          text: _text,
-          textSize: _textSize,
-          color: "#FFFFFF",
-          fontName: "Arial",
-        },
-      ];
+    const image = MultipleProfilePictureBackground;
+    const texts = [
+      {
+        position: { x: 512 - size["width"] / 2, y: 512 - size["height"] / 2 },
+        text: _text,
+        textSize: _textSize,
+        color: "#FFFFFF",
+        fontName: "Arial",
+      },
+    ];
 
-      const uri = await RNPhotoManipulator.printText(image, texts);
-      setUri(uri);
-    }
-  }, []);
+    const uri = await RNPhotoManipulator.printText(image, texts);
+    setUri(uri);
+  }, [principals]);
 
   return (
     <View style={style}>
