@@ -10,12 +10,13 @@ import {
 } from "react-native";
 import RNQRGenerator from "rn-qr-generator";
 import colors from "../../data/colors";
-import { makeBackendActor } from "../../lib/actor";
+import { makeIcychatActor } from "../../lib/actor";
 import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
 import {
   addToCache,
   GENERAL_CACHE,
   getFromCache,
+  isInCache,
   PROFILE_CACHE,
 } from "../../utility/caches";
 import { scale, verticalScale } from "../../utility/scalingUtils";
@@ -24,17 +25,18 @@ import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIn
 import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
 
 const QRCodeModal = ({ modalVisible, setModalVisible }) => {
-  const [uri, setUri] = useState(null);
-  const [profile, setProfile] = useState(null);
-
   const context = useContext(MainContext);
 
+  const [uri, setUri] = useState(null);
+  const [profile, setProfile] = useState(
+    isInCache(PROFILE_CACHE, context)
+      ? parseProfile(getFromCache(PROFILE_CACHE, context))
+      : null
+  );
+
   useEffect(async () => {
-    let temp = getFromCache(PROFILE_CACHE, context);
-    if (temp) {
-      setProfile(parseProfile(temp));
-    } else {
-      const response = await makeBackendActor(context).getMyProfile();
+    if (profile == null) {
+      const response = await makeIcychatActor(context).getMyProfile();
       setProfile(response["ok"]);
       addToCache(PROFILE_CACHE, context, stringifyProfile(response["ok"]));
     }

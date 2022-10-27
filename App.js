@@ -5,8 +5,9 @@ import { StyleSheet } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import AppNavigation from "./navigation/AppNavigation/AppNavigation";
 import { useFonts } from "expo-font";
-import { useCallback } from "react";
+import { useCallback, useEffect } from "react";
 import * as SplashScreen from "expo-splash-screen";
+import * as SystemUI from "expo-system-ui";
 
 LogBox.ignoreLogs(["Warning: ..."]);
 LogBox.ignoreAllLogs();
@@ -17,6 +18,10 @@ export default function App() {
     "Poppins-Medium": require("./assets/fonts/Poppins-Medium.ttf"),
     "Poppins-SemiBold": require("./assets/fonts/Poppins-SemiBold.ttf"),
   });
+
+  useEffect(async () => {
+    await SystemUI.setBackgroundColorAsync("#181A20");
+  }, []);
 
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {

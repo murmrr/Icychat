@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Modal, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import colors from "../../data/colors";
-import { makeBackendActor } from "../../lib/actor";
+import { makeIcychatActor } from "../../lib/actor";
 import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
 import { addToCache, getFromCache, PROFILE_CACHE } from "../../utility/caches";
 import { scale, verticalScale } from "../../utility/scalingUtils";
@@ -30,7 +30,7 @@ const AddToChatModal = ({
     if (temp) {
       setProfile(parseProfile(temp));
     } else {
-      const response = await makeBackendActor(context).getProfile(principal);
+      const response = await makeIcychatActor(context).getProfile(principal);
       setProfile(response["ok"]);
       addToCache(PROFILE_CACHE, principal, stringifyProfile(response["ok"]));
     }
@@ -40,7 +40,7 @@ const AddToChatModal = ({
     setLoadingChat(true);
 
     const otherUserPublicKey = (
-      await makeBackendActor(context).getPublicKey(principal)
+      await makeIcychatActor(context).getPublicKey(principal)
     )["ok"];
 
     const otherUserChatKey = await encryptAsymmetric(
@@ -48,7 +48,7 @@ const AddToChatModal = ({
       otherUserPublicKey
     );
 
-    const response = await makeBackendActor(context).addToChat(
+    const response = await makeIcychatActor(context).addToChat(
       id,
       principal,
       otherUserChatKey

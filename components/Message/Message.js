@@ -2,11 +2,12 @@ import { Ed25519KeyIdentity } from "@dfinity/identity";
 import React, { useContext, useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import colors from "../../data/colors";
-import { makeBackendActor } from "../../lib/actor";
+import { makeIcychatActor } from "../../lib/actor";
 import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
 import {
   addToCache,
   getFromCache,
+  isInCache,
   MESSAGE_CACHE,
   PROFILE_CACHE,
 } from "../../utility/caches";
@@ -14,44 +15,48 @@ import {
   convertTime,
   decryptSymmetric,
   parseProfile,
+  stringifyProfile,
 } from "../../utility/utils";
 import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
 import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
 
 const Message = ({ message, chatKey }) => {
-  const [profile, setProfile] = useState(null);
-  const [isMe, setIsMe] = useState(false);
-  const [decryptedMessage, setDecryptedMessage] = useState("");
-
   const context = useContext(MainContext);
 
+  const [profile, setProfile] = useState(
+    isInCache(PROFILE_CACHE, message["sender"])
+      ? parseProfile(getFromCache(PROFILE_CACHE, message["sender"]))
+      : null
+  );
+  const [isMe, setIsMe] = useState(
+    Ed25519KeyIdentity.fromJSON(JSON.stringify(context))
+      .getPrincipal()
+      .toString() === message["sender"].toString()
+      ? true
+      : false
+  );
+  const [decryptedMessage, setDecryptedMessage] = useState(
+    isInCache(MESSAGE_CACHE, message["content"]["message"])
+      ? getFromCache(MESSAGE_CACHE, message["content"]["message"])
+      : ""
+  );
+
   useEffect(async () => {
-    let principal = Ed25519KeyIdentity.fromJSON(
-      JSON.stringify(context)
-    ).getPrincipal();
-    if (principal.toString() === message["sender"].toString()) {
-      setIsMe(true);
-      setProfile(true);
-    } else {
-      setIsMe(false);
-      let temp = getFromCache(PROFILE_CACHE, message["sender"]);
-      if (temp) {
-        setProfile(parseProfile(temp));
-      } else {
-        const response = await makeBackendActor(context).getProfile(
-          message["sender"]
-        );
-        setProfile(response["ok"]);
-        addToCache(PROFILE_CACHE, message["sender"], stringify(response["ok"]));
-      }
+    if (profile == null) {
+      const response = await makeIcychatActor(context).getProfile(
+        message["sender"]
+      );
+      setProfile(response["ok"]);
+      addToCache(
+        PROFILE_CACHE,
+        message["sender"],
+        stringifyProfile(response["ok"])
+      );
     }
   }, []);
 
   useEffect(async () => {
-    let temp = getFromCache(MESSAGE_CACHE, message["content"]["message"]);
-    if (temp) {
-      setDecryptedMessage(temp);
-    } else {
+    if (decryptedMessage == "") {
       const decryptedMessage = await decryptSymmetric(
         message["content"]["message"],
         chatKey

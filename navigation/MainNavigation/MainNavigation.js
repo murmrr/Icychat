@@ -4,7 +4,7 @@ import OneSignal from "react-native-onesignal";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import TabBarIcon from "../../components/TabBarIcon/TabBarIcon";
 import colors from "../../data/colors";
-import { makeBackendActor } from "../../lib/actor";
+import { makeIcychatActor } from "../../lib/actor";
 import FindScreen from "../../screens/FindScreen/FindScreen";
 import ChatsNavigation from "../ChatsNavigation/ChatsNavigation";
 import MeNavigation from "../MeNavigation/MeNavigation";
@@ -21,7 +21,7 @@ const MainNavigation = ({ identity, setIsSignedIn }) => {
     OneSignal.promptForPushNotificationsWithUserResponse();
     const device = await OneSignal.getDeviceState();
     if (device["userId"]) {
-      await makeBackendActor(identity).setMyPushToken(device["userId"]);
+      makeIcychatActor(identity).setMyPushToken(device["userId"]);
     }
   }, []);
 

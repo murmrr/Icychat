@@ -14,7 +14,7 @@ import BubbleToast from "../../components/BubbleToast/BubbleToast";
 import CustomActivityIndicator from "../../components/CustomActivityIndicator/CustomActivityIndicator";
 import InputWrapper from "../../components/InputWrapper/InputWrapper";
 import colors from "../../data/colors";
-import { makeBackendActor } from "../../lib/actor";
+import { makeIcychatActor } from "../../lib/actor";
 import { addToCache, GENERAL_CACHE } from "../../utility/caches";
 import { scale, verticalScale } from "../../utility/scalingUtils";
 import { generateAsymmetricKeys } from "../../utility/utils";
@@ -40,7 +40,7 @@ const SignUpScreen = ({ setIsSignedIn }) => {
       const profileUpdate = {
         username: username,
       };
-      const response = await makeBackendActor(identity).register(
+      const response = await makeIcychatActor(identity).register(
         profileUpdate,
         publicKey
       );

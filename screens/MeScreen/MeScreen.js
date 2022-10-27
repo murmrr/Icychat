@@ -15,13 +15,14 @@ import CustomProfilePicture from "../../components/CustomProfilePicture/CustomPr
 import DepositDetailsModal from "../../components/DepositDetailsModal/DepositDetailsModal";
 import colors from "../../data/colors";
 import { POLLING_INTERVAL } from "../../data/constants";
-import { makeBackendActor, makeLedgerActor } from "../../lib/actor";
+import { makeIcychatActor, makeLedgerActor } from "../../lib/actor";
 import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
 import {
   addToCache,
   clearAllCaches,
   GENERAL_CACHE,
   getFromCache,
+  isInCache,
   PROFILE_CACHE,
 } from "../../utility/caches";
 import { scale, verticalScale } from "../../utility/scalingUtils";
@@ -34,16 +35,25 @@ import {
 } from "../../utility/utils";
 
 const MeScreen = ({ navigation, setIsSignedIn }) => {
-  const [profile, setProfile] = useState(null);
-  const [modalVisible, setModalVisible] = useState(false);
-  const [amount, setAmount] = useState(-1n);
-
   const context = useContext(MainContext);
 
-  useEffect(() => {
-    let value = getFromCache(GENERAL_CACHE, "@balance");
-    if (value) {
-      setAmount(BigInt(value));
+  const [profile, setProfile] = useState(
+    isInCache(PROFILE_CACHE, context)
+      ? parseProfile(getFromCache(PROFILE_CACHE, context))
+      : null
+  );
+  const [modalVisible, setModalVisible] = useState(false);
+  const [amount, setAmount] = useState(
+    isInCache(GENERAL_CACHE, "@balance")
+      ? BigInt(getFromCache(GENERAL_CACHE, "@balance"))
+      : -1n
+  );
+
+  useEffect(async () => {
+    if (profile == null) {
+      const response = await makeIcychatActor(context).getMyProfile();
+      setProfile(response["ok"]);
+      addToCache(PROFILE_CACHE, context, stringifyProfile(response["ok"]));
     }
   }, []);
 
@@ -88,18 +98,7 @@ const MeScreen = ({ navigation, setIsSignedIn }) => {
     addToCache(GENERAL_CACHE, "@balance", numE8s.toString());
   }, POLLING_INTERVAL);
 
-  useInterval(async () => {
-    let temp = getFromCache(PROFILE_CACHE, context);
-    if (temp) {
-      setProfile(parseProfile(temp));
-    } else {
-      const response = await makeBackendActor(context).getMyProfile();
-      setProfile(response["ok"]);
-      addToCache(PROFILE_CACHE, context, stringifyProfile(response["ok"]));
-    }
-  }, POLLING_INTERVAL);
-
-  const handleGhost = async () => {
+  const handleGhost = () => {
     Alert.alert(
       "Ghost Account",
       "Are you sure you want to ghost your account?",
@@ -110,18 +109,16 @@ const MeScreen = ({ navigation, setIsSignedIn }) => {
         },
         {
           text: "Yes",
-          onPress: async () => {
-            try {
-              clearAllCaches();
-              setIsSignedIn(false);
-            } catch (exception) {}
+          onPress: () => {
+            clearAllCaches();
+            setIsSignedIn(false);
           },
         },
       ]
     );
   };
 
-  const handleBurn = async () => {
+  const handleBurn = () => {
     Alert.alert("Burn Account", "Are you sure you want to burn your account?", [
       {
         text: "No",
@@ -129,12 +126,10 @@ const MeScreen = ({ navigation, setIsSignedIn }) => {
       },
       {
         text: "Yes",
-        onPress: async () => {
-          try {
-            await makeBackendActor(context).burnAccount();
-            clearAllCaches();
-            setIsSignedIn(false);
-          } catch (exception) {}
+        onPress: () => {
+          makeIcychatActor(context).burnAccount();
+          clearAllCaches();
+          setIsSignedIn(false);
         },
       },
     ]);

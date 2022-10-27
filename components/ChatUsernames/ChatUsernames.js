@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Text } from "react-native";
 import { POLLING_INTERVAL } from "../../data/constants";
-import { makeBackendActor } from "../../lib/actor";
+import { makeIcychatActor } from "../../lib/actor";
 import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
 import { addToCache, getFromCache, PROFILE_CACHE } from "../../utility/caches";
 import {
@@ -21,7 +21,7 @@ const ChatUsernamesSingle = ({ principal, style }) => {
     if (temp) {
       setOtherUserProfile(parseProfile(temp));
     } else {
-      const response = await makeBackendActor(context).getProfile(principal);
+      const response = await makeIcychatActor(context).getProfile(principal);
       setOtherUserProfile(response["ok"]);
       addToCache(PROFILE_CACHE, principal, stringifyProfile(response["ok"]));
     }
@@ -49,7 +49,7 @@ const ChatUsernamesMultiple = ({ principals, style }) => {
           otherUserProfiles.set(principal.toText(), parseProfile(temp))
         );
       } else {
-        const response = await makeBackendActor(context).getProfile(principal);
+        const response = await makeIcychatActor(context).getProfile(principal);
         setOtherUserProfiles(
           otherUserProfiles.set(principal.toText(), response["ok"])
         );

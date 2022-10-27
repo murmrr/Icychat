@@ -4,7 +4,7 @@ import { StyleSheet, TextInput, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/FontAwesome";
 import colors from "../../data/colors";
-import { makeBackendActor } from "../../lib/actor";
+import { makeIcychatActor } from "../../lib/actor";
 import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
 import { scale } from "../../utility/scalingUtils";
 import { encryptSymmetric } from "../../utility/utils";
@@ -37,7 +37,7 @@ const ChatInput = ({ id, chatKey, messageBuffer, setMessageBuffer }) => {
         time: BigInt(Date.now()) * 1000000n,
       };
       setMessageBuffer((messageBuffer) => [...messageBuffer, bufferedMessage]);
-      await makeBackendActor(context).sendMessage(id, messageContent);
+      await makeIcychatActor(context).sendMessage(id, messageContent);
 
       inputRef.current.clear();
       setMessage("");

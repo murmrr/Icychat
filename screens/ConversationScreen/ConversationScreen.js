@@ -16,12 +16,13 @@ import CustomHeader from "../../components/CustomHeader/CustomHeader";
 import Message from "../../components/Message/Message";
 import colors from "../../data/colors";
 import { POLLING_INTERVAL } from "../../data/constants";
-import { makeBackendActor } from "../../lib/actor";
+import { makeIcychatActor } from "../../lib/actor";
 import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
 import {
   addToCache,
   CONVERSATION_CACHE,
   getFromCache,
+  isInCache,
 } from "../../utility/caches";
 import {
   parseConversation,
@@ -31,7 +32,11 @@ import {
 
 const ConversationScreen = ({ navigation, route }) => {
   const { id, chatKey, principals } = route.params;
-  const [data, setData] = useState(null);
+  const [data, setData] = useState(
+    isInCache(CONVERSATION_CACHE, id.toString())
+      ? parseConversation(getFromCache(CONVERSATION_CACHE, id.toString()))
+      : null
+  );
   const [messageBuffer, setMessageBuffer] = useState([]);
   const [justUpdated, setJustUpdated] = useState(false);
 
@@ -40,15 +45,8 @@ const ConversationScreen = ({ navigation, route }) => {
   const insets = useSafeAreaInsets();
   const headerHeight = useHeaderHeight();
 
-  useEffect(async () => {
-    let value = getFromCache(CONVERSATION_CACHE, id.toString());
-    if (value) {
-      setData(parseConversation(value));
-    }
-  }, []);
-
   useInterval(async () => {
-    let response = await makeBackendActor(context).getMyChat(id);
+    let response = await makeIcychatActor(context).getMyChat(id);
     if (response["ok"]) {
       const myIndexOf = (arr, elem) => {
         for (let i = 0; i < arr.length; ++i) {

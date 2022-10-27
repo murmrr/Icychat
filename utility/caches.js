@@ -20,6 +20,10 @@ export const CONVERSATION_CACHE = new MMKV({
   id: "conversationCache",
 });
 
+export const isInCache = (cacheType, key) => {
+  return cacheType.contains(key.toString());
+};
+
 export const getFromCache = (cacheType, key) => {
   return cacheType.getString(key.toString());
 };

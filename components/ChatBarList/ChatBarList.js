@@ -10,9 +10,14 @@ import Swipeable from "react-native-gesture-handler/Swipeable";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import colors from "../../data/colors";
 import { POLLING_INTERVAL } from "../../data/constants";
-import { makeBackendActor } from "../../lib/actor";
+import { makeIcychatActor } from "../../lib/actor";
 import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
-import { addToCache, GENERAL_CACHE, getFromCache } from "../../utility/caches";
+import {
+  addToCache,
+  GENERAL_CACHE,
+  getFromCache,
+  isInCache,
+} from "../../utility/caches";
 import { scale } from "../../utility/scalingUtils";
 import {
   parseChatHeaders,
@@ -24,7 +29,11 @@ import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIn
 import ItemDivider from "../ItemDivider/ItemDivider";
 
 const ChatBarList = () => {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState(
+    isInCache(GENERAL_CACHE, "@myChatHeaders")
+      ? parseChatHeaders(getFromCache(GENERAL_CACHE, "@myChatHeaders"))
+      : null
+  );
   const [deletedIds, setDeletedIds] = useState([]);
 
   let row = [];
@@ -32,15 +41,8 @@ const ChatBarList = () => {
 
   const context = useContext(MainContext);
 
-  useEffect(async () => {
-    let value = getFromCache(GENERAL_CACHE, "@myChatHeaders");
-    if (value) {
-      setData(parseChatHeaders(value));
-    }
-  }, []);
-
   useInterval(async () => {
-    const response = await makeBackendActor(context).getMyChatHeaders();
+    const response = await makeIcychatActor(context).getMyChatHeaders();
     if (response["ok"]) {
       setData(response["ok"]);
       addToCache(
@@ -120,7 +122,7 @@ const ChatBarList = () => {
           renderItem={(v) =>
             renderRowItem(v, async () => {
               setDeletedIds((deletedIds) => [...deletedIds, v.item.id]);
-              await makeBackendActor(context).leaveChat(v.item.id);
+              await makeIcychatActor(context).leaveChat(v.item.id);
             })
           }
           keyExtractor={keyExtractor}

@@ -2,9 +2,14 @@ import React, { useContext, useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Modal from "react-native-modal";
 import colors from "../../data/colors";
-import { makeBackendActor } from "../../lib/actor";
+import { makeIcychatActor } from "../../lib/actor";
 import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
-import { addToCache, getFromCache, PROFILE_CACHE } from "../../utility/caches";
+import {
+  addToCache,
+  getFromCache,
+  isInCache,
+  PROFILE_CACHE,
+} from "../../utility/caches";
 import { scale, verticalScale } from "../../utility/scalingUtils";
 import {
   encryptAsymmetric,
@@ -18,18 +23,19 @@ import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
 import SendModal from "../SendModal/SendModal";
 
 const FindBarModal = ({ principal, modalVisible, setModalVisible }) => {
-  const [profile, setProfile] = useState(null);
+  const [profile, setProfile] = useState(
+    isInCache(PROFILE_CACHE, principal)
+      ? parseProfile(getFromCache(PROFILE_CACHE, principal))
+      : null
+  );
   const [loadingChat, setLoadingChat] = useState(false);
   const [forSend, setForSend] = useState(false);
 
   const context = useContext(MainContext);
 
   useEffect(async () => {
-    let temp = getFromCache(PROFILE_CACHE, principal);
-    if (temp) {
-      setProfile(parseProfile(temp));
-    } else {
-      const response = await makeBackendActor(context).getProfile(principal);
+    if (profile == null) {
+      const response = await makeIcychatActor(context).getProfile(principal);
       setProfile(response["ok"]);
       addToCache(PROFILE_CACHE, principal, stringifyProfile(response["ok"]));
     }
@@ -39,7 +45,7 @@ const FindBarModal = ({ principal, modalVisible, setModalVisible }) => {
     setLoadingChat(true);
 
     const otherUserPublicKey = (
-      await makeBackendActor(context).getPublicKey(principal)
+      await makeIcychatActor(context).getPublicKey(principal)
     )["ok"];
 
     const chatKey = await generateSymmetricKey();
@@ -51,7 +57,7 @@ const FindBarModal = ({ principal, modalVisible, setModalVisible }) => {
       otherUserPublicKey
     );
 
-    const response = await makeBackendActor(context).createChat(
+    const response = await makeIcychatActor(context).createChat(
       principal,
       myChatKey,
       otherUserChatKey

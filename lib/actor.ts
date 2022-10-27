@@ -12,7 +12,7 @@ import {
 
 import { ICYCHAT_CANISTER_ID, IC_HOST, LEDGER_CANISTER_ID } from "../config";
 
-export const makeBackendActor = (identity: Identity) => {
+export const makeIcychatActor = (identity: Identity) => {
   const agent = new HttpAgent({
     identity,
     host: IC_HOST,

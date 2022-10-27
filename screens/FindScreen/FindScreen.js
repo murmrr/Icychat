@@ -11,7 +11,7 @@ import QRCodeModal from "../../components/QRCodeModal/QRCodeModal";
 import QRCodeScannerModal from "../../components/QRCodeScannerModal/QRCodeScannerModal";
 import colors from "../../data/colors";
 import { POLLING_INTERVAL } from "../../data/constants";
-import { makeBackendActor } from "../../lib/actor";
+import { makeIcychatActor } from "../../lib/actor";
 import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
 import { useInterval } from "../../utility/utils";
 
@@ -85,7 +85,7 @@ const FindScreen = ({ forAdd, navigation, route }) => {
   }, []);
 
   useInterval(async () => {
-    const response = await makeBackendActor(context).getUsers(query);
+    const response = await makeIcychatActor(context).getUsers(query);
     setAllUsers(response["ok"]);
     if (searchBarLoading) {
       setSearchBarLoading(false);
