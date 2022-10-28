@@ -2,12 +2,12 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { useLayoutEffect } from "react";
 import colors from "../../data/colors";
 import AboutScreen from "../../screens/AboutScreen/AboutScreen";
-import InfoScreen from "../../screens/InfoScreen/InfoScreen";
+import NotificationsScreen from "../../screens/NotificationsScreen/NotificationsScreen";
 import SettingsScreen from "../../screens/SettingsScreen/SettingsScreen";
 
 const Stack = createStackNavigator();
 
-const InfoNavigation = ({ navigation, setIsSignedIn }) => {
+const SettingsNavigation = ({ navigation, setIsSignedIn }) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: false,
@@ -31,11 +31,11 @@ const InfoNavigation = ({ navigation, setIsSignedIn }) => {
         headerShadowVisible: false,
       }}
     >
-      <Stack.Screen name="Info" component={InfoScreen} />
       <Stack.Screen name="Settings" component={SettingsScreen} />
       <Stack.Screen name="About" component={AboutScreen} />
+      <Stack.Screen name="Notifications" component={NotificationsScreen} />
     </Stack.Navigator>
   );
 };
 
-export default InfoNavigation;
+export default SettingsNavigation;

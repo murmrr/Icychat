@@ -2,7 +2,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { useLayoutEffect } from "react";
 import colors from "../../data/colors";
 import MeScreen from "../../screens/MeScreen/MeScreen";
-import InfoNavigation from "../InfoNavigation/InfoNavigation";
+import SettingsNavigation from "../SettingsNavigation/SettingsNavigation";
 
 const Stack = createStackNavigator();
 
@@ -34,7 +34,7 @@ const MeNavigation = ({ navigation, setIsSignedIn }) => {
       <Stack.Screen name="Me">
         {(props) => <MeScreen setIsSignedIn={setIsSignedIn} {...props} />}
       </Stack.Screen>
-      <Stack.Screen name="InfoNavigation" component={InfoNavigation} />
+      <Stack.Screen name="SettingsNavigation" component={SettingsNavigation} />
     </Stack.Navigator>
   );
 };

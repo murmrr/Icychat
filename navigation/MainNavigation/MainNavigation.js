@@ -6,6 +6,7 @@ import TabBarIcon from "../../components/TabBarIcon/TabBarIcon";
 import colors from "../../data/colors";
 import { makeIcychatActor } from "../../lib/actor";
 import FindScreen from "../../screens/FindScreen/FindScreen";
+import { addToCache, GENERAL_CACHE, isInCache } from "../../utility/caches";
 import ChatsNavigation from "../ChatsNavigation/ChatsNavigation";
 import MeNavigation from "../MeNavigation/MeNavigation";
 
@@ -21,7 +22,10 @@ const MainNavigation = ({ identity, setIsSignedIn }) => {
     OneSignal.promptForPushNotificationsWithUserResponse();
     const device = await OneSignal.getDeviceState();
     if (device["userId"]) {
-      makeIcychatActor(identity).setMyPushToken(device["userId"]);
+      if (!isInCache(GENERAL_CACHE, "@setPushToken")) {
+        makeIcychatActor(identity).setMyPushToken(device["userId"]);
+        addToCache(GENERAL_CACHE, "@setPushToken", true);
+      }
     }
   }, []);
 

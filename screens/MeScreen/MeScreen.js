@@ -61,7 +61,7 @@ const MeScreen = ({ navigation, setIsSignedIn }) => {
     navigation.setOptions({
       headerRight: (props) => (
         <TouchableOpacity
-          onPress={() => navigation.navigate("InfoNavigation")}
+          onPress={() => navigation.navigate("SettingsNavigation")}
           style={{
             paddingHorizontal: 20,
             padding: 10,

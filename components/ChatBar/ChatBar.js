@@ -49,7 +49,9 @@ const ChatBar = ({ chatHeader }) => {
         MESSAGE_CACHE,
         chatHeader["lastMessage"][0]["content"]["message"]
       );
-      if (decryptedMessage == null) {
+      if (temp) {
+        setDecryptedMessage(temp);
+      } else {
         const decryptedMessage = await decryptSymmetric(
           chatHeader["lastMessage"][0]["content"]["message"],
           chatKey
