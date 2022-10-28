@@ -7,6 +7,7 @@ import {
   addToCache,
   GENERAL_CACHE,
   getFromCache,
+  isInCache,
   MESSAGE_CACHE,
 } from "../../utility/caches";
 import { moderateScale } from "../../utility/scalingUtils";
@@ -20,7 +21,19 @@ import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIn
 import ProfilePictureStack from "../ProfilePictureStack/ProfilePictureStack";
 
 const ChatBar = ({ chatHeader }) => {
-  const [decryptedMessage, setDecryptedMessage] = useState(null);
+  const [decryptedMessage, setDecryptedMessage] = useState(
+    chatHeader["lastMessage"].length > 0
+      ? isInCache(
+          MESSAGE_CACHE,
+          chatHeader["lastMessage"][0]["content"]["message"]
+        )
+        ? getFromCache(
+            MESSAGE_CACHE,
+            chatHeader["lastMessage"][0]["content"]["message"]
+          )
+        : null
+      : " "
+  );
   const [chatKey, setChatKey] = useState(null);
 
   const navigation = useNavigation();
@@ -36,9 +49,7 @@ const ChatBar = ({ chatHeader }) => {
         MESSAGE_CACHE,
         chatHeader["lastMessage"][0]["content"]["message"]
       );
-      if (temp) {
-        setDecryptedMessage(temp);
-      } else {
+      if (decryptedMessage == null) {
         const decryptedMessage = await decryptSymmetric(
           chatHeader["lastMessage"][0]["content"]["message"],
           chatKey
