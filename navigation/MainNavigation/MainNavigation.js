@@ -6,9 +6,9 @@ import TabBarIcon from "../../components/TabBarIcon/TabBarIcon";
 import colors from "../../data/colors";
 import { makeIcychatActor } from "../../lib/actor";
 import FindScreen from "../../screens/FindScreen/FindScreen";
-import { addToCache, GENERAL_CACHE, isInCache } from "../../utility/caches";
 import ChatsNavigation from "../ChatsNavigation/ChatsNavigation";
 import MeNavigation from "../MeNavigation/MeNavigation";
+import Constants from "expo-constants";
 
 export const MainContext = createContext("");
 
@@ -18,14 +18,13 @@ const MainNavigation = ({ identity, setIsSignedIn }) => {
   const insets = useSafeAreaInsets();
 
   useEffect(async () => {
-    OneSignal.setAppId("983438ea-3272-4813-acc2-6ea134a6f05a");
+    OneSignal.setAppId(Constants.manifest.extra.oneSignalAppId);
+    OneSignal.setRequiresUserPrivacyConsent(true);
     OneSignal.promptForPushNotificationsWithUserResponse();
+    OneSignal.disablePush(false);
     const device = await OneSignal.getDeviceState();
     if (device["userId"]) {
-      if (!isInCache(GENERAL_CACHE, "@setPushToken")) {
-        makeIcychatActor(identity).setMyPushToken(device["userId"]);
-        addToCache(GENERAL_CACHE, "@setPushToken", true);
-      }
+      await makeIcychatActor(identity).setMyPushToken(device["userId"]);
     }
   }, []);
 
