@@ -12,33 +12,33 @@ type SendMessageError =
  };
 type Result_9 = 
  variant {
-   err: GetMyChatHeadersError;
-   ok: vec ChatHeader;
- };
-type Result_8 = 
- variant {
    err: GetMyProfileError;
    ok: Profile;
  };
-type Result_7 = 
+type Result_8 = 
  variant {
    err: GetMyPushTokenError;
    ok: text;
  };
-type Result_6 = 
+type Result_7 = 
  variant {
    err: GetProfileError;
    ok: Profile;
  };
-type Result_5 = 
+type Result_6 = 
  variant {
    err: GetPublicKeyError;
    ok: text;
  };
-type Result_4 = 
+type Result_5 = 
  variant {
    err: GetUsersError;
    ok: vec principal;
+ };
+type Result_4 = 
+ variant {
+   err: GhostAccountError;
+   ok;
  };
 type Result_3 = 
  variant {
@@ -50,25 +50,30 @@ type Result_2 =
    err: RegisterError;
    ok;
  };
-type Result_13 = 
+type Result_14 = 
  variant {
    err: AddToChatError;
    ok;
  };
-type Result_12 = 
+type Result_13 = 
  variant {
    err: BurnAccountError;
    ok;
  };
-type Result_11 = 
+type Result_12 = 
  variant {
    err: CreateChatError;
    ok;
  };
-type Result_10 = 
+type Result_11 = 
  variant {
    err: GetMyChatError;
    ok: SharedChat;
+ };
+type Result_10 = 
+ variant {
+   err: GetMyChatHeadersError;
+   ok: vec ChatHeader;
  };
 type Result_1 = 
  variant {
@@ -104,6 +109,7 @@ type LeaveChatError =
    IdNotFound;
    UserNotFound;
  };
+type GhostAccountError = variant {UserNotFound;};
 type GetUsersError = variant {UserNotFound;};
 type GetPublicKeyError = variant {UserNotFound;};
 type GetProfileError = variant {UserNotFound;};
@@ -135,16 +141,17 @@ type AddToChatError =
    UserNotFound;
  };
 service : {
-  addToChat: (nat, principal, text) -> (Result_13);
-  burnAccount: () -> (Result_12);
-  createChat: (principal, text, text) -> (Result_11);
-  getMyChat: (nat) -> (Result_10) query;
-  getMyChatHeaders: () -> (Result_9) query;
-  getMyProfile: () -> (Result_8) query;
-  getMyPushToken: () -> (Result_7) query;
-  getProfile: (principal) -> (Result_6) query;
-  getPublicKey: (principal) -> (Result_5) query;
-  getUsers: (text) -> (Result_4) query;
+  addToChat: (nat, principal, text) -> (Result_14);
+  burnAccount: () -> (Result_13);
+  createChat: (principal, text, text) -> (Result_12);
+  getMyChat: (nat) -> (Result_11) query;
+  getMyChatHeaders: () -> (Result_10) query;
+  getMyProfile: () -> (Result_9) query;
+  getMyPushToken: () -> (Result_8) query;
+  getProfile: (principal) -> (Result_7) query;
+  getPublicKey: (principal) -> (Result_6) query;
+  getUsers: (text) -> (Result_5) query;
+  ghostAccount: () -> (Result_4);
   leaveChat: (nat) -> (Result_3);
   register: (ProfileUpdate, text) -> (Result_2);
   sendMessage: (nat, MessageContent) -> (Result_1);

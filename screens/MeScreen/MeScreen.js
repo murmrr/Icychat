@@ -110,6 +110,7 @@ const MeScreen = ({ navigation, setIsSignedIn }) => {
         {
           text: "Yes",
           onPress: () => {
+            makeIcychatActor(context).ghostAccount();
             clearAllCaches();
             setIsSignedIn(false);
           },

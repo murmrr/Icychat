@@ -7,6 +7,7 @@ import MainNavigation from "../MainNavigation/MainNavigation";
 import * as Network from "expo-network";
 import { useInterval } from "../../utility/utils";
 import NoInternetScreen from "../../screens/NoInternetScreen/NoInternetScreen";
+import colors from "../../data/colors";
 
 const AppNavigation = () => {
   const [hasInternet, setHasInternet] = useState(true);
@@ -41,7 +42,7 @@ const AppNavigation = () => {
   }, [isSignedIn]);
 
   return (
-    <SafeAreaProvider>
+    <SafeAreaProvider style={{ backgroundColor: colors.DARK_PRIMARY }}>
       {hasInternet ? (
         <>
           {isSignedIn ? (
