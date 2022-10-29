@@ -66,7 +66,10 @@ const SettingsScreen = ({ navigation }) => {
       style={{ backgroundColor: colors.DARK_PRIMARY }}
       contentContainerStyle={styles.container}
     >
-      <InfoButton name={"Notifications"} onPress={() => navigation.navigate("Notifications")} />
+      <InfoButton
+        name={"Notifications"}
+        onPress={() => navigation.navigate("Notifications")}
+      />
       <InfoButton name={"About"} onPress={() => navigation.navigate("About")} />
     </ScrollView>
   );
