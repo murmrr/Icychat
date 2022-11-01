@@ -8,7 +8,7 @@ import { makeIcychatActor } from "../../lib/actor";
 import FindScreen from "../../screens/FindScreen/FindScreen";
 import ChatsNavigation from "../ChatsNavigation/ChatsNavigation";
 import MeNavigation from "../MeNavigation/MeNavigation";
-import Constants from "expo-constants";
+import { addToCache, GENERAL_CACHE, isInCache } from "../../utility/caches";
 
 export const MainContext = createContext("");
 
@@ -18,13 +18,14 @@ const MainNavigation = ({ identity, setIsSignedIn }) => {
   const insets = useSafeAreaInsets();
 
   useEffect(async () => {
-    OneSignal.setAppId(Constants.manifest.extra.oneSignalAppId);
-    OneSignal.setRequiresUserPrivacyConsent(true);
+    OneSignal.setAppId("19d49feb-ac2c-494c-9f7c-d8392c73d838");
     OneSignal.promptForPushNotificationsWithUserResponse();
-    OneSignal.disablePush(false);
     const device = await OneSignal.getDeviceState();
     if (device["userId"]) {
-      await makeIcychatActor(identity).setMyPushToken(device["userId"]);
+      if (!isInCache(GENERAL_CACHE, "@setPushToken")) {
+        await makeIcychatActor(identity).setMyPushToken(device["userId"]);
+        addToCache(GENERAL_CACHE, "@setPushToken", "true");
+      }
     }
   }, []);
 
