@@ -1,5 +1,4 @@
 import { Ed25519KeyIdentity } from "@dfinity/identity";
-import { useHeaderHeight } from "@react-navigation/elements";
 import React, { useContext, useEffect, useState } from "react";
 import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -28,8 +27,6 @@ const SendModal = ({ principal, setForSend }) => {
   const [sending, setSending] = useState(false);
 
   const context = useContext(MainContext);
-
-  const headerHeight = useHeaderHeight();
 
   useEffect(() => {
     if (balance != null && transferFee != null) {
@@ -135,7 +132,11 @@ const SendModal = ({ principal, setForSend }) => {
             setAmount={setAmount}
             available={available}
           />
-          <TouchableOpacity onPress={sendAmount} style={styles.button}>
+          <TouchableOpacity
+            onLongPress={sendAmount}
+            disabled={amount == null || amount == "0"}
+            style={styles.button}
+          >
             {sending ? (
               <CustomActivityIndicator />
             ) : (

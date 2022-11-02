@@ -127,6 +127,7 @@ const ConversationScreen = ({ navigation, route }) => {
       />
       <View style={styles.container}>
         <KeyboardAvoidingView
+          enabled={!modalVisible}
           behavior={Platform.OS === "ios" ? "padding" : "height"}
           keyboardVerticalOffset={headerHeight}
           style={styles.keyboardContainer}

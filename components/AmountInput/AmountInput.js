@@ -24,7 +24,11 @@ const AmountInput = ({ amount, setAmount, available }) => {
       const numeric = parseFloat(amount);
       if (numeric >= 0.0 && numeric < formatE8s(available)) {
         setAmount(amount);
+      } else {
+        setAmount(available.toString());
       }
+    } else {
+      setAmount("");
     }
   };
 
