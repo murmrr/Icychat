@@ -1,14 +1,39 @@
-import React, { useLayoutEffect } from "react";
-import { StyleSheet } from "react-native";
+import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
+import { StyleSheet, Switch, Text, View } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
+import OneSignal from "react-native-onesignal";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import CustomBackButton from "../../components/CustomBackButton/CustomBackButton";
 import InfoButton from "../../components/InfoButton/InfoButton";
 import colors from "../../data/colors";
-import { verticalScale } from "../../utility/scalingUtils";
+import { makeIcychatActor } from "../../lib/actor";
+import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
+import { scale, verticalScale } from "../../utility/scalingUtils";
+import { useInterval } from "../../utility/utils";
 
 const SettingsScreen = ({ navigation }) => {
+  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
+
   const insets = useSafeAreaInsets();
+
+  const context = useContext(MainContext);
+
+  OneSignal.addPermissionObserver(async () => {
+    const deviceState = await OneSignal.getDeviceState();
+    await makeIcychatActor(context).setMyPushToken(deviceState["userId"]);
+  });
+
+  useInterval(async () => {
+    const deviceState = await OneSignal.getDeviceState();
+    if (
+      !deviceState["hasNotificationPermission"] ||
+      !deviceState["isSubscribed"]
+    ) {
+      setNotificationsEnabled(false);
+    } else {
+      setNotificationsEnabled(true);
+    }
+  }, 100);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -61,15 +86,40 @@ const SettingsScreen = ({ navigation }) => {
     };
   }, []);
 
+  const toggleNotificationsSwitch = async () => {
+    if (notificationsEnabled) {
+      OneSignal.disablePush(true);
+      setNotificationsEnabled((previousState) => !previousState);
+    } else {
+      const deviceState = await OneSignal.getDeviceState();
+      if (!deviceState["hasNotificationPermission"]) {
+        OneSignal.promptForPushNotificationsWithUserResponse(true);
+        const deviceState2 = await OneSignal.getDeviceState();
+        if (deviceState2["hasNotificationPermission"]) {
+          setNotificationsEnabled((previousState) => !previousState);
+        }
+      } else if (!deviceState["isSubscribed"]) {
+        OneSignal.disablePush(false);
+        setNotificationsEnabled((previousState) => !previousState);
+      }
+    }
+  };
+
   return (
     <ScrollView
       style={{ backgroundColor: colors.DARK_PRIMARY }}
       contentContainerStyle={styles.container}
     >
-      <InfoButton
-        name={"Notifications"}
-        onPress={() => navigation.navigate("Notifications")}
-      />
+      <View style={styles.notificationSwitchContainer}>
+        <Switch
+          trackColor={{ true: colors.ORANGE }}
+          ios_backgroundColor={colors.LIGHT_GRAY}
+          onValueChange={toggleNotificationsSwitch}
+          value={notificationsEnabled}
+          style={styles.notificationSwitch}
+        />
+        <Text style={styles.notificationSwitchText}>Allow Notifications</Text>
+      </View>
       <InfoButton name={"About"} onPress={() => navigation.navigate("About")} />
     </ScrollView>
   );
@@ -81,6 +131,25 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: colors.DARK_PRIMARY,
     alignItems: "center",
+  },
+  notificationSwitchContainer: {
+    width: scale(310),
+    height: scale(60),
+    borderRadius: 15,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    backgroundColor: colors.BLUE,
+    marginVertical: verticalScale(8),
+  },
+  notificationSwitchText: {
+    marginRight: scale(20),
+    color: "#FFFFFF",
+    fontSize: 20,
+    fontFamily: "Poppins-Medium",
+  },
+  notificationSwitch: {
+    marginLeft: scale(20),
   },
 });
 
