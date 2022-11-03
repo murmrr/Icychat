@@ -1,13 +1,13 @@
 import { Ed25519KeyIdentity } from "@dfinity/identity";
+import * as Network from "expo-network";
 import React, { useEffect, useState } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
+import colors from "../../data/colors";
+import NoInternetScreen from "../../screens/NoInternetScreen/NoInternetScreen";
 import { GENERAL_CACHE, getFromCache } from "../../utility/caches";
+import { useInterval } from "../../utility/utils";
 import AuthNavigation from "../AuthNavigation/AuthNavigation";
 import MainNavigation from "../MainNavigation/MainNavigation";
-import * as Network from "expo-network";
-import { useInterval } from "../../utility/utils";
-import NoInternetScreen from "../../screens/NoInternetScreen/NoInternetScreen";
-import colors from "../../data/colors";
 
 const AppNavigation = () => {
   const [hasInternet, setHasInternet] = useState(true);

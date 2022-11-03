@@ -4,9 +4,11 @@ import OneSignal from "react-native-onesignal";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import TabBarIcon from "../../components/TabBarIcon/TabBarIcon";
 import colors from "../../data/colors";
+import { makeIcychatActor } from "../../lib/actor";
 import FindScreen from "../../screens/FindScreen/FindScreen";
 import ChatsNavigation from "../ChatsNavigation/ChatsNavigation";
 import MeNavigation from "../MeNavigation/MeNavigation";
+import DeviceInfo from "react-native-device-info";
 
 export const MainContext = createContext("");
 
@@ -17,6 +19,13 @@ const MainNavigation = ({ identity, setIsSignedIn }) => {
 
   useEffect(async () => {
     OneSignal.setAppId("19d49feb-ac2c-494c-9f7c-d8392c73d838");
+    const deviceState = await OneSignal.getDeviceState();
+    if (deviceState["notificationPermissionStatus"]) {
+      await makeIcychatActor(identity).addPushToken(
+        await DeviceInfo.getUniqueId(),
+        deviceState["userId"]
+      );
+    }
   }, []);
 
   return (

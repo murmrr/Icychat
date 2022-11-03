@@ -54,10 +54,7 @@ const SignUpScreen = ({ setIsSignedIn }) => {
       const profileUpdate = {
         username: username,
       };
-      const response = await makeIcychatActor(identity).register(
-        profileUpdate,
-        publicKey
-      );
+      await makeIcychatActor(identity).register(profileUpdate, publicKey);
       setLoading(false);
       setIsSignedIn(true);
     } else {

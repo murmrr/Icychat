@@ -7,6 +7,8 @@ import Aes from "react-native-aes-crypto";
 import OpenPGP from "react-native-fast-openpgp";
 import { GENERAL_CACHE, getFromCache } from "./caches";
 
+export const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
 export const useInterval = (callback, delay) => {
   const savedCallback = useRef();
 

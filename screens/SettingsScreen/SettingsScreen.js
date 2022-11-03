@@ -1,5 +1,6 @@
-import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
+import React, { useContext, useLayoutEffect, useState } from "react";
 import { StyleSheet, Switch, Text, View } from "react-native";
+import DeviceInfo from "react-native-device-info";
 import { ScrollView } from "react-native-gesture-handler";
 import OneSignal from "react-native-onesignal";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -20,7 +21,10 @@ const SettingsScreen = ({ navigation }) => {
 
   OneSignal.addPermissionObserver(async () => {
     const deviceState = await OneSignal.getDeviceState();
-    await makeIcychatActor(context).setMyPushToken(deviceState["userId"]);
+    await makeIcychatActor(context).addPushToken(
+      await DeviceInfo.getUniqueId(),
+      deviceState["userId"]
+    );
   });
 
   useInterval(async () => {

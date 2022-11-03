@@ -60,6 +60,7 @@
     "react-native": "0.64.3",
     "react-native-aes-crypto": "^2.1.1",
     "react-native-cache": "^2.0.2",
+    "react-native-device-info": "^10.3.0",
     "react-native-elements": "^3.4.2",
     "react-native-fast-openpgp": "^2.4.3",
     "react-native-fetch-api": "2.0.0",
