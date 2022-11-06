@@ -3,10 +3,10 @@ import { StyleSheet, View } from "react-native";
 import ChatBarList from "../../components/ChatBarList/ChatBarList";
 import colors from "../../data/colors";
 
-const ChatsScreen = () => {
+const ChatsScreen = ({ messageBuffer, setMessageBuffer }) => {
   return (
     <View style={styles.container}>
-      <ChatBarList />
+      <ChatBarList messageBuffer={messageBuffer} setMessageBuffer={setMessageBuffer} />
     </View>
   );
 };

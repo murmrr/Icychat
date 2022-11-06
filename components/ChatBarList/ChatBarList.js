@@ -28,7 +28,7 @@ import ChatBar from "../ChatBar/ChatBar";
 import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
 import ItemDivider from "../ItemDivider/ItemDivider";
 
-const ChatBarList = () => {
+const ChatBarList = ({ messageBuffer, setMessageBuffer }) => {
   const [data, setData] = useState(
     isInCache(GENERAL_CACHE, "@myChatHeaders")
       ? parseChatHeaders(getFromCache(GENERAL_CACHE, "@myChatHeaders"))

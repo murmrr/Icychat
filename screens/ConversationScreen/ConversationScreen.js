@@ -31,7 +31,7 @@ import {
   useInterval,
 } from "../../utility/utils";
 
-const ConversationScreen = ({ navigation, route }) => {
+const ConversationScreen = ({ navigation, route, messageBuffer, setMessageBuffer }) => {
   const { id, chatKey } = route.params;
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -47,15 +47,35 @@ const ConversationScreen = ({ navigation, route }) => {
   const insets = useSafeAreaInsets();
   const headerHeight = useHeaderHeight();
 
+  const isMissing = (tempMessage, messages) => {
+    for (var i = 0; i < messages.length; ++i) {
+      if (tempMessage["content"]["message"] == messages[i]["content"]["message"]) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   useInterval(async () => {
     let response = await makeIcychatActor(context).getMyChat(id);
     if (response["ok"]) {
       setPrincipals(response["ok"]["otherUsers"]);
-      setData(response["ok"]);
+
+      const data = response["ok"];
+      const messages = data["messages"]
+      var missingMessages = []
+      for (var i = 0; i < messageBuffer.length; ++i) {
+        if (isMissing(messageBuffer[i], messages)) {
+          missingMessages.push(messageBuffer[i]);
+        }
+      }
+      data["messages"] = messages.concat(missingMessages)
+
+      setData(data);
       addToCache(
         CONVERSATION_CACHE,
         id.toString(),
-        stringifyConversation(response["ok"])
+        stringifyConversation(data)
       );
     }
   }, POLLING_INTERVAL);
@@ -142,7 +162,7 @@ const ConversationScreen = ({ navigation, route }) => {
             keyExtractor={keyExtractor}
             style={styles.messagesContainer}
           />
-          <ChatInput id={id} chatKey={chatKey} />
+          <ChatInput id={id} chatKey={chatKey} setMessageBuffer={setMessageBuffer} />
         </KeyboardAvoidingView>
       </View>
     </>

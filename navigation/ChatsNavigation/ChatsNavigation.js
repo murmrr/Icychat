@@ -8,6 +8,8 @@ import FindScreen from "../../screens/FindScreen/FindScreen";
 const Stack = createStackNavigator();
 
 const ChatsNavigation = ({ navigation }) => {
+  const [messageBuffer, setMessageBuffer] = useState([]);
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerShown: false,
@@ -32,8 +34,12 @@ const ChatsNavigation = ({ navigation }) => {
         headerShadowVisible: false,
       }}
     >
-      <Stack.Screen name="ChatsScreen" component={ChatsScreen} />
-      <Stack.Screen name="ConversationScreen" component={ConversationScreen} />
+      <Stack.Screen name="ChatsScreen">
+        {(props) => <ChatsScreen {...props} messageBuffer={messageBuffer} setMessageBuffer={setMessageBuffer} />}
+      </Stack.Screen>     
+      <Stack.Screen name="ConversationScreen">
+        {(props) => <ConversationScreen {...props} messageBuffer={messageBuffer} setMessageBuffer={setMessageBuffer} />}
+      </Stack.Screen>
       <Stack.Screen name="Add">
         {(props) => <FindScreen forAdd={true} {...props} />}
       </Stack.Screen>

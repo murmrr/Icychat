@@ -8,8 +8,9 @@ import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
 import { scale } from "../../utility/scalingUtils";
 import { encryptSymmetric } from "../../utility/utils";
 import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
+import { Ed25519KeyIdentity } from "@dfinity/identity";
 
-const ChatInput = ({ id, chatKey }) => {
+const ChatInput = ({ id, chatKey, setMessageBuffer }) => {
   const [message, setMessage] = useState("");
   const [sending, setSending] = useState(false);
   const inputRef = useRef();
@@ -26,6 +27,13 @@ const ChatInput = ({ id, chatKey }) => {
         message: encryptedMessage,
       };
       await makeIcychatActor(context).sendMessage(id, messageContent);
+      const tempMessage = {
+        content: messageContent,
+        id: BigInt(Math.floor(Math.random() * 1000000)),
+        sender: Ed25519KeyIdentity.fromJSON(JSON.stringify(context)).getPrincipal(),
+        time: BigInt(Date.now()) * 1000000n
+      }
+      setMessageBuffer(messageBuffer => [...messageBuffer, tempMessage])
 
       inputRef.current.clear();
       setMessage("");
