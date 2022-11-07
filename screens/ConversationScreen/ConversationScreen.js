@@ -1,5 +1,5 @@
 import { useHeaderHeight } from "@react-navigation/elements";
-import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
+import React, { useContext, useLayoutEffect, useState } from "react";
 import {
   FlatList,
   KeyboardAvoidingView,

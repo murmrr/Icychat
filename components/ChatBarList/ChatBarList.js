@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 import {
   Animated,
   FlatList,
@@ -58,7 +58,6 @@ const ChatBarList = ({ messageBuffer, setMessageBuffer }) => {
                 messageBuffer[data[i]["id"]][
                   messageBuffer[data[i]["id"]].length - 1
                 ];
-              console.log("a");
             }
           }
         }
