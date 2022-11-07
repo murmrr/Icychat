@@ -10,7 +10,7 @@ import { encryptSymmetric } from "../../utility/utils";
 import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
 import { Ed25519KeyIdentity } from "@dfinity/identity";
 
-const ChatInput = ({ id, chatKey, setMessageBuffer }) => {
+const ChatInput = ({ id, chatKey, messageBuffer, setMessageBuffer }) => {
   const [message, setMessage] = useState("");
   const [sending, setSending] = useState(false);
   const inputRef = useRef();
@@ -30,10 +30,23 @@ const ChatInput = ({ id, chatKey, setMessageBuffer }) => {
       const tempMessage = {
         content: messageContent,
         id: BigInt(Math.floor(Math.random() * 1000000)),
-        sender: Ed25519KeyIdentity.fromJSON(JSON.stringify(context)).getPrincipal(),
-        time: BigInt(Date.now()) * 1000000n
+        sender: Ed25519KeyIdentity.fromJSON(
+          JSON.stringify(context)
+        ).getPrincipal(),
+        time: BigInt(Date.now()) * 1000000n,
+      };
+      const oldMessageBuffer = messageBuffer[id];
+      if (oldMessageBuffer) {
+        setMessageBuffer((prevState) => ({
+          ...prevState,
+          [id]: oldMessageBuffer.concat([tempMessage]),
+        }));
+      } else {
+        setMessageBuffer((prevState) => ({
+          ...prevState,
+          [id]: [tempMessage],
+        }));
       }
-      setMessageBuffer(messageBuffer => [...messageBuffer, tempMessage])
 
       inputRef.current.clear();
       setMessage("");

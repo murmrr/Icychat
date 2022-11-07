@@ -31,7 +31,12 @@ import {
   useInterval,
 } from "../../utility/utils";
 
-const ConversationScreen = ({ navigation, route, messageBuffer, setMessageBuffer }) => {
+const ConversationScreen = ({
+  navigation,
+  route,
+  messageBuffer,
+  setMessageBuffer,
+}) => {
   const { id, chatKey } = route.params;
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -49,12 +54,14 @@ const ConversationScreen = ({ navigation, route, messageBuffer, setMessageBuffer
 
   const isMissing = (tempMessage, messages) => {
     for (var i = 0; i < messages.length; ++i) {
-      if (tempMessage["content"]["message"] == messages[i]["content"]["message"]) {
+      if (
+        tempMessage["content"]["message"] == messages[i]["content"]["message"]
+      ) {
         return false;
       }
     }
     return true;
-  }
+  };
 
   useInterval(async () => {
     let response = await makeIcychatActor(context).getMyChat(id);
@@ -62,14 +69,17 @@ const ConversationScreen = ({ navigation, route, messageBuffer, setMessageBuffer
       setPrincipals(response["ok"]["otherUsers"]);
 
       const data = response["ok"];
-      const messages = data["messages"]
-      var missingMessages = []
-      for (var i = 0; i < messageBuffer.length; ++i) {
-        if (isMissing(messageBuffer[i], messages)) {
-          missingMessages.push(messageBuffer[i]);
+      const messages = data["messages"];
+      const myMessageBuffer = messageBuffer[id];
+      var missingMessages = [];
+      if (myMessageBuffer) {
+        for (var i = 0; i < myMessageBuffer.length; ++i) {
+          if (isMissing(myMessageBuffer[i], messages)) {
+            missingMessages.push(myMessageBuffer[i]);
+          }
         }
       }
-      data["messages"] = messages.concat(missingMessages)
+      data["messages"] = messages.concat(missingMessages);
 
       setData(data);
       addToCache(
@@ -162,7 +172,12 @@ const ConversationScreen = ({ navigation, route, messageBuffer, setMessageBuffer
             keyExtractor={keyExtractor}
             style={styles.messagesContainer}
           />
-          <ChatInput id={id} chatKey={chatKey} setMessageBuffer={setMessageBuffer} />
+          <ChatInput
+            id={id}
+            chatKey={chatKey}
+            messageBuffer={messageBuffer}
+            setMessageBuffer={setMessageBuffer}
+          />
         </KeyboardAvoidingView>
       </View>
     </>

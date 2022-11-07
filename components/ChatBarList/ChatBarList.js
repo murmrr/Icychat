@@ -44,12 +44,27 @@ const ChatBarList = ({ messageBuffer, setMessageBuffer }) => {
   useInterval(async () => {
     const response = await makeIcychatActor(context).getMyChatHeaders();
     if (response["ok"]) {
-      setData(response["ok"]);
-      addToCache(
-        GENERAL_CACHE,
-        "@myChatHeaders",
-        stringifyChatHeaders(response["ok"])
-      );
+      var data = response["ok"];
+      for (var i = 0; i < data.length; ++i) {
+        if (messageBuffer[data[i]["id"]]) {
+          if (data[i]["lastMessage"].length > 0) {
+            if (
+              data[i]["lastMessage"][0]["time"] <
+              messageBuffer[data[i]["id"]][
+                messageBuffer[data[i]["id"]].length - 1
+              ]["time"]
+            ) {
+              data[i]["lastMessage"][0] =
+                messageBuffer[data[i]["id"]][
+                  messageBuffer[data[i]["id"]].length - 1
+                ];
+              console.log("a");
+            }
+          }
+        }
+      }
+      setData(data);
+      addToCache(GENERAL_CACHE, "@myChatHeaders", stringifyChatHeaders(data));
     }
   }, POLLING_INTERVAL);
 

@@ -35,10 +35,22 @@ const ChatsNavigation = ({ navigation }) => {
       }}
     >
       <Stack.Screen name="ChatsScreen">
-        {(props) => <ChatsScreen {...props} messageBuffer={messageBuffer} setMessageBuffer={setMessageBuffer} />}
-      </Stack.Screen>     
+        {(props) => (
+          <ChatsScreen
+            {...props}
+            messageBuffer={messageBuffer}
+            setMessageBuffer={setMessageBuffer}
+          />
+        )}
+      </Stack.Screen>
       <Stack.Screen name="ConversationScreen">
-        {(props) => <ConversationScreen {...props} messageBuffer={messageBuffer} setMessageBuffer={setMessageBuffer} />}
+        {(props) => (
+          <ConversationScreen
+            {...props}
+            messageBuffer={messageBuffer}
+            setMessageBuffer={setMessageBuffer}
+          />
+        )}
       </Stack.Screen>
       <Stack.Screen name="Add">
         {(props) => <FindScreen forAdd={true} {...props} />}

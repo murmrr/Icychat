@@ -6,7 +6,10 @@ import colors from "../../data/colors";
 const ChatsScreen = ({ messageBuffer, setMessageBuffer }) => {
   return (
     <View style={styles.container}>
-      <ChatBarList messageBuffer={messageBuffer} setMessageBuffer={setMessageBuffer} />
+      <ChatBarList
+        messageBuffer={messageBuffer}
+        setMessageBuffer={setMessageBuffer}
+      />
     </View>
   );
 };
