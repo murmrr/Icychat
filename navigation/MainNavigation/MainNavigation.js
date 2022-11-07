@@ -32,6 +32,7 @@ const MainNavigation = ({ identity, setIsSignedIn }) => {
     <MainContext.Provider value={identity}>
       <Tab.Navigator
         screenOptions={{
+          lazy: false,
           tabBarShowLabel: false,
           headerStyle: {
             backgroundColor: colors.BLUE,
