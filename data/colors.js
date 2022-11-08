@@ -11,4 +11,6 @@ export default {
   YELLOW: "#FDB32a",
   DARK_PURPLE: "#242042",
   RED: "#rgb(238, 50, 50)",
+  CHAT_BLUE: "rgb(46, 92, 230)",
+  CHAT_GRAY: "rgb(72, 72, 74)",
 };

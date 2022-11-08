@@ -94,7 +94,10 @@ const Message = ({ message, chatKey }) => {
       </View>
       <View style={styles.messageContainer(isMe)}>
         {decryptedMessage ? (
-          <Text style={styles.message(isMe)}>{decryptedMessage}</Text>
+          <View style={styles.messageBackground(isMe)}>
+            <View style={styles.messageBackgroundArrow(isMe)} />
+            <Text style={styles.message(isMe)}>{decryptedMessage}</Text>
+          </View>
         ) : (
           <View style={styles.messageLoadingContainer}>
             <CustomActivityIndicator />
@@ -154,10 +157,34 @@ const styles = StyleSheet.create({
     paddingRight: isMe ? 8 : 0,
   }),
   messageLoadingContainer: { justifyContent: "flex-end", flexDirection: "row" },
+  messageBackground: (isMe) => ({
+    alignSelf: isMe ? "flex-end" : "flex-start",
+    backgroundColor: isMe ? colors.CHAT_BLUE : colors.CHAT_GRAY,
+    borderRadius: 20,
+    borderTopStartRadius: isMe ? 20 : 0,
+    borderTopEndRadius: isMe ? 0 : 20,
+    paddingVertical: "2.5%",
+    paddingHorizontal: "3%",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+  }),
+  messageBackgroundArrow: (isMe) => ({
+    position: "absolute",
+    width: 5,
+    height: 5,
+    top: 0,
+    borderBottomRightRadius: isMe ? 10 : 0,
+    borderBottomLeftRadius: isMe ? 0 : 10,
+    right: isMe ? 0 : undefined,
+    left: isMe ? undefined : 0,
+    backgroundColor: isMe ? colors.CHAT_BLUE : colors.CHAT_GRAY,
+    zIndex: -10,
+  }),
   message: (isMe) => ({
     color: colors.WHITE,
     fontSize: 15,
-    marginBottom: 10,
     textAlign: isMe ? "right" : "left",
   }),
 });

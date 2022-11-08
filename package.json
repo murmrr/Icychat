@@ -25,6 +25,7 @@
     "@react-navigation/native": "^6.0.8",
     "@react-navigation/native-stack": "^6.5.0",
     "@react-navigation/stack": "^6.3.1",
+    "@shopify/flash-list": "^1.4.0",
     "big-integer": "^1.6.51",
     "bls-patch": "./bls-patch",
     "buffer": "^6.0.3",
