@@ -184,6 +184,7 @@ const styles = StyleSheet.create({
   }),
   message: (isMe) => ({
     color: colors.WHITE,
+    fontFamily: "Poppins-Regular",
     fontSize: 15,
     textAlign: isMe ? "right" : "left",
   }),

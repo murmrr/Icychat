@@ -1,5 +1,6 @@
+import { FlashList } from "@shopify/flash-list";
 import React, { useContext, useLayoutEffect, useState } from "react";
-import { FlatList, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/FontAwesome";
 import CustomActivityIndicator from "../../components/CustomActivityIndicator/CustomActivityIndicator";
@@ -13,6 +14,7 @@ import colors from "../../data/colors";
 import { POLLING_INTERVAL } from "../../data/constants";
 import { makeIcychatActor } from "../../lib/actor";
 import { MainContext } from "../../navigation/MainNavigation/MainNavigation";
+import { moderateScale } from "../../utility/scalingUtils";
 import { useInterval } from "../../utility/utils";
 
 const FindScreen = ({ forAdd, navigation, route }) => {
@@ -117,7 +119,8 @@ const FindScreen = ({ forAdd, navigation, route }) => {
       />
       <View style={styles.container(query == "")}>
         {allUsers ? (
-          <FlatList
+          <FlashList
+            estimatedItemSize={moderateScale(64.53)}
             ListHeaderComponent={
               <FindSearchBar
                 query={query}

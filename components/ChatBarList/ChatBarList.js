@@ -1,11 +1,6 @@
+import { FlashList } from "@shopify/flash-list";
 import React, { useContext, useState } from "react";
-import {
-  Animated,
-  FlatList,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Animated, StyleSheet, TouchableOpacity, View } from "react-native";
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import colors from "../../data/colors";
@@ -18,7 +13,7 @@ import {
   getFromCache,
   isInCache,
 } from "../../utility/caches";
-import { scale } from "../../utility/scalingUtils";
+import { moderateScale, scale } from "../../utility/scalingUtils";
 import {
   parseChatHeaders,
   stringifyChatHeaders,
@@ -122,7 +117,8 @@ const ChatBarList = ({ messageBuffer, setMessageBuffer }) => {
   return (
     <View style={styles.container}>
       {data ? (
-        <FlatList
+        <FlashList
+          estimatedItemSize={moderateScale(64.53)}
           data={data
             .filter((chat) => !deletedIds.includes(chat.id))
             .sort((a, b) => {

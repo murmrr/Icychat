@@ -31,7 +31,11 @@ export const useInterval = (callback, delay) => {
 export const convertTime = (bigTime) => {
   const utc = Number(bigTime) / 1000000;
   if (utc) {
-    return moment(utc).format("h:mm a");
+    if (utc < new Date(Date.now() - 86400000)) {
+      return moment(utc).format("MM/DD");
+    } else {
+      return moment(utc).format("h:mm a");
+    }
   }
   return utc;
 };
