@@ -59,7 +59,7 @@ const styles = StyleSheet.create({
   nestedContainer: (numPrincipals) => ({
     backgroundColor: colors.MIDNIGHT_BLUE,
     borderRadius: 10,
-    width: scale(330),
+    width: scale(329),
     height: moderateScale(
       numPrincipals < 5
         ? numPrincipals * 64.53 + 2 * numPrincipals * 17.5

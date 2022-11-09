@@ -10,7 +10,7 @@ import {
   isInCache,
   MESSAGE_CACHE,
 } from "../../utility/caches";
-import { moderateScale } from "../../utility/scalingUtils";
+import { moderateScale, scale } from "../../utility/scalingUtils";
 import {
   convertTime,
   decryptAsymmetric,
@@ -119,7 +119,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     height: moderateScale(64.53),
-    marginHorizontal: moderateScale(26),
+    marginHorizontal: scale(20),
     marginVertical: moderateScale(17.5),
   },
   avatarContainer: {
@@ -130,7 +130,8 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   avatar: {
-    width: "100%",
+    width: scale(62),
+    height: scale(62),
     aspectRatio: 1,
     borderRadius: 100,
   },

@@ -2296,11 +2296,6 @@
   dependencies:
     eslint-visitor-keys "^1.1.0"
 
-"@vahesaroyan/react-native-bubble-select@^0.1.8":
-  version "0.1.8"
-  resolved "https://registry.yarnpkg.com/@vahesaroyan/react-native-bubble-select/-/react-native-bubble-select-0.1.8.tgz#613c5a4f9e35da5f18967581a2879791fc9434b9"
-  integrity sha512-mipf9eWwkcduyRvpbjCd1KewpDcP+b9bXhwnWPCK2UuRNCo+UZCREbc0ePIWp6Tm413mbVxlArIxMC7KcVag9w==
-
 "@xmldom/xmldom@~0.7.0":
   version "0.7.5"
   resolved "https://registry.yarnpkg.com/@xmldom/xmldom/-/xmldom-0.7.5.tgz#09fa51e356d07d0be200642b0e4f91d8e6dd408d"
@@ -7596,6 +7591,11 @@ react-native-elements@^3.4.2:
     opencollective-postinstall "^2.0.3"
     react-native-ratings "8.0.4"
     react-native-size-matters "^0.3.1"
+
+react-native-face-pile@^1.9.0:
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/react-native-face-pile/-/react-native-face-pile-1.9.0.tgz#2c58254273932ee61138c45d79a2a0ac9644b2de"
+  integrity sha512-q9nzn0Eh14gGAmLKUc4PC40MV3u9hA1BcVlF8LbGZ8ybVDxaaWdjRPAdGEqPiS6FS+0s82D/aqD/EzyZVat9ug==
 
 react-native-fast-openpgp@^2.4.3:
   version "2.4.3"

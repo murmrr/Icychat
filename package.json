@@ -64,6 +64,7 @@
     "react-native-cache": "^2.0.2",
     "react-native-device-info": "^10.3.0",
     "react-native-elements": "^3.4.2",
+    "react-native-face-pile": "^1.9.0",
     "react-native-fast-openpgp": "^2.4.3",
     "react-native-fetch-api": "2.0.0",
     "react-native-gesture-handler": "~2.1.0",

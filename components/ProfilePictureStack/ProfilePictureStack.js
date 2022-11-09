@@ -10,7 +10,7 @@ const ProfilePictureStackMultiple = ({ principals, style }) => {
   const [uri, setUri] = useState(null);
 
   useEffect(async () => {
-    const _text = principals.length < 10 ? String(principals.length) : "+";
+    const _text = principals.length - 2 < 10 ? "+" + String(principals.length - 2) : "+..."
     const _textSize = scale(300);
 
     const fontSpecs = {
@@ -38,6 +38,23 @@ const ProfilePictureStackMultiple = ({ principals, style }) => {
     const uri = await RNPhotoManipulator.printText(image, texts);
     setUri(uri);
   }, [principals]);
+
+  if (principals.length == 2) {
+    return (
+      <View style={[style, {flexDirection:"row"}]}>
+        <CustomProfilePicture principal={principals[0]} style={[style, {width: "75%", marginTop: "7%", marginLeft: "0%"}]} />
+        <CustomProfilePicture principal={principals[1]} style={[style, {width: "75%", marginTop: "7%", marginLeft: "-28.5%"}]} />
+      </View>
+    );
+  } else if (principals.length > 2) {
+    return (
+      <View style={[style, {flexDirection:"row"}]}>
+        <CustomProfilePicture principal={principals[0]} style={[style, {width: "75%", marginTop: "7%", marginLeft: "0%"}]} />
+        <CustomProfilePicture principal={principals[1]} style={[style, {width: "75%", marginTop: "7%", marginLeft: "-36%"}]} />
+        <Image principal={principals[2]} source={{ uri: uri }} style={[style, {width: "76%", borderWidth: 1, borderColor: "white", aspectRatio: 1, marginLeft: "-89%", marginTop: "12%"}]} />
+      </View>
+    );
+  }
 
   return (
     <View style={style}>
