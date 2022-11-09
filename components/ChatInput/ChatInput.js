@@ -105,7 +105,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: "Poppins-Regular",
     width: "100%",
-    paddingLeft: 10,
+    paddingHorizontal: 10,
     height: 52,
     borderRadius: 15,
   },
