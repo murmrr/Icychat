@@ -3,11 +3,16 @@ import {
   Modal,
   ScrollView,
   StyleSheet,
+  Text,
   TouchableOpacity,
   View,
 } from "react-native";
 import colors from "../../data/colors";
-import { moderateScale, scale } from "../../utility/scalingUtils";
+import {
+  moderateScale,
+  scale,
+  verticalScale,
+} from "../../utility/scalingUtils";
 import FindBar from "../FindBar/FindBar";
 import ItemDivider from "../ItemDivider/ItemDivider";
 
@@ -26,6 +31,12 @@ const ViewParticipantsModal = ({
           style={styles.touchableView}
         />
         <View style={styles.nestedContainer(principals.length)}>
+          <View style={styles.numContainer}>
+            <Text style={styles.numText}>
+              {principals.length}{" "}
+              {principals.length == 1 ? "Participant" : "Participants"}
+            </Text>
+          </View>
           <ScrollView>
             {[...principals.values()].map((principal, index) => {
               return (
@@ -60,12 +71,27 @@ const styles = StyleSheet.create({
     backgroundColor: colors.MIDNIGHT_BLUE,
     borderRadius: 10,
     width: scale(329),
-    height: moderateScale(
-      numPrincipals < 5
-        ? numPrincipals * 64.53 + 2 * numPrincipals * 17.5
-        : 410.15
-    ),
+    height:
+      verticalScale(20) +
+      scale(30) +
+      moderateScale(
+        numPrincipals < 5
+          ? numPrincipals * 64.53 + 2 * numPrincipals * 17.5
+          : 390.15
+      ),
   }),
+  numContainer: {
+    backgroundColor: colors.CHAT_BLUE,
+    borderTopStartRadius: 10,
+    borderTopEndRadius: 10,
+  },
+  numText: {
+    fontFamily: "Poppins-Medium",
+    color: colors.WHITE,
+    fontSize: scale(18),
+    textAlign: "center",
+    marginVertical: verticalScale(10),
+  },
 });
 
 export default ViewParticipantsModal;

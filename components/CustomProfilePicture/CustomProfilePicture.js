@@ -58,6 +58,7 @@ import {
   PROFILE_PICTURE_CACHE,
 } from "../../utility/caches";
 import { randomFromPrincipal } from "../../utility/utils";
+import colors from "../../data/colors";
 
 const CustomProfilePicture = ({ principal, style }) => {
   const [uri, setUri] = useState(null);
@@ -165,6 +166,8 @@ const styles = StyleSheet.create({
     width: "100%",
     height: undefined,
     aspectRatio: 1,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: colors.WHITE,
   },
 });
 

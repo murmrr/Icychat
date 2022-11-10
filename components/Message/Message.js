@@ -80,12 +80,19 @@ const Message = ({ message, chatKey }) => {
           />
         </View>
         <View style={styles.textsContainer(isMe)}>
-          {profile ? (
-            <Text style={styles.avatarTitle(isMe)}>
-              {isMe ? "Me" : profile["username"]}
-            </Text>
+          {isMe ? (
+            <Text style={styles.avatarTitle(isMe)}>Me</Text>
           ) : (
-            <CustomActivityIndicator />
+            <>
+              {" "}
+              {profile ? (
+                <Text style={styles.avatarTitle(isMe)}>
+                  {profile["username"]}
+                </Text>
+              ) : (
+                <CustomActivityIndicator />
+              )}
+            </>
           )}
           <Text style={styles.messageTime(isMe)}>
             {convertTime(message["time"])}

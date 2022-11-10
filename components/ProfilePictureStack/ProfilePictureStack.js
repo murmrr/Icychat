@@ -3,6 +3,7 @@ import { Image, StyleSheet, View } from "react-native";
 import RNPhotoManipulator from "react-native-photo-manipulator";
 import rnTextSize from "react-native-text-size";
 import MultipleProfilePictureBackground from "../../assets/multiple-profile-picture-background.png";
+import colors from "../../data/colors";
 import { scale } from "../../utility/scalingUtils";
 import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
 
@@ -117,6 +118,8 @@ const ProfilePictureStackMultiple = ({ principals, width, height, style }) => {
         <Image
           source={{ uri: uri }}
           style={{
+            borderWidth: StyleSheet.hairlineWidth,
+            borderColor: colors.WHITE,
             aspectRatio: 1,
             height: height * 0.46333333333,
             borderRadius: height,
