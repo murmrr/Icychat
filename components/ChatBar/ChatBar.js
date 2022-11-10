@@ -83,6 +83,8 @@ const ChatBar = ({ chatHeader }) => {
         <View style={styles.avatarContainer}>
           <ProfilePictureStack
             principals={chatHeader["otherUsers"]}
+            width={styles.avatar.width}
+            height={styles.avatar.height}
             style={styles.avatar}
           />
         </View>

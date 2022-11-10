@@ -9,7 +9,12 @@ const CustomHeader = ({ principals, setModalVisible }) => {
     <View style={styles.container}>
       <Icon name="lock" size={25} color={colors.WHITE} style={styles.icon} />
       <TouchableOpacity onPress={() => setModalVisible(true)}>
-        <ProfilePictureStack principals={principals} style={styles.avatar} />
+        <ProfilePictureStack
+          principals={principals}
+          width={styles.avatar.width}
+          height={styles.avatar.height}
+          style={styles.avatar}
+        />
       </TouchableOpacity>
     </View>
   );
