@@ -23,13 +23,17 @@ import ChatBar from "../ChatBar/ChatBar";
 import CustomActivityIndicator from "../CustomActivityIndicator/CustomActivityIndicator";
 import ItemDivider from "../ItemDivider/ItemDivider";
 
-const ChatBarList = ({ messageBuffer, setMessageBuffer }) => {
+const ChatBarList = ({
+  messageBuffer,
+  setMessageBuffer,
+  deletedIds,
+  setDeletedIds,
+}) => {
   const [data, setData] = useState(
     isInCache(GENERAL_CACHE, "@myChatHeaders")
       ? parseChatHeaders(getFromCache(GENERAL_CACHE, "@myChatHeaders"))
       : null
   );
-  const [deletedIds, setDeletedIds] = useState([]);
 
   let row = [];
   let prevOpenedRow;
