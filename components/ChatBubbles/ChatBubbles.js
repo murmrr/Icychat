@@ -86,7 +86,7 @@ const ChatBubbles = ({
             })
             .values(),
         ].map((chatHeader, index) => {
-          const angle = (index * 2 * Math.PI) / data.length;
+          const angle = (index * 2 * Math.PI) / data.length - Math.PI / 2;
           return (
             <TouchableOpacity
               onPress={async () => {
@@ -106,6 +106,10 @@ const ChatBubbles = ({
                 height: frontR * 2,
                 borderRadius: frontR,
                 position: "absolute",
+                shadowColor: "#000",
+                shadowOffset: { width: 0, height: 6 },
+                shadowOpacity: 0.25,
+                shadowRadius: 6,
               }}
             >
               <ProfilePictureStack

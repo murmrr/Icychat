@@ -118,7 +118,7 @@ const ProfilePictureStackMultiple = ({ principals, width, height, style }) => {
         <Image
           source={{ uri: uri }}
           style={{
-            borderWidth: StyleSheet.hairlineWidth,
+            borderWidth: 1.5,
             borderColor: colors.WHITE,
             aspectRatio: 1,
             height: height * 0.46333333333,
