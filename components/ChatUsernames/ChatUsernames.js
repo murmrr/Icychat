@@ -16,15 +16,17 @@ const ChatUsernamesSingle = ({ principal, style }) => {
 
   const context = useContext(MainContext);
 
-  useEffect(async () => {
-    let temp = getFromCache(PROFILE_CACHE, principal);
-    if (temp) {
-      setOtherUserProfile(parseProfile(temp));
-    } else {
-      const response = await makeIcychatActor(context).getProfile(principal);
-      setOtherUserProfile(response["ok"]);
-      addToCache(PROFILE_CACHE, principal, stringifyProfile(response["ok"]));
-    }
+  useEffect(() => {
+    (async () => {
+      let temp = getFromCache(PROFILE_CACHE, principal);
+      if (temp) {
+        setOtherUserProfile(parseProfile(temp));
+      } else {
+        const response = await makeIcychatActor(context).getProfile(principal);
+        setOtherUserProfile(response["ok"]);
+        addToCache(PROFILE_CACHE, principal, stringifyProfile(response["ok"]));
+      }
+    })();
   }, []);
 
   return otherUserProfile ? (

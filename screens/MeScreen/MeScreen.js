@@ -49,12 +49,14 @@ const MeScreen = ({ navigation, setIsSignedIn }) => {
       : -1n
   );
 
-  useEffect(async () => {
-    if (profile == null) {
-      const response = await makeIcychatActor(context).getMyProfile();
-      setProfile(response["ok"]);
-      addToCache(PROFILE_CACHE, context, stringifyProfile(response["ok"]));
-    }
+  useEffect(() => {
+    (async () => {
+      if (profile == null) {
+        const response = await makeIcychatActor(context).getMyProfile();
+        setProfile(response["ok"]);
+        addToCache(PROFILE_CACHE, context, stringifyProfile(response["ok"]));
+      }
+    })();
   }, []);
 
   useLayoutEffect(() => {

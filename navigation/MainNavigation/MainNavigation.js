@@ -17,15 +17,17 @@ const Tab = createBottomTabNavigator();
 const MainNavigation = ({ identity, setIsSignedIn }) => {
   const insets = useSafeAreaInsets();
 
-  useEffect(async () => {
-    OneSignal.setAppId("19d49feb-ac2c-494c-9f7c-d8392c73d838");
-    const deviceState = await OneSignal.getDeviceState();
-    if (deviceState["notificationPermissionStatus"]) {
-      await makeIcychatActor(identity).addPushToken(
-        await DeviceInfo.getUniqueId(),
-        deviceState["userId"]
-      );
-    }
+  useEffect(() => {
+    (async () => {
+      OneSignal.setAppId("19d49feb-ac2c-494c-9f7c-d8392c73d838");
+      const deviceState = await OneSignal.getDeviceState();
+      if (deviceState["notificationPermissionStatus"]) {
+        await makeIcychatActor(identity).addPushToken(
+          await DeviceInfo.getUniqueId(),
+          deviceState["userId"]
+        );
+      }
+    })();
   }, []);
 
   return (

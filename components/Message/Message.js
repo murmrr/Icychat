@@ -41,33 +41,37 @@ const Message = ({ message, chatKey }) => {
       : ""
   );
 
-  useEffect(async () => {
-    if (profile == null) {
-      const response = await makeIcychatActor(context).getProfile(
-        message["sender"]
-      );
-      setProfile(response["ok"]);
-      addToCache(
-        PROFILE_CACHE,
-        message["sender"],
-        stringifyProfile(response["ok"])
-      );
-    }
+  useEffect(() => {
+    (async () => {
+      if (profile == null) {
+        const response = await makeIcychatActor(context).getProfile(
+          message["sender"]
+        );
+        setProfile(response["ok"]);
+        addToCache(
+          PROFILE_CACHE,
+          message["sender"],
+          stringifyProfile(response["ok"])
+        );
+      }
+    })();
   }, []);
 
-  useEffect(async () => {
-    if (decryptedMessage == "") {
-      const decryptedMessage = await decryptSymmetric(
-        message["content"]["message"],
-        chatKey
-      );
-      setDecryptedMessage(decryptedMessage);
-      addToCache(
-        MESSAGE_CACHE,
-        message["content"]["message"],
-        decryptedMessage
-      );
-    }
+  useEffect(() => {
+    (async () => {
+      if (decryptedMessage == "") {
+        const decryptedMessage = await decryptSymmetric(
+          message["content"]["message"],
+          chatKey
+        );
+        setDecryptedMessage(decryptedMessage);
+        addToCache(
+          MESSAGE_CACHE,
+          message["content"]["message"],
+          decryptedMessage
+        );
+      }
+    })();
   }, []);
 
   return (

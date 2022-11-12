@@ -19,8 +19,10 @@ export default function App() {
     "Poppins-SemiBold": require("./assets/fonts/Poppins-SemiBold.ttf"),
   });
 
-  useEffect(async () => {
-    await SystemUI.setBackgroundColorAsync("#181A20");
+  useEffect(() => {
+    (async () => {
+      await SystemUI.setBackgroundColorAsync("#181A20");
+    })();
   }, []);
 
   const onLayoutRootView = useCallback(async () => {

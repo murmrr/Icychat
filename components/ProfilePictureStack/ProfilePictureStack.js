@@ -10,35 +10,39 @@ import CustomProfilePicture from "../CustomProfilePicture/CustomProfilePicture";
 const ProfilePictureStackMultiple = ({ principals, width, height, style }) => {
   const [uri, setUri] = useState(null);
 
-  useEffect(async () => {
-    const _text =
-      principals.length - 3 < 10 ? "+" + String(principals.length - 3) : "+...";
-    const _textSize = scale(300);
+  useEffect(() => {
+    (async () => {
+      const _text =
+        principals.length - 3 < 10
+          ? "+" + String(principals.length - 3)
+          : "+...";
+      const _textSize = scale(300);
 
-    const fontSpecs = {
-      fontFamily: "Arial",
-      fontSize: _textSize,
-    };
+      const fontSpecs = {
+        fontFamily: "Arial",
+        fontSize: _textSize,
+      };
 
-    const size = await rnTextSize.measure({
-      text: _text,
-      width: 1024,
-      ...fontSpecs,
-    });
-
-    const image = MultipleProfilePictureBackground;
-    const texts = [
-      {
-        position: { x: 512 - size["width"] / 2, y: 512 - size["height"] / 2 },
+      const size = await rnTextSize.measure({
         text: _text,
-        textSize: _textSize,
-        color: "#FFFFFF",
-        fontName: "Arial",
-      },
-    ];
+        width: 1024,
+        ...fontSpecs,
+      });
 
-    const uri = await RNPhotoManipulator.printText(image, texts);
-    setUri(uri);
+      const image = MultipleProfilePictureBackground;
+      const texts = [
+        {
+          position: { x: 512 - size["width"] / 2, y: 512 - size["height"] / 2 },
+          text: _text,
+          textSize: _textSize,
+          color: "#FFFFFF",
+          fontName: "Arial",
+        },
+      ];
+
+      const uri = await RNPhotoManipulator.printText(image, texts);
+      setUri(uri);
+    })();
   }, [principals]);
 
   if (principals.length == 2) {

@@ -25,15 +25,17 @@ const AddToChatModal = ({
 
   const context = useContext(MainContext);
 
-  useEffect(async () => {
-    let temp = getFromCache(PROFILE_CACHE, principal);
-    if (temp) {
-      setProfile(parseProfile(temp));
-    } else {
-      const response = await makeIcychatActor(context).getProfile(principal);
-      setProfile(response["ok"]);
-      addToCache(PROFILE_CACHE, principal, stringifyProfile(response["ok"]));
-    }
+  useEffect(() => {
+    (async () => {
+      let temp = getFromCache(PROFILE_CACHE, principal);
+      if (temp) {
+        setProfile(parseProfile(temp));
+      } else {
+        const response = await makeIcychatActor(context).getProfile(principal);
+        setProfile(response["ok"]);
+        addToCache(PROFILE_CACHE, principal, stringifyProfile(response["ok"]));
+      }
+    })();
   }, []);
 
   const createChat = async () => {

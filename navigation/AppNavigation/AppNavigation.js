@@ -23,22 +23,26 @@ const AppNavigation = () => {
     }
   }, 500);
 
-  useEffect(async () => {
-    try {
-      let value = getFromCache(GENERAL_CACHE, "@identity");
-      if (value != null) {
-        setIsSignedIn(true);
-      }
-    } catch (error) {}
+  useEffect(() => {
+    (async () => {
+      try {
+        let value = getFromCache(GENERAL_CACHE, "@identity");
+        if (value != null) {
+          setIsSignedIn(true);
+        }
+      } catch (error) {}
+    })();
   }, []);
 
-  useEffect(async () => {
-    if (isSignedIn) {
-      let value = getFromCache(GENERAL_CACHE, "@identity");
-      setIdentity(Ed25519KeyIdentity.fromParsedJson(JSON.parse(value)));
-    } else {
-      setIdentity(null);
-    }
+  useEffect(() => {
+    (async () => {
+      if (isSignedIn) {
+        let value = getFromCache(GENERAL_CACHE, "@identity");
+        setIdentity(Ed25519KeyIdentity.fromParsedJson(JSON.parse(value)));
+      } else {
+        setIdentity(null);
+      }
+    })();
   }, [isSignedIn]);
 
   return (

@@ -114,44 +114,46 @@ const CustomProfilePicture = ({ principal, style }) => {
     SnakeOnShoulder,
   ];
 
-  useEffect(async () => {
-    const rand = randomFromPrincipal(principal);
-    let temp = getFromCache(PROFILE_PICTURE_CACHE, rand);
-    if (temp) {
-      setUri(temp);
-    } else {
-      const operations = [
-        {
-          operation: "overlay",
-          overlay: species[rand % species.length],
-          position: { x: 0, y: 0 },
-        },
-        {
-          operation: "overlay",
-          overlay: outfits[rand % outfits.length],
-          position: { x: 0, y: 0 },
-        },
-        {
-          operation: "overlay",
-          overlay: eyes[rand % eyes.length],
-          position: { x: 0, y: 0 },
-        },
-        {
-          operation: "overlay",
-          overlay: miscellaneous[rand % miscellaneous.length],
-          position: { x: 0, y: 0 },
-        },
-      ];
-      const uri = await RNPhotoManipulator.batch(
-        backgrounds[rand % backgrounds.length],
-        operations,
-        { x: 0, y: 0, height: 2500, width: 2000 },
-        null,
-        1
-      );
-      setUri(uri);
-      addToCache(PROFILE_PICTURE_CACHE, rand, uri);
-    }
+  useEffect(() => {
+    (async () => {
+      const rand = randomFromPrincipal(principal);
+      let temp = getFromCache(PROFILE_PICTURE_CACHE, rand);
+      if (temp) {
+        setUri(temp);
+      } else {
+        const operations = [
+          {
+            operation: "overlay",
+            overlay: species[rand % species.length],
+            position: { x: 0, y: 0 },
+          },
+          {
+            operation: "overlay",
+            overlay: outfits[rand % outfits.length],
+            position: { x: 0, y: 0 },
+          },
+          {
+            operation: "overlay",
+            overlay: eyes[rand % eyes.length],
+            position: { x: 0, y: 0 },
+          },
+          {
+            operation: "overlay",
+            overlay: miscellaneous[rand % miscellaneous.length],
+            position: { x: 0, y: 0 },
+          },
+        ];
+        const uri = await RNPhotoManipulator.batch(
+          backgrounds[rand % backgrounds.length],
+          operations,
+          { x: 0, y: 0, height: 2500, width: 2000 },
+          null,
+          1
+        );
+        setUri(uri);
+        addToCache(PROFILE_PICTURE_CACHE, rand, uri);
+      }
+    })();
   }, []);
 
   return (

@@ -33,12 +33,14 @@ const FindBarModal = ({ principal, modalVisible, setModalVisible }) => {
 
   const context = useContext(MainContext);
 
-  useEffect(async () => {
-    if (profile == null) {
-      const response = await makeIcychatActor(context).getProfile(principal);
-      setProfile(response["ok"]);
-      addToCache(PROFILE_CACHE, principal, stringifyProfile(response["ok"]));
-    }
+  useEffect(() => {
+    (async () => {
+      if (profile == null) {
+        const response = await makeIcychatActor(context).getProfile(principal);
+        setProfile(response["ok"]);
+        addToCache(PROFILE_CACHE, principal, stringifyProfile(response["ok"]));
+      }
+    })();
   }, []);
 
   const createChat = async () => {

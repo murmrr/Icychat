@@ -38,34 +38,36 @@ const ChatBar = ({ chatHeader }) => {
 
   const navigation = useNavigation();
 
-  useEffect(async () => {
-    const myChatKey = chatHeader["key"];
-    const privateKey = getFromCache(GENERAL_CACHE, "@privateKey");
-    const chatKey = await decryptAsymmetric(myChatKey, privateKey);
-    setChatKey(chatKey);
+  useEffect(() => {
+    (async () => {
+      const myChatKey = chatHeader["key"];
+      const privateKey = getFromCache(GENERAL_CACHE, "@privateKey");
+      const chatKey = await decryptAsymmetric(myChatKey, privateKey);
+      setChatKey(chatKey);
 
-    if (chatHeader["lastMessage"].length > 0) {
-      let temp = getFromCache(
-        MESSAGE_CACHE,
-        chatHeader["lastMessage"][0]["content"]["message"]
-      );
-      if (temp) {
-        setDecryptedMessage(temp);
-      } else {
-        const decryptedMessage = await decryptSymmetric(
-          chatHeader["lastMessage"][0]["content"]["message"],
-          chatKey
-        );
-        setDecryptedMessage(decryptedMessage);
-        addToCache(
+      if (chatHeader["lastMessage"].length > 0) {
+        let temp = getFromCache(
           MESSAGE_CACHE,
-          chatHeader["lastMessage"][0]["content"]["message"],
-          decryptedMessage
+          chatHeader["lastMessage"][0]["content"]["message"]
         );
+        if (temp) {
+          setDecryptedMessage(temp);
+        } else {
+          const decryptedMessage = await decryptSymmetric(
+            chatHeader["lastMessage"][0]["content"]["message"],
+            chatKey
+          );
+          setDecryptedMessage(decryptedMessage);
+          addToCache(
+            MESSAGE_CACHE,
+            chatHeader["lastMessage"][0]["content"]["message"],
+            decryptedMessage
+          );
+        }
+      } else {
+        setDecryptedMessage(" ");
       }
-    } else {
-      setDecryptedMessage(" ");
-    }
+    })();
   }, [chatHeader]);
 
   return (
