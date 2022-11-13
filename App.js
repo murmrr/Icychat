@@ -9,9 +9,6 @@ import { useCallback, useEffect } from "react";
 import * as SplashScreen from "expo-splash-screen";
 import * as SystemUI from "expo-system-ui";
 
-LogBox.ignoreLogs(["Warning: ..."]);
-LogBox.ignoreAllLogs();
-
 export default function App() {
   const [fontsLoaded] = useFonts({
     "Poppins-Regular": require("./assets/fonts/Poppins-Regular.ttf"),
@@ -34,6 +31,9 @@ export default function App() {
   if (!fontsLoaded) {
     return null;
   }
+
+  LogBox.ignoreLogs(["Warning: ..."]);
+  LogBox.ignoreAllLogs();
 
   return (
     <NavigationContainer>

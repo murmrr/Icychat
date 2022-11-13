@@ -14,6 +14,7 @@ const ChatsScreen = ({ messageBuffer, setMessageBuffer }) => {
   const navigation = useNavigation();
 
   useLayoutEffect(() => {
+    /*
     navigation.setOptions({
       headerRight: (props) => (
         <TouchableOpacity
@@ -34,6 +35,7 @@ const ChatsScreen = ({ messageBuffer, setMessageBuffer }) => {
         </TouchableOpacity>
       ),
     });
+    */
   }, [showBubbles]);
 
   return (
