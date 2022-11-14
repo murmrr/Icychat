@@ -303,7 +303,7 @@ export const computeAccountId = (
 };
 
 export const formatE8s = (units) => {
-  return Number((units * 100000000000n) / 100000000n) / 100000000000;
+  return Number((units * BigInt(100000000000)) / BigInt(100000000)) / 100000000000;
 };
 
 export const formatICP = (units) => {
