@@ -30,7 +30,7 @@
     "buffer": "^6.0.3",
     "buffer-crc32": "^0.2.13",
     "crypto-js": "^4.1.1",
-    "expo": "^47.0.0",
+    "expo": "~47.0.3",
     "expo-asset": "~8.6.2",
     "expo-av": "~13.0.1",
     "expo-barcode-scanner": "~12.0.0",
