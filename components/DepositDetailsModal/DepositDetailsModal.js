@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import Icon from "react-native-vector-icons/FontAwesome";
 import Modal from "react-native-modal";
 import colors from "../../data/colors";
 import { scale, verticalScale } from "../../utility/scalingUtils";
@@ -9,6 +10,11 @@ import SendModal from "../SendModal/SendModal";
 
 const DepositDetailsModal = ({ principal, modalVisible, setModalVisible }) => {
   const [forSend, setForSend] = useState(false);
+  const [subAccountId, setSubAccountId] = useState(0);
+
+  const onSubAccountIdIncrease = () => {
+    setSubAccountId(subAccountId + 1);
+  }
 
   return (
     <Modal
@@ -28,10 +34,21 @@ const DepositDetailsModal = ({ principal, modalVisible, setModalVisible }) => {
         {forSend ? (
           <SendModal setForSend={setForSend} />
         ) : (
+
           <View style={styles.nestedContainer}>
+            <TouchableOpacity
+              onPress={onSubAccountIdIncrease}
+            >
+              <Icon
+                name="arrow-right"
+                size={20}
+                color={colors.WHITE}
+                style={{ padding: 8 }}
+              />
+            </TouchableOpacity>
             <FieldWrapper
               label="Account ID"
-              data={computeAccountId(principal)}
+              data={computeAccountId(principal, subAccountId)}
               color={colors.BLUE}
               top={true}
             />
@@ -68,7 +85,7 @@ const styles = StyleSheet.create({
   nestedContainer: {
     backgroundColor: colors.MIDNIGHT_BLUE,
     width: scale(300),
-    height: verticalScale(330),
+    height: verticalScale(360),
     borderRadius: 20,
     alignItems: "center",
     justifyContent: "center",
